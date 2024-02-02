@@ -225,7 +225,7 @@ namespace BusinessObject.Migrations
                 name: "IX_BookingDetails_CarID",
                 table: "BookingDetails",
                 column: "CarID",
-                unique: true);
+                unique: false);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookingDetails_ContractID",
