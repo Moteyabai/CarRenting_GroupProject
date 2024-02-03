@@ -9,6 +9,8 @@ namespace BusinessObject.Mapping
         {
             Map_Register_User();
             Map_Update_User();
+            Map_Contract();
+            Map_CarDamage();
         }
 
         private void Map_Register_User()
@@ -18,6 +20,26 @@ namespace BusinessObject.Mapping
         private void Map_Update_User()
         {
             CreateMap<UserUpdateDTO, User>();
+        }
+
+        private void Map_Contract()
+        {
+            CreateMap<ContractDTO, Contract>();
+        }
+
+        private void Map_CarDamage()
+        {
+            CreateMap<CarDamageDTO, CarDamage>();
+        }
+
+        private void Map_BookingDetail()
+        {
+            CreateMap<BookingDetailDTO, BookingDetail>();
+        }
+
+        private void Map_Booking()
+        {
+            CreateMap<BookingDTO, Booking>();
         }
 
     }

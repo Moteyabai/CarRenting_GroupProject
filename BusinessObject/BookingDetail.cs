@@ -6,11 +6,9 @@ namespace BusinessObject
     public class BookingDetail
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Required]
         public int DetailsID { get; set; }
         [Required]
         public int BookingID { get; set; }
-        [Required]
         public int ContractID { get; set; }
         [Required]
         public int CarID { get; set; }
