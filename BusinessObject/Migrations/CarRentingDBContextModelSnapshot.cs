@@ -150,6 +150,12 @@ namespace BusinessObject.Migrations
 
             modelBuilder.Entity("BusinessObject.CarDamage", b =>
                 {
+                    b.Property<int>("CarDamageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarDamageID"), 1L, 1);
+
                     b.Property<int>("BookingDetailID")
                         .HasColumnType("int");
 
@@ -159,6 +165,8 @@ namespace BusinessObject.Migrations
 
                     b.Property<decimal>("Fined")
                         .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("CarDamageID");
 
                     b.HasIndex("BookingDetailID");
 
@@ -172,9 +180,6 @@ namespace BusinessObject.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContractID"), 1L, 1);
-
-                    b.Property<int>("BookingID")
-                        .HasColumnType("int");
 
                     b.Property<string>("CarInformation")
                         .IsRequired()

@@ -28,7 +28,6 @@ namespace DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CarDamage>().HasNoKey();
             modelBuilder.Entity<Role>().HasData(
                 new Role { RoleID = 1, Name = "Customer" },
                 new Role { RoleID = 2, Name = "Manager" },

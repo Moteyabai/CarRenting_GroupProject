@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BusinessObject.Migrations
 {
-    public partial class InitDB : Migration
+    public partial class GroupProject : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,6 @@ namespace BusinessObject.Migrations
                 {
                     ContractID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BookingID = table.Column<int>(type: "int", nullable: false),
                     CarInformation = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Deposit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -187,12 +186,15 @@ namespace BusinessObject.Migrations
                 name: "CarDamages",
                 columns: table => new
                 {
+                    CarDamageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BookingDetailID = table.Column<int>(type: "int", nullable: false),
                     Damage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Fined = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_CarDamages", x => x.CarDamageID);
                     table.ForeignKey(
                         name: "FK_CarDamages_BookingDetails_BookingDetailID",
                         column: x => x.BookingDetailID,

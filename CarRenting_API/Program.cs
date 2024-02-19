@@ -1,6 +1,21 @@
+using BusinessObject;
 using BusinessObject.Mapping;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.ModelBuilder;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<Contract>("Contract");
+modelBuilder.EntitySet<CarDamage>("CarDamage");
+modelBuilder.EntitySet<Booking>("Booking");
+modelBuilder.EntitySet<BookingDetail>("BookingDetail");
+// Add services to the container.
+
+builder.Services.AddControllers().AddOData(
+    options => options.EnableQueryFeatures(null).AddRouteComponents(
+        routePrefix: "odata",
+        model: modelBuilder.GetEdmModel()));
 
 // Add services to the container.
 
