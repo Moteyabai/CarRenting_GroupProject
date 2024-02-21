@@ -36,17 +36,34 @@ namespace DataAccess
             try
             {
                 using var context = new CarRentingDBContext();
-                var check = context.Bookings.Find(bookingID);
 
-                if (check==null)
+                var Contract = context.Contracts.Find(contractID);
+
+                if (Contract == null)
+                {
+                    throw new Exception("Contract ID is not existing. Please choose a different Contract id.");
+                }
+
+                var Booking = context.Bookings.Find(bookingID);
+
+                if (Booking == null)
                 {
                     throw new Exception("Booking ID is not existing. Please choose a different booking id.");
                 }
                 else
                 {
+                    var Car = context.Cars.Find(dto.CarID);
+
+                    if (Car == null)
+                    {
+                        throw new Exception("Car ID is not existing. Please choose a different Car id.");
+                    }
 
                     var bookingDetail = new BookingDetail 
                     {
+                        Booking = Booking,
+                        Car = Car,
+                        Contract = Contract,
                         BookingID = bookingID,
                         ContractID = contractID,
                         CarID = dto.CarID,
