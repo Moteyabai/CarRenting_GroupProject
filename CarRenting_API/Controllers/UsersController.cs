@@ -3,6 +3,7 @@ using BusinessObject;
 using Repositories;
 using AutoMapper;
 using BusinessObject.DTO;
+using BusinessObject.Models.JwtTokenModels;
 
 namespace CarRenting_API.Controllers
 {
@@ -50,16 +51,17 @@ namespace CarRenting_API.Controllers
         //Simple Login
         //GET: api/Users/Login
         [HttpGet("Login")]
-        public ActionResult<User> Login(string email, string password)
+        public ActionResult<User> Login(LoginModel model)
         {
-            var u = new User();
-            u = _userRepository.CheckLogin(email, password);
-            if (u == null)
+            try
             {
-                Message = "Incorrect email or password!";
-                return NotFound(Message);
+                var token = _userRepository.Login(model);
+                return Ok(token);
             }
-            return Ok(u);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/Users/GetUser/5
