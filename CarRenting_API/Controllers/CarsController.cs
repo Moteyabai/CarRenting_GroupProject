@@ -11,6 +11,7 @@ using Repositories.IRepository;
 using Repositories.Repository;
 using AutoMapper;
 using BusinessObject.DTO;
+using BusinessObject.Models.CarModels;
 
 namespace CarRenting_API.Controllers
 {
@@ -28,17 +29,27 @@ namespace CarRenting_API.Controllers
         }
        
         // GET: api/Cars
-        [HttpGet("CarList")]
-        public ActionResult<IEnumerable<Car>> GetUsers()
+        [HttpGet("car-list")]
+        public ActionResult<IEnumerable<CarViewModels>> GetListCars()
         {
-            List<Car> list = new List<Car>();
-            list = _carRepository.GetListCar();
-            if (list.Count == 0) {
-                Message = "List is empty!";
-
-                return NotFound(Message);
+            try
+            {
+                List<CarViewModels> list = new List<CarViewModels>();
+                var cars = _carRepository.GetListCar();
+                if (list == null)
+                {
+                    return NotFound("No cars found!");
+                }
+                else
+                {
+                    list = _mapper.Map<List<CarViewModels>>(cars);    
+                    return Ok(list);
+                }
             }
-            return Ok(list);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/Cars/5

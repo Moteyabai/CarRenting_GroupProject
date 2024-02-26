@@ -50,7 +50,7 @@ namespace CarRenting_API.Controllers
 
         //Simple Login
         //GET: api/Users/Login
-        [HttpGet("Login")]
+        [HttpGet("login")]
         public ActionResult<User> Login(LoginModel model)
         {
             try
