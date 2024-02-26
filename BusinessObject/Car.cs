@@ -18,6 +18,8 @@ namespace BusinessObject
         [Required]
         public decimal Deposit { get; set; }
         [Required]
+        public decimal PricePerDay { get; set; }
+        [Required]
         public int Status { get; set; }
 
         public virtual CarBrand CarBrand { get; set; }
