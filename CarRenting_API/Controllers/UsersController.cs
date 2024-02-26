@@ -4,11 +4,12 @@ using Repositories;
 using AutoMapper;
 using BusinessObject.DTO;
 using BusinessObject.Models.JwtTokenModels;
+using System.Collections.Generic;
 
 namespace CarRenting_API.Controllers
 {
     [Route("api/[controller]")]
-    /*[ApiController]*/
+    [ApiController]
     public class UsersController : ControllerBase
     {
         private IUserRepository _userRepository = new UserRepository();
@@ -22,30 +23,35 @@ namespace CarRenting_API.Controllers
 
         // GET: api/Users/UserList
         [HttpGet("UserList")]
-        public ActionResult<IEnumerable<User>> GetUsers()
+        public ActionResult<IEnumerable<UserDisplayDTO>> GetUsers()
         {
-            List<User> list = new List<User>();
-            list = _userRepository.GetAllUsers();
-            if (list.Count == 0)
-            {
-                Message = "List is empty!";
+            
+                List<User> list = _userRepository.GetAllUsers();
+                var nList = _mapper.Map<List<UserDisplayDTO>>(list);
 
-                return NotFound(Message);
-            }
-            return Ok(list);
+                if (nList.Count == 0)
+                {
+                    Message = "No users found!";
+
+                    return NotFound(Message);
+                }
+                return Ok(nList);
+            
         }
 
         [HttpGet("Search/{name}")]
         public ActionResult<IEnumerable<User>> SearchByName(string name)
-        {
-            List<User> list = new List<User>();
-            list = _userRepository.SearchUsersByName(name);
-            if (list.Count == 0)
+        {           
+            List<User> list = _userRepository.SearchUsersByName(name);
+            var nList = _mapper.Map<List<UserDisplayDTO>>(list);
+
+            if (nList.Count == 0)
             {
-                Message = "No User Found";
+                Message = "No users found!";
+
                 return NotFound(Message);
             }
-            return Ok(list);
+            return Ok(nList);
         }
 
         //Simple Login
@@ -69,11 +75,15 @@ namespace CarRenting_API.Controllers
         public ActionResult<User> GetUserByID(int id)
         {
             var u = _userRepository.GetUserByID(id);
-            if (u == null)
+            var nU = _mapper.Map<UserDisplayDTO>(u);
+
+            if (nU == null)
             {
-                return NotFound("No user found!");
+                Message = "No user found!";
+
+                return NotFound(Message);
             }
-            return Ok(u);
+            return Ok(nU);
         }
 
         // PUT: api/Users/Update
@@ -100,7 +110,7 @@ namespace CarRenting_API.Controllers
         // POST: api/Users/Register
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Register")]
-        public ActionResult<User> Register(UserRegisterDTO userRegisterDTO)
+        public ActionResult<UserRegisterDTO> Register(UserRegisterDTO userRegisterDTO)
         {
             var user = _mapper.Map<User>(userRegisterDTO);
             var list = _userRepository.GetAllUsers();
