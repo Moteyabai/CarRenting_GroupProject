@@ -4,6 +4,8 @@ using Repositories;
 using AutoMapper;
 using BusinessObject.DTO;
 using BusinessObject.Models.JwtTokenModels;
+using Microsoft.AspNetCore.Authorization;
+using BusinessObject.Models.UserModels;
 
 namespace CarRenting_API.Controllers
 {
@@ -21,18 +23,27 @@ namespace CarRenting_API.Controllers
         }
 
         // GET: api/Users/UserList
-        [HttpGet("UserList")]
-        public ActionResult<IEnumerable<User>> GetUsers()
+        [HttpGet("get-user-list")]
+        public ActionResult<IEnumerable<UserViewModel>> GetUsers()
         {
-            List<User> list = new List<User>();
-            list = _userRepository.GetAllUsers();
-            if (list.Count == 0)
+            try
             {
-                Message = "List is empty!";
-
-                return NotFound(Message);
+                List<UserViewModel> list = new List<UserViewModel>();
+                var userList = _userRepository.GetAllUsers();
+                if (userList == null)
+                {
+                    return NotFound("No User List");
+                }
+                else
+                {
+                    list = _mapper.Map<List<UserViewModel>>(userList);
+                    return Ok(list);
+                }
             }
-            return Ok(list);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("Search/{name}")]
@@ -78,7 +89,7 @@ namespace CarRenting_API.Controllers
 
         // PUT: api/Users/Update
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult UpdateUser(UserUpdateDTO userUpdateDTO)
         {
             var user = _mapper.Map<User>(userUpdateDTO);

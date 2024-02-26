@@ -2,6 +2,7 @@
 using BusinessObject.DTO;
 using BusinessObject.Models.CarModels;
 using BusinessObject.Models.JwtTokenModels;
+using BusinessObject.Models.UserModels;
 
 namespace BusinessObject.Mapping
 {
@@ -17,6 +18,7 @@ namespace BusinessObject.Mapping
             Map_BookingDetail();
             Map_Booking();
             Map_Car_CarViewModels();
+            Map_User_UserViewModel();
         }
 
         private void Map_Register_User()
@@ -56,6 +58,11 @@ namespace BusinessObject.Mapping
         private void Map_Car_CarViewModels()
         {
             CreateMap<Car, CarViewModels>();
+        }
+
+        private void Map_User_UserViewModel()
+        {
+            CreateMap<User, UserViewModel>();
         }
     }
 }
