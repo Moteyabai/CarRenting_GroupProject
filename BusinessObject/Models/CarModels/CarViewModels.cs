@@ -14,6 +14,7 @@ namespace BusinessObject.Models.CarModels
         public int CarBrandID { get; set; }
         public string CarPlate { get; set; }
         public decimal Deposit { get; set; }
+        public decimal PricePerDay { get; set; }
         public int Status { get; set; }
     }
 }
