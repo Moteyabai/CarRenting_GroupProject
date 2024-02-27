@@ -19,11 +19,16 @@ namespace BusinessObject.Mapping
             Map_Booking();
             Map_Car_CarViewModels();
             Map_User_UserViewModel();
+            Map_Display_User();
         }
 
         private void Map_Register_User()
         {
             CreateMap<UserRegisterDTO, User>();
+        }
+        private void Map_Display_User()
+        {
+            CreateMap<User, UserDisplayDTO>();
         }
         private void Map_Update_User()
         {
