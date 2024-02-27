@@ -11,7 +11,7 @@
     <a asp-page="Create">Create New</a>
 </p>
 <form method="post">
-    <input asp-for="Search" type="text" />
+    <input asp-for="Search" type="text" value="@Model.Search" />
     <button type="submit">Search</button>
 </form>
 @if (Model.User == null)
