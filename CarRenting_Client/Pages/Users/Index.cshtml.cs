@@ -3,6 +3,9 @@ using BusinessObject;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using BusinessObject.DTO;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace CarRenting_Client.Pages.Users
 {
@@ -21,26 +24,47 @@ namespace CarRenting_Client.Pages.Users
         }
 
         public IList<UserDisplayDTO> User { get;set; } = default!;
+        [BindProperty]
+        public string Search {  get; set; }
 
         public async Task OnGetAsync()
         {
             HttpResponseMessage response = await Client.GetAsync(ApiUrl + "UserList");
 
-            string strData = await response.Content.ReadAsStringAsync();
-
-            var options = new JsonSerializerOptions
+            if (response.IsSuccessStatusCode)
             {
+                string strData = await response.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+                User = System.Text.Json.JsonSerializer.Deserialize<List<UserDisplayDTO>>(strData, options);
+
+                RedirectToPage("./Index");
+            }
+            RedirectToPage("./Index");
+        }
+
+        public async Task OnPostAsync()
+        {
+            /*string json = JsonConvert.SerializeObject(Search);*/;
+            HttpResponseMessage response = await Client.GetAsync(ApiUrl + "Search/" + Search);
+
+            if(response.IsSuccessStatusCode)
+            {
+                string strData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions {       
                 PropertyNameCaseInsensitive = true,
             };
-            if (strData.Equals("\"List is empty!\""))
-            {
-                User = null;
-            }
-            else
-            {
                 User = System.Text.Json.JsonSerializer.Deserialize<List<UserDisplayDTO>>(strData, options);
+ 
+            RedirectToPage("./Index");
             }
-            
+            RedirectToPage("./Index");
+
         }
+            
     }
 }
