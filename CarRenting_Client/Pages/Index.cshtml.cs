@@ -12,9 +12,15 @@ namespace CarRenting_Client.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (HttpContext.Session.GetString("token") == null)
+            {
+                return RedirectToPage("./Login");
+            }
+            
 
+            return Page();
         }
     }
 }

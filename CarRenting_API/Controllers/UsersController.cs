@@ -65,10 +65,15 @@ namespace CarRenting_API.Controllers
         //Simple Login
         //GET: api/Users/Login
         [HttpGet("login")]
-        public ActionResult<User> Login(LoginModel model)
+        public ActionResult<User> Login(string email, string password)
         {
             try
             {
+                var model = new LoginModel()
+                {
+                    Email = email,
+                    Password = password
+                };
                 var token = _userRepository.Login(model);
                 return Ok(token);
             }
