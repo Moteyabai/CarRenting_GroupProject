@@ -5,6 +5,8 @@ using AutoMapper;
 using BusinessObject.DTO;
 using BusinessObject.Models.JwtTokenModels;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using BusinessObject.Models.UserModels;
 
 namespace CarRenting_API.Controllers
 {
@@ -22,21 +24,27 @@ namespace CarRenting_API.Controllers
         }
 
         // GET: api/Users/UserList
-        [HttpGet("UserList")]
-        public ActionResult<IEnumerable<UserDisplayDTO>> GetUsers()
+        [HttpGet("get-user-list")]
+        public ActionResult<IEnumerable<UserViewModel>> GetUsers()
         {
-            
-                List<User> list = _userRepository.GetAllUsers();
-                var nList = _mapper.Map<List<UserDisplayDTO>>(list);
-
-                if (nList.Count == 0)
+            try
+            {
+                List<UserViewModel> list = new List<UserViewModel>();
+                var userList = _userRepository.GetAllUsers();
+                if (userList == null)
                 {
-                    Message = "No users found!";
-
-                    return NotFound(Message);
+                    return NotFound("No User List");
                 }
-                return Ok(nList);
-            
+                else
+                {
+                    list = _mapper.Map<List<UserViewModel>>(userList);
+                    return Ok(list);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("Search/{name}")]
@@ -57,10 +65,15 @@ namespace CarRenting_API.Controllers
         //Simple Login
         //GET: api/Users/Login
         [HttpGet("login")]
-        public ActionResult<User> Login(LoginModel model)
+        public ActionResult<User> Login(string email, string password)
         {
             try
             {
+                var model = new LoginModel()
+                {
+                    Email = email,
+                    Password = password
+                };
                 var token = _userRepository.Login(model);
                 return Ok(token);
             }
@@ -88,7 +101,7 @@ namespace CarRenting_API.Controllers
 
         // PUT: api/Users/Update
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult UpdateUser(UserUpdateDTO userUpdateDTO)
         {
             var user = _mapper.Map<User>(userUpdateDTO);
