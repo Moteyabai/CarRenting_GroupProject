@@ -1,0 +1,72 @@
+﻿@page
+@model CarRenting_Client.Pages.Users.CarModel
+@{
+    ViewData["Title"] = "Cars";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/popupFull.css" />
+    <title>Document</title>
+</head>
+
+<body>
+    <a asp-page="Booking">Booking</a>
+    <form method="get">
+        <div class="search_bar">
+            <input asp-for="Name" placeholder="Search name customer...">
+            <input type="submit" value="Search" />
+        </div>
+    </form>
+    <table>
+        <tr>
+            <th>Company</th>
+            <th>Contact</th>
+            <th>Country</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var car in Model.Cars)
+        {
+            <tr>
+                <td>@car.CarName</td>
+                <td>@car.CarPlate</td>
+                <td>@car.Deposit</td>
+                <td>
+                    <div class="job_salary" onclick="openFormUpdate('@car.CarID')">
+                        Booking
+                    </div>
+                </td>
+            </tr>
+            <div class="form-popup" id="myFormUpdate_@car.CarID">
+                <!-- Your existing form content -->
+                <form method="post" asp-page-handler="OnPost" class="form-container" id="formUpdate_@car.CarID">
+                    <input type="hidden" asp-for="CarID" value="@car.CarID" required>
+                    <label for="StartDate"><b>Start Date</b></label>
+                    <input type="date" asp-for="StartDate" required>
+
+                    <label for="EndDate"><b>End Date</b></label>
+                    <input type="date" asp-for="EndDate" required>
+
+                    <button type="submit" class="btn">Add Room</button>
+                    <button type="button" class="btn cancel" onclick="closeFormUpdate('@car.CarID')">Close</button>
+                </form>
+            </div>
+        }
+    </table>
+    <script>
+        function openFormUpdate(roomId) {
+            document.getElementById("myFormUpdate_" + roomId).style.display = "block";
+        }
+
+        function closeFormUpdate(roomId) {
+            document.getElementById("myFormUpdate_" + roomId).style.display = "none";
+        }
+    </script>
+</body>
+
+</html>
+

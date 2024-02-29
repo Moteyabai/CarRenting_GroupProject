@@ -1,0 +1,22 @@
+﻿@page
+@model CarRenting_Client.Pages.BookingModel
+@{
+}
+
+<table>
+    <tr>
+        <th>Company</th>
+        <th>Contact</th>
+        <th>Country</th>
+    </tr>
+    @foreach (var booking in Model.Bookings)
+    {
+        <tr>
+            <td>@booking.BookingDate</td>
+            <td>@booking.TotalPrice</td>
+            <td>
+                <a asp-page="BookingDetail" asp-route-bookingID="@booking.BookingID">View</a>
+            </td>
+        </tr>
+    }
+</table>
