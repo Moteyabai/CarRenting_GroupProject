@@ -2,3 +2,12 @@
 @model CarRenting_Client.Pages.CarDamageModel
 @{
 }
+
+<div>
+    <label for="bookingDate">Damage:</label>
+    <input id="bookingDate" type="text" asp-for="CarDamage.Damage" disabled>
+</div>
+<div>
+    <label for="totalPrice">Fined:</label>
+    <input id="totalPrice" type="text" asp-for="CarDamage.Fined" disabled>
+</div>

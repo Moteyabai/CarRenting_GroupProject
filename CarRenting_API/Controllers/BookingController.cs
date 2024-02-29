@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.OData.Query;
 using Repositories.IRepository;
 using Repositories.Repository;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using DataAccess;
+using Microsoft.AspNetCore.OData.Formatter;
 
 namespace CarRenting_API.Controllers
 {
@@ -43,6 +45,13 @@ namespace CarRenting_API.Controllers
                 Console.WriteLine($"Exception in Post: {ex}");
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        [EnableQuery]
+        public IActionResult Put([FromRoute] int key, [FromBody] BookingUpdateDTO dto)
+        {
+            bookingRepository.Update(key, dto);
+            return Ok();
         }
     }
 }

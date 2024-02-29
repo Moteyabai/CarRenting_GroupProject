@@ -13,6 +13,6 @@ namespace BusinessObject.DTO
         public DateTime BookingDate { get; set; }
         public decimal TotalPrice { get; set; }
         public int Status { get; set; }
-        public List<BookingDetailViewDTO> BookingDetails { get; set; }
+        public virtual List<BookingDetailViewDTO> BookingDetails { get; set; }
     }
 }
