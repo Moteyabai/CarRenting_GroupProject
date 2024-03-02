@@ -12,10 +12,6 @@
     <input id="totalPrice" type="text" asp-for="Booking.TotalPrice" disabled>
 </div>
 <div>
-    <label for="carId">Car ID:</label>
-    <input id="carId" type="text" asp-for="Booking.BookingDetails[0].CarID" disabled>
-</div>
-<div>
     <label for="startDate">Start Date:</label>
     <input id="startDate" type="text" asp-for="Booking.BookingDetails[0].StartDate" disabled>
 </div>
@@ -32,9 +28,9 @@
     <input id="fined" type="text" asp-for="Booking.BookingDetails[0].Fined" disabled>
 </div>
 <div>
-    <label for="contractId">Contract ID:</label>
-    <input id="contractId" type="text" asp-for="Booking.BookingDetails[0].ContractID" disabled>
+    <label for="fined">Fined:</label>
+    <input id="fined" type="text" asp-for="Booking.BookingDetails[0].ContractID" disabled>
 </div>
 
-<a asp-page="Contract" asp-route-contractID="Booking.BookingDetails[0].ContractID">View Contract</a>
-<a asp-page="CarDamage" asp-route-damageID="Booking.BookingDetails[0].BookingDetailID">View Car Damage</a>
+<a asp-page="Contract" asp-route-contractID="@Model.Booking.BookingDetails[0].ContractID">View Contract</a>
+<a asp-page="CarDamage" asp-route-damageID="@Model.Booking.BookingDetails[0].DetailsID">View Car Damage</a>

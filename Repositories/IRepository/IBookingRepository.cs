@@ -12,5 +12,6 @@ namespace Repositories.IRepository
     {
         int Create(BookingDTO dto);
         List<Booking> Bookings();
+        void Update(int bookingID, BookingUpdateDTO dto);
     }
 }

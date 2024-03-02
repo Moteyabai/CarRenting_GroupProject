@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using static System.Net.WebRequestMethods;
 using BusinessObject;
 using BusinessObject.DTO;
 
@@ -17,7 +16,7 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnGetAsync(int bookingID)
         {
-            BookingViewDto booking = null;
+            List<BookingViewDto> bookingViews = null;
             using (var httpClient = new HttpClient())
             {
                 string apiUrl1 = $"{apiUrl}{bookingID}";
@@ -25,7 +24,15 @@ namespace CarRenting_Client.Pages
                 using (HttpResponseMessage response = await httpClient.GetAsync(apiUrl1))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    booking = JsonConvert.DeserializeObject<BookingViewDto>(apiResponse);
+                    var apiResponseObject = JObject.Parse(apiResponse);
+
+                    if (apiResponseObject["value"] is JArray bookingReservationsArray)
+                    {
+                        bookingViews = JsonConvert.DeserializeObject<List<BookingViewDto>>(bookingReservationsArray.ToString())!;
+                        // Deserialize as a list if it's an array
+
+                    }
+                    Booking = bookingViews.FirstOrDefault();
                 }
             }
 

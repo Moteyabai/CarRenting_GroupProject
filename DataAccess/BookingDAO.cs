@@ -82,5 +82,29 @@ namespace DataAccess
             }
             return bookings;
         }
+
+        public void Update(int bookingID, BookingUpdateDTO dto)
+        {
+            try
+            {
+                using var context = new CarRentingDBContext();
+                var existingBooking = context.Bookings.Find(bookingID);
+
+                if (existingBooking != null)
+                {
+                    existingBooking.Status = dto.Status;
+
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Booking not found for update.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to update booking: {ex.Message}");
+            }
+        }
     }
 }

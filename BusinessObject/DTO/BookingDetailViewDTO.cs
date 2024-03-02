@@ -16,6 +16,6 @@ namespace BusinessObject.DTO
         public DateTime EndDate { get; set; }
         public string CarStatus { get; set; }
         public decimal CarPrice { get; set; }
-        public int Fined { get; set; }
+        public decimal? Fined { get; set; }
     }
 }
