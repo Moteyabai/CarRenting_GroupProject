@@ -61,7 +61,7 @@ namespace CarRenting_Client.Pages
             try
             {
                 string token = null;
-                HttpResponseMessage response = await Client.GetAsync(ApiUrl + "login" + "?email=" + Email + "&&password=" + Password);
+                HttpResponseMessage response = await Client.GetAsync(ApiUrl + "Login" + "?email=" + Email + "&&password=" + Password);
                 if (response.IsSuccessStatusCode)
                 {
                     HttpContext.Session.SetString("token", response.ToString());

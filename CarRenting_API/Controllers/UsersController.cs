@@ -24,12 +24,12 @@ namespace CarRenting_API.Controllers
         }
 
         // GET: api/Users/UserList
-        [HttpGet("get-user-list")]
-        public ActionResult<IEnumerable<UserViewModel>> GetUsers()
+        [HttpGet("UserList")]
+        public ActionResult<IEnumerable<UserDisplayDTO>> GetUsers()
         {
             try
             {
-                List<UserViewModel> list = new List<UserViewModel>();
+                List<UserDisplayDTO> list = new List<UserDisplayDTO>();
                 var userList = _userRepository.GetAllUsers();
                 if (userList == null)
                 {
@@ -37,7 +37,7 @@ namespace CarRenting_API.Controllers
                 }
                 else
                 {
-                    list = _mapper.Map<List<UserViewModel>>(userList);
+                    list = _mapper.Map<List<UserDisplayDTO>>(userList);
                     return Ok(list);
                 }
             }
@@ -64,7 +64,7 @@ namespace CarRenting_API.Controllers
 
         //Simple Login
         //GET: api/Users/Login
-        [HttpGet("login")]
+        [HttpGet("Login")]
         public ActionResult<User> Login(string email, string password)
         {
             try
@@ -101,7 +101,7 @@ namespace CarRenting_API.Controllers
 
         // PUT: api/Users/Update
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("update")]
+        [HttpPut("Update")]
         public IActionResult UpdateUser(UserUpdateDTO userUpdateDTO)
         {
             var user = _mapper.Map<User>(userUpdateDTO);

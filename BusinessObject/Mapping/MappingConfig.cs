@@ -18,7 +18,6 @@ namespace BusinessObject.Mapping
             Map_BookingDetail();
             Map_Booking();
             Map_Car_CarViewModels();
-            Map_User_UserViewModel();
             Map_Display_User();
         }
 
@@ -63,11 +62,6 @@ namespace BusinessObject.Mapping
         private void Map_Car_CarViewModels()
         {
             CreateMap<Car, CarViewModels>();
-        }
-
-        private void Map_User_UserViewModel()
-        {
-            CreateMap<User, UserViewModel>();
         }
     }
 }
