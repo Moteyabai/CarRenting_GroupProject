@@ -20,5 +20,8 @@ namespace Repositories.Repository
 
         public void Update(int bookingID, BookingUpdateDTO dto)
         => BookingDAO.Instance.Update(bookingID,dto);
+
+        public void UpdatePrice(int bookingID, BookingPriceDTO dto)
+        => BookingDAO.Instance.UpdatePrice(bookingID, dto);
     }
 }

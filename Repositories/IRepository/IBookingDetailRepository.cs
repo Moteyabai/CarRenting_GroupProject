@@ -1,4 +1,5 @@
-﻿using BusinessObject.DTO;
+﻿using BusinessObject;
+using BusinessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,10 @@ namespace Repositories.IRepository
     {
         int Create(int bookingID, int contractID, BookingDetailDTO dto);
         bool CheckBooking(int carId, DateTime start, DateTime end);
+
+        BookingDetail BookingDetails(int detailID);
+        List<BookingDetail> BookingDetailss();
+
+
     }
 }
