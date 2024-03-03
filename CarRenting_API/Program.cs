@@ -1,5 +1,6 @@
 using BusinessObject;
 using BusinessObject.Mapping;
+using BusinessObject.Models;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
 

@@ -2,6 +2,7 @@
 using BusinessObject;
 using BusinessObject.DTO;
 using BusinessObject.Mapping;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,7 +93,9 @@ namespace DataAccess
             try
             {
                 using var context = new CarRentingDBContext();
-                carDamages = context.CarDamages.AsQueryable().ToList();
+                carDamages = context.CarDamages
+                                .Include(cd => cd.BookingDetail)
+                                .ToList();
             }
             catch (Exception ex)
             {

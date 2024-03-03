@@ -67,12 +67,23 @@
 
 
 
-                <h1>Upload Profile Image</h1>
+                <h1>Car Damage</h1>
 
                 <form method="post" enctype="multipart/form-data">
                     <div style="display: flex;">
-                        <div style="width: 49%; padding-right: 1%; text-align: right;">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/025/019/602/small/camping-hiking-nature-mountain-river-graphic-illustration-vector-art-t-shirt-design-generative-ai-png.png" style="width: 100%; text-align: center;">
+                        <div style="width: 49%;height: 25%; padding-right: 1%; text-align: left;">
+                            <div>
+                                <label>Booking: </label>
+                                <p>@Model.PaymentDTO.booking</p>
+                            </div>
+                            <div>
+                                <label>Damage</label>
+                                <p>@Model.PaymentDTO.damage</p>
+                            </div>
+                            <div>
+                                <label>Total</label>
+                                <p>@Model.PaymentDTO.total</p>
+                            </div>
                         </div>
                         <div style="width: 49%; padding-left: 1%;">
                             <input type="hidden" asp-for="CarDamage.CarDamageID">
@@ -82,6 +93,15 @@
                             <textarea disabled asp-for="CarDamage.Damage" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
                         </div>
 
+                    </div>
+                </form>
+
+                
+
+                <form method="post" asp-page-handler="CreateCheckOutSession">
+                    <div class="search_bar">
+                        <input type="hidden" asp-for="PaymentDTO.total">
+                        <input type="submit" value="submit" />
                     </div>
                 </form>
 

@@ -28,5 +28,11 @@ namespace CarRenting_API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        [EnableQuery]
+        public ActionResult<IQueryable<BookingDetail>> Get()
+        {
+            return Ok(bookingDetailRepository.BookingDetailss());
+        }
     }
 }
