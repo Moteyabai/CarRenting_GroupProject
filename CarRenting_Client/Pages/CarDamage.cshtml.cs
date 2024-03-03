@@ -9,6 +9,7 @@ namespace CarRenting_Client.Pages
     public class CarDamageModel : PageModel
     {
         private readonly string apiUrl = "http://localhost:5209/odata/CarDamage?$filter=BookingDetailID eq ";
+        private readonly string apiUrlUpdate = "http://localhost:5209/odata/CarDamage/";
 
         [BindProperty]
         public CarDamage CarDamage { get; set; }
@@ -37,6 +38,33 @@ namespace CarRenting_Client.Pages
                 }
             }
 
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlUpdate}{CarDamage.CarDamageID}", CarDamage);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reload the page after successful deletion
+                        return RedirectToPage();
+                    }
+                    else
+                    {
+                        string errorMessage = await response.Content.ReadAsStringAsync();
+                        return BadRequest($"Failed to update car damage: {errorMessage}");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
         }
     }
 }

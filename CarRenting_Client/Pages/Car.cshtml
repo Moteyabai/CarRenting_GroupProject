@@ -1,62 +1,128 @@
 ﻿@page
 @model CarRenting_Client.Pages.Users.CarModel
 @{
-    ViewData["Title"] = "Cars";
+    Layout = null;
 }
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/popupFull.css" />
-    <title>Document</title>
+    <title>Job Dashboard | By Code Info</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
+    <!-- Font Awesome Cdn Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>
 
 <body>
-    <a asp-page="Booking">Booking</a>
-    <form method="get">
-        <div class="search_bar">
-            <input asp-for="Name" placeholder="Search name customer...">
-            <input type="submit" value="Search" />
-        </div>
-    </form>
-    <table>
-        <tr>
-            <th>Company</th>
-            <th>Contact</th>
-            <th>Country</th>
-            <th>Action</th>
-        </tr>
-        @foreach (var car in Model.Cars)
-        {
-            <tr>
-                <td>@car.CarName</td>
-                <td>@car.CarPlate</td>
-                <td>@car.Deposit</td>
-                <td>
-                    <div class="job_salary" onclick="openFormUpdate('@car.CarID')">
-                        Booking
-                    </div>
-                </td>
-            </tr>
-            <div class="form-popup" id="myFormUpdate_@car.CarID">
-                <!-- Your existing form content -->
-                <form method="post" asp-page-handler="OnPost" class="form-container" id="formUpdate_@car.CarID">
-                    <input type="hidden" asp-for="CarID" value="@car.CarID" required>
-                    <label for="StartDate"><b>Start Date</b></label>
-                    <input type="date" asp-for="StartDate" required>
+    <div class="container">
+        <nav>
+            <div class="navbar">
+                <div class="logo">
+                    <img src="/pic/logo.jpg" alt="">
+                    <h1>Hotel</h1>
+                </div>
+                <ul>
+                    <li>
+                        <a href="Car">
+                            <i class="fas fa-user"></i>
+                            <span class="nav-item">Car</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Booking">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="nav-item">Booking</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="AdminReservation">
+                            <i class="fas fa-tasks"></i>
+                            <span class="nav-item">Reservation</span>
+                        </a>
+                    </li>
 
-                    <label for="EndDate"><b>End Date</b></label>
-                    <input type="date" asp-for="EndDate" required>
-
-                    <button type="submit" class="btn">Add Room</button>
-                    <button type="button" class="btn cancel" onclick="closeFormUpdate('@car.CarID')">Close</button>
-                </form>
+                    <li>
+                        <a href="ReportStatistic">
+                            <i class="fab fa-dochub"></i>
+                            <span class="nav-item">Statistic</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Login" class="logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="nav-item">Logout</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-        }
-    </table>
+        </nav>
+
+        <section class="main">
+            <div class="main-top">
+                <p>Dam Anh Bang SE150648 University</p>
+            </div>
+            <div class="main-body">
+                <h1>Cars</h1>
+
+                <form method="get">
+                    <div class="search_bar">
+                        <input asp-for="Name" placeholder="Search name room...">
+                        <input type="submit" value="Search" />
+                    </div>
+                </form>
+
+
+
+                @foreach (var car in Model.Cars)
+                {
+                    <div class="job_card">
+                        <div class="job_details">
+                            <div class="text">
+                                <div>
+                                    <span style="font-weight: bold;">Name: </span>
+                                    <span>@car.CarName</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">Car Plate: </span>
+                                    <span>@car.CarPlate</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">Deposit: </span>
+                                    <span>@car.Deposit</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="job_salary">
+                            <div class="job_salary" onclick="openFormUpdate('@car.CarID')">
+                                Booking
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="form-popup" id="myFormUpdate_@car.CarID">
+                        <!-- Your existing form content -->
+                        <form method="post" asp-page-handler="OnPost" class="form-container" id="formUpdate_@car.CarID">
+                            <input type="hidden" asp-for="CarID" value="@car.CarID" required>
+                            <label for="StartDate"><b>Start Date</b></label>
+                            <input type="date" asp-for="StartDate" required><br/>
+
+                            <label for="EndDate"><b>End Date</b></label>
+                            <input type="date" asp-for="EndDate" required>
+
+                            <button type="submit" class="btn">Hire</button>
+                            <button type="button" class="btn cancel" onclick="closeFormUpdate('@car.CarID')">Close</button>
+                        </form>
+                    </div>
+                }
+
+            </div>
+        </section>
+    </div>
+
     <script>
         function openFormUpdate(roomId) {
             document.getElementById("myFormUpdate_" + roomId).style.display = "block";
@@ -66,7 +132,7 @@
             document.getElementById("myFormUpdate_" + roomId).style.display = "none";
         }
     </script>
+
 </body>
 
 </html>
-
