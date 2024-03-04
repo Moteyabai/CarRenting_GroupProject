@@ -15,6 +15,10 @@ using System.Net.Security;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Text;
+using System.Dynamic;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Http;
+using BusinessObject.Models.Enum;
 
 namespace CarRenting_Client.Pages
 {
@@ -40,7 +44,7 @@ namespace CarRenting_Client.Pages
             }
             else
             {
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Car");
             }
         }
 
@@ -60,17 +64,41 @@ namespace CarRenting_Client.Pages
 
             try
             {
-                string token = null;
-                HttpResponseMessage response = await Client.GetAsync(ApiUrl + "login" + "?email=" + Email + "&&password=" + Password);
-                if (response.IsSuccessStatusCode)
+                var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                IConfigurationRoot configuration = builder.Build();
+                if (Email == configuration["Admin:email"] && Password == configuration["Admin:password"])
                 {
-                    HttpContext.Session.SetString("token", response.ToString());
-                    return RedirectToPage("./Index");
+                    HttpContext.Session.SetString("ID", "ADMIN");
+                    HttpContext.Session.SetString("userName", "ADMIN");
+                    HttpContext.Session.SetString("email", "ADMIN");
+                    HttpContext.Session.SetString("RoleID", "ADMIN");
+                    return RedirectToPage("./Car");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Wrong email or password!");
-                    return Page();
+                    HttpResponseMessage response = await Client.GetAsync(ApiUrl + "login" + "?email=" + Email + "&&password=" + Password);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var token = await response.Content.ReadAsStringAsync();
+                        var handler = new JwtSecurityTokenHandler();
+                        var jsonToken = handler.ReadJwtToken(token);
+                        var userId = jsonToken.Claims.First(claims => claims.Type == "userID").Value;
+                        var userName = jsonToken.Claims.First(claims => claims.Type == "userName").Value;
+                        var email = jsonToken.Claims.First(claims => claims.Type == "email").Value;
+                        var roleID = jsonToken.Claims.First(claims => claims.Type == "roleID").Value;
+                        HttpContext.Session.SetString("ID", userId);
+                        HttpContext.Session.SetString("userName", userName);
+                        HttpContext.Session.SetString("email", email);
+                        HttpContext.Session.SetString("RoleID", roleID);
+                        return RedirectToPage("./Car");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Wrong email or password!");
+                        return Page();
+                    }
                 }
             }
             catch (Exception ex)
