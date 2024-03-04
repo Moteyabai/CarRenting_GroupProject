@@ -106,5 +106,29 @@ namespace DataAccess
                 throw new Exception($"Failed to update booking: {ex.Message}");
             }
         }
+
+        public void UpdatePrice(int bookingID, BookingPriceDTO dto)
+        {
+            try
+            {
+                using var context = new CarRentingDBContext();
+                var existingBooking = context.Bookings.Find(bookingID);
+
+                if (existingBooking != null)
+                {
+                    existingBooking.TotalPrice = dto.TotalPrice;
+
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Booking not found for update.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to update booking: {ex.Message}");
+            }
+        }
     }
 }

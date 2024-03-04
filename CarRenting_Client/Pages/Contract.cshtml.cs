@@ -12,6 +12,7 @@ namespace CarRenting_Client.Pages
         private readonly string apiUrl = "http://localhost:5209/odata/Contract?$filter=ContractID eq ";
         private readonly string apiUrlAccept = "http://localhost:5209/odata/Booking/";
         private readonly string apiUrlReject = "http://localhost:5209/odata/Booking/";
+        private readonly string apiUrlUpdate = "http://localhost:5209/odata/Contract/";
 
         [BindProperty]
         public Contract Contract { get; set; }
@@ -96,6 +97,33 @@ namespace CarRenting_Client.Pages
             catch (Exception ex)
             {
                 return BadRequest($"Failed to update booking: {ex.Message}");
+            }
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlUpdate}{Contract.ContractID}", Contract);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reload the page after successful deletion
+                        return Page();
+                    }
+                    else
+                    {
+                        string errorMessage = await response.Content.ReadAsStringAsync();
+                        return BadRequest($"Failed to update contract: {errorMessage}");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
             }
         }
     }

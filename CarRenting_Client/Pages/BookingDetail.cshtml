@@ -1,36 +1,107 @@
 ﻿@page
 @model CarRenting_Client.Pages.BookingDetailModel
 @{
+    Layout = null;
 }
 
-<div>
-    <label for="bookingDate">Booking Date:</label>
-    <input id="bookingDate" type="text" asp-for="Booking.BookingDate" disabled>
-</div>
-<div>
-    <label for="totalPrice">Total Price:</label>
-    <input id="totalPrice" type="text" asp-for="Booking.TotalPrice" disabled>
-</div>
-<div>
-    <label for="startDate">Start Date:</label>
-    <input id="startDate" type="text" asp-for="Booking.BookingDetails[0].StartDate" disabled>
-</div>
-<div>
-    <label for="endDate">End Date:</label>
-    <input id="endDate" type="text" asp-for="Booking.BookingDetails[0].EndDate" disabled>
-</div>
-<div>
-    <label for="carPrice">Car Price:</label>
-    <input id="carPrice" type="text" asp-for="Booking.BookingDetails[0].CarPrice" disabled>
-</div>
-<div>
-    <label for="fined">Fined:</label>
-    <input id="fined" type="text" asp-for="Booking.BookingDetails[0].Fined" disabled>
-</div>
-<div>
-    <label for="fined">Fined:</label>
-    <input id="fined" type="text" asp-for="Booking.BookingDetails[0].ContractID" disabled>
-</div>
+<!DOCTYPE html>
+<html lang="en">
 
-<a asp-page="Contract" asp-route-contractID="@Model.Booking.BookingDetails[0].ContractID">View Contract</a>
-<a asp-page="CarDamage" asp-route-damageID="@Model.Booking.BookingDetails[0].DetailsID">View Car Damage</a>
+<head>
+    <title>Job Dashboard | By Code Info</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
+    <!-- Font Awesome Cdn Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <div class="navbar">
+                <div class="logo">
+                    <img src="/pic/logo.jpg" alt="">
+                    <h1>Hotel</h1>
+                </div>
+                <ul>
+                    <li>
+                        <a href="Car">
+                            <i class="fas fa-user"></i>
+                            <span class="nav-item">Car</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Booking">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="nav-item">Booking</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="AdminReservation">
+                            <i class="fas fa-tasks"></i>
+                            <span class="nav-item">Reservation</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="ReportStatistic">
+                            <i class="fab fa-dochub"></i>
+                            <span class="nav-item">Statistic</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Login" class="logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="nav-item">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <section class="main">
+            <div class="main-top">
+                <p>Dam Anh Bang SE150648 University</p>
+            </div>
+            <div class="main-body">
+                <h1>Booking</h1>
+                <div style="margin-bottom: 10px; margin-left:15px;">
+                    <label style="font-weight: bold;" for="fname">Booking Date:</label>
+                    <span>@Model.Booking.BookingDate</span>
+                    <br>
+                    <label style="font-weight: bold;" for="fname">Total Price:</label>
+                    <span>@Model.Booking.TotalPrice</span>
+                    <br>
+                </div>
+                <h3>Booking Detail</h3>
+                <div class="job_card">
+                    <div class="job_details">
+                        <div class="text">
+                            <label style="font-weight: bold;" for="fname">Start Date:</label>
+                            <span>@Model.Booking.BookingDetails[0].StartDate</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">End Date:</label>
+                            <span>@Model.Booking.BookingDetails[0].EndDate</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Price:</label>
+                            <span>@Model.Booking.BookingDetails[0].CarPrice</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Fined:</label>
+                            <span>@Model.Booking.BookingDetails[0].Fined</span>
+                            <br>
+                        </div>
+                    </div>
+
+                </div>
+                <a asp-page="Contract" asp-route-contractID="@Model.Booking.BookingDetails[0].ContractID">Contract</a>
+                <a asp-page="CarDamage" asp-route-damageID="@Model.Booking.BookingDetails[0].DetailsID">Car Damage</a>
+
+            </div>
+        </section>
+    </div>
+
+
+
+</body>
+
+</html>

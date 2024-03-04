@@ -111,6 +111,33 @@ namespace DataAccess
             }
         }
 
+        public BookingDetail BookingDetails(int detailID)
+        {
+            try
+            {
+                using var context = new CarRentingDBContext();
+                return context.BookingDetails.Find(detailID);
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"Failed to get BookingDetail: {e.Message}");
+            }
+        }
+
+        public List<BookingDetail> BookingDetailss()
+        {
+            try
+            {
+                using var context = new CarRentingDBContext();
+                return context.BookingDetails.ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to get BookingDetail: {e.Message}");
+            }
+        }
+
+
 
     }
 }
