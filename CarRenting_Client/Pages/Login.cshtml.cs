@@ -24,16 +24,10 @@ namespace CarRenting_Client.Pages
 {
     public class LoginModel : PageModel
     {
-        private readonly HttpClient Client;
-        private string ApiUrl = "http://localhost:5209/api/Users/";
-
+        private string ApiUrl = "http://localhost:5209/api/Users/login";
+        
         public LoginModel()
         {
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
-            Client = new HttpClient(handler);
-            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-            Client.DefaultRequestHeaders.Accept.Add(contentType);
         }
 
         public IActionResult OnGet()
@@ -78,10 +72,11 @@ namespace CarRenting_Client.Pages
                 }
                 else
                 {
-                    HttpResponseMessage response = await Client.GetAsync(ApiUrl + "login" + "?email=" + Email + "&&password=" + Password);
+                    HttpClient Client = new HttpClient();
+                    HttpResponseMessage response = await Client.GetAsync(ApiUrl + "?email=" + Email + "&&password=" + Password);
                     if (response.IsSuccessStatusCode)
                     {
-                        var token = await response.Content.ReadAsStringAsync();
+                        string token = await response.Content.ReadAsStringAsync();
                         var handler = new JwtSecurityTokenHandler();
                         var jsonToken = handler.ReadJwtToken(token);
                         var userId = jsonToken.Claims.First(claims => claims.Type == "userID").Value;
