@@ -32,7 +32,7 @@ namespace CarRenting_Client.Pages
 
         public IActionResult OnGet()
         {
-            if (HttpContext.Session.GetString("token") == null)
+            if (HttpContext.Session.GetString("ID") == null)
             {
                 return Page();
             }

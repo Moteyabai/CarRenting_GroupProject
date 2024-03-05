@@ -48,6 +48,10 @@ namespace CarRenting_Client.Pages.Users
                 }
             }
 
+            if (HttpContext.Session.GetString("ID") == null)
+            {
+                return RedirectToPage("./Login");
+            }
 
             return Page();
         }
