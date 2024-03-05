@@ -7,6 +7,7 @@ using Repositories.Repository;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using DataAccess;
 using Microsoft.AspNetCore.OData.Formatter;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarRenting_API.Controllers
 {
