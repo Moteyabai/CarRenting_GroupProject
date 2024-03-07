@@ -1,6 +1,5 @@
 using BusinessObject;
 using BusinessObject.Mapping;
-using BusinessObject.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
 using Microsoft.IdentityModel.Tokens;
@@ -37,24 +36,54 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["JwtConfig:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey
         (Encoding.UTF8.GetBytes(builder.Configuration["JwtConfig:Key"])),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = false,
+        ValidateIssuer = string.IsNullOrEmpty(builder.Configuration["JwtConfig:Issuer"]),
+        ValidateAudience = string.IsNullOrEmpty(builder.Configuration["JwtConfig:Audience"]),
+        ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
 });
 
-builder.Services.AddSwaggerGen(opt =>
+builder.Services.AddSwaggerGen(option =>
 {
-    opt.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Book API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Standard Authorization header using bearer scheme (\"bearer {token}\")",
         In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
     });
-    opt.OperationFilter<SecurityRequirementsOperationFilter>();
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
 });
+
+//builder.Services.AddSwaggerGen(opt =>
+//{
+//    opt.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+//    {
+//        Description = "Standard Authorization header using bearer scheme (\"bearer {token}\")",
+//        In = ParameterLocation.Header,
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.ApiKey,
+//        BearerFormat = "JWT",
+//        Scheme = "Bearer"
+//    });
+//    opt.OperationFilter<SecurityRequirementsOperationFilter>();
+//});
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
