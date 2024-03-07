@@ -19,7 +19,6 @@ namespace CarRenting_API.Controllers
         private IContractRepository contractRepository = new ContractRepository();
 
         [EnableQuery]
-        [Authorize]
         public ActionResult<IQueryable<Booking>> Get()
         {
             return Ok(bookingRepository.Bookings());
