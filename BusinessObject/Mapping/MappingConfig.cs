@@ -3,6 +3,7 @@ using BusinessObject.DTO;
 using BusinessObject.Models.CarModels;
 using BusinessObject.Models.JwtTokenModels;
 using BusinessObject.Models.UserModels;
+using DataAccess;
 
 namespace BusinessObject.Mapping
 {
@@ -61,7 +62,26 @@ namespace BusinessObject.Mapping
 
         private void Map_Car_CarViewModels()
         {
-            CreateMap<Car, CarViewModels>();
+            CreateMap<Car, CarViewModels>()
+                .AfterMap<MapingAction_Car_CarViewModel>();
+        }
+
+
+        public class MapingAction_Car_CarViewModel : IMappingAction<Car, CarViewModels>
+        {
+            public void Process (Car source, CarViewModels destination, ResolutionContext context)
+            {
+                var db = new CarRentingDBContext();
+                var brand = db.CarBrands.FirstOrDefault(x => x.CarBrandID == source.CarBrandID);
+
+                destination.CarID = source.CarID;
+                destination.CarName = source.CarName;
+                destination.CarBrand = brand.Name;
+                destination.CarPlate = source.CarPlate;
+                destination.Deposit = source.Deposit;
+                destination.PricePerDay = source.PricePerDay;
+                destination.Status = source.Status;
+            }
         }
     }
 }
