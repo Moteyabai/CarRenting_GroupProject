@@ -1,0 +1,137 @@
+﻿@page
+@model CarRenting_Client.Pages.ProfileModel
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+    <title>Job Dashboard | By Code Info</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
+    <!-- Font Awesome Cdn Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <div class="navbar">
+                <div class="logo">
+                    <img src="/pic/logo.jpg" alt="">
+                    <h1>Hotel</h1>
+                </div>
+                <ul>
+                    <li>
+                        <a href="CustomerReservation">
+                            <i class="fas fa-tasks"></i>
+                            <span class="nav-item">Reservation </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Profile">
+                            <i class="fas fa-user"></i>
+                            <span class="nav-item">Topic</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="Login" class="logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="nav-item">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <section class="main">
+            <div class="main-top">
+                <p>Dam Anh Bang SE150648 University</p>
+            </div>
+            <div class="main-body">
+
+
+
+                <h1>Upload Profile Image</h1>
+
+                <form method="post" enctype="multipart/form-data">
+                    <div style="display: flex;">
+                        <div style="width: 49%; padding-right: 1%; text-align: right;">
+                            <img src="https://static.vecteezy.com/system/resources/thumbnails/025/019/602/small/camping-hiking-nature-mountain-river-graphic-illustration-vector-art-t-shirt-design-generative-ai-png.png" style="width: 100%; text-align: center;">
+                        </div>
+                        <div style="width: 49%; padding-left: 1%;">
+                            <input type="hidden" asp-for="Customer.UserID">
+                            <label for="fname">Name:</label><br>
+                            <input disabled asp-for="Customer.UserName" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="lname">Phone:</label><br>
+                            <input disabled asp-for="Customer.Phone" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="lname">Email:</label><br>
+                            <input disabled asp-for="Customer.Email" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="lname">Identification:</label><br>
+                            <input disabled asp-for="Customer.Identification" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="lname">License:</label><br>
+                            <input disabled asp-for="Customer.License" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </section>
+    </div>
+
+    <button class="open-button" onclick="openForm()">Update Profile</button>
+
+    <div class="form-popup" id="myForm">
+        <form method="post" class="form-container">
+
+            <label for="RoomNumber"><b>Full Name</b></label>
+            <input type="text" asp-for="Customer.UserName" required>
+            <span asp-validation-for="Customer.UserName" class="text-danger"></span>
+
+            <label for="RoomDetailDescription"><b>Telephone </b></label>
+            <input type="text" asp-for="Customer.Phone" required>
+            <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+
+            <label for="RoomMaxCapacity"><b>Email</b></label>
+            <input type="text" asp-for="Customer.Email" required>
+            <span asp-validation-for="Customer.Email" class="text-danger"></span>
+
+            <label for="RoomPricePerDay"><b>Identification</b></label>
+            <input type="text" asp-for="Customer.Identification" required><br></br>
+            <span asp-validation-for="Customer.Identification" class="text-danger"></span>
+
+            <label for="RoomPricePerDay"><b>License</b></label>
+            <input type="text" asp-for="Customer.License" required><br></br>
+            <span asp-validation-for="Customer.License" class="text-danger"></span>
+
+            <label for="RoomPricePerDay"><b>Password</b></label>
+            <input type="text" asp-for="Customer.Password" required><br></br>
+            <span asp-validation-for="Customer.Password" class="text-danger"></span>
+
+            <input type="hidden" asp-for="Customer.Status" value="1" required>
+
+            <input type="hidden" asp-for="Customer.UserID" required>
+
+            <button type="submit" class="btn">Update</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        </form>
+    </div>
+
+    <script>
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>

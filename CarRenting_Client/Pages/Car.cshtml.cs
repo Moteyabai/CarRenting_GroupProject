@@ -1,8 +1,9 @@
-using BusinessObject;
+﻿using BusinessObject;
 using BusinessObject.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http;
 
 namespace CarRenting_Client.Pages.Users
@@ -72,8 +73,8 @@ namespace CarRenting_Client.Pages.Users
                 var bookingDetail = new BookingDetailDTO
                 {
                     CarID = CarID,
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now,
+                    StartDate = StartDate,
+                    EndDate = EndDate,
                     CarStatus = "1",
                     CarPrice = Car.PricePerDay,
                     Fined = 0
@@ -91,19 +92,28 @@ namespace CarRenting_Client.Pages.Users
                     if (response.IsSuccessStatusCode)
                     {
                         // Reload the page after successful deletion
-                        return RedirectToPage();
+                        TempData["Message"] = "Booking successfully created.";
                     }
                     else
                     {
                         string errorMessage = await response.Content.ReadAsStringAsync();
-                        return BadRequest($"Failed to booking: {errorMessage}");
+                        JObject errorObject = JObject.Parse(errorMessage);
+
+                        // Lấy thông báo từ thuộc tính "message" trong đối tượng error
+                        string message = (string)errorObject["error"]["message"];
+
+                        // Lưu thông báo vào TempData
+                        TempData["Message"] = message;
                     }
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest($"An error occurred: {ex.Message}");
+                TempData["Message"] = "Date validation.";
             }
+
+            return RedirectToPage("Car"); // Trả về trang hiện tại sau khi đã xử lý các ngoại lệ
         }
+
     }
 }

@@ -16,6 +16,7 @@ modelBuilder.EntitySet<Contract>("Contract");
 modelBuilder.EntitySet<CarDamage>("CarDamage");
 modelBuilder.EntitySet<Booking>("Booking");
 modelBuilder.EntitySet<BookingDetail>("BookingDetail");
+modelBuilder.EntitySet<Transaction>("Transaction");
 // Add services to the container.
 
 builder.Services.AddControllers().AddOData(

@@ -45,6 +45,16 @@
         display: inline-block;
         margin: 0 auto;
     }
+
+    input[type=submit] {
+        background-color: #04AA6D;
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
 </style>
 <body>
     <div class="card">
@@ -53,6 +63,12 @@
         </div>
         <h1>Success</h1>
         <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
+
+        <form method="post">
+            <div class="search_bar">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
     </div>
 </body>
 </html>

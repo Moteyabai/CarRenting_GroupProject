@@ -99,7 +99,10 @@
         </section>
     </div>
 
-    <button class="open-button" onclick="openForm()">Update</button>
+    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3"))
+    {
+        <button class="open-button" onclick="openForm()">Update</button>
+    }
 
     <div class="form-popup" id="myForm">
         <form method="post" class="form-container">

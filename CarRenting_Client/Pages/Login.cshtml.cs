@@ -64,10 +64,10 @@ namespace CarRenting_Client.Pages
                 IConfigurationRoot configuration = builder.Build();
                 if (Email == configuration["Admin:email"] && Password == configuration["Admin:password"])
                 {
-                    HttpContext.Session.SetString("ID", "ADMIN");
+                    HttpContext.Session.SetString("ID", "USERID");
                     HttpContext.Session.SetString("userName", "ADMIN");
                     HttpContext.Session.SetString("email", "ADMIN");
-                    HttpContext.Session.SetString("RoleID", "ADMIN");
+                    HttpContext.Session.SetString("RoleID", "ROLEID");
                     return RedirectToPage("./Car");
                 }
                 else

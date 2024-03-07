@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using BusinessObject;
 using BusinessObject.DTO;
+using BusinessObject.Models.Enum;
+using Microsoft.AspNetCore.Http;
 
 namespace CarRenting_Client.Pages
 {
@@ -33,6 +35,7 @@ namespace CarRenting_Client.Pages
 
                     }
                     Booking = bookingViews.FirstOrDefault();
+                    HttpContext.Session.SetInt32("DetailsID", Booking.BookingID);
                 }
             }
 

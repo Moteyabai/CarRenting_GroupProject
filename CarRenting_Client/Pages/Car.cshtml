@@ -11,8 +11,32 @@
     <title>Job Dashboard | By Code Info</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/popup.css" />
+    <style>
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f1f1f1;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+            .notification.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+
+
+    </style>
     <!-- Font Awesome Cdn Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
 </head>
 
 <body>
@@ -37,16 +61,16 @@
                         </a>
                     </li>
                     <li>
-                        <a href="pushimage">
+                        <a href="Transaction">
                             <i class="fas fa-tasks"></i>
-                            <span class="nav-item">pushimage</span>
+                            <span class="nav-item">Transaction</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="ReportStatistic">
+                        <a href="Profile">
                             <i class="fab fa-dochub"></i>
-                            <span class="nav-item">Statistic</span>
+                            <span class="nav-item">Profile</span>
                         </a>
                     </li>
                     <li>
@@ -120,7 +144,19 @@
                 }
 
             </div>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="notification">
+                    <p>@TempData["Message"]</p>
+                </div>
+            }
+
         </section>
+
+        
+
+
     </div>
 
     <script>
@@ -131,6 +167,21 @@
         function closeFormUpdate(roomId) {
             document.getElementById("myFormUpdate_" + roomId).style.display = "none";
         }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const notification = document.querySelector('.notification');
+
+            setTimeout(function () {
+                notification.classList.add('show');
+                setTimeout(function () {
+                    notification.classList.remove('show');
+                }, 3000);
+            }, 1000); // Show notification after 1 second
+        });
+
+
     </script>
 
 </body>

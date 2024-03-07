@@ -97,20 +97,25 @@
                 </form>
 
                 
-
-                <form method="post" asp-page-handler="CreateCheckOutSession">
-                    <div class="search_bar">
-                        <input type="hidden" asp-for="PaymentDTO.total">
-                        <input type="submit" value="submit" />
-                    </div>
-                </form>
-
+                @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1") && Model.PaymentDTO.Status != 4 && Model.PaymentDTO.Status != 2)
+                {
+                    <form method="post" asp-page-handler="CreateCheckOutSession">
+                        <div class="search_bar">
+                            <input type="hidden" asp-for="PaymentDTO.total">
+                            <input type="submit" value="submit" />
+                        </div>
+                    </form>
+                }
 
             </div>
         </section>
     </div>
 
-    <button class="open-button" onclick="openForm()">Update</button>
+    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3") && Model.PaymentDTO.Status != 4 && Model.PaymentDTO.Status != 2)
+    {
+        <button class="open-button" onclick="openForm()">Update</button>
+    }
+    
 
     <div class="form-popup" id="myForm">
         <form method="post" class="form-container">
