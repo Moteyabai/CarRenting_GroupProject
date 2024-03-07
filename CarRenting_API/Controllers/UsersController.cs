@@ -25,6 +25,7 @@ namespace CarRenting_API.Controllers
 
         // GET: api/Users/UserList
         [HttpGet("UserList")]
+        [Authorize]
         public ActionResult<IEnumerable<UserDisplayDTO>> GetUsers()
         {
             try
