@@ -11,6 +11,8 @@ namespace BusinessObject
         public int BookingDetailID { get; set; }
         public string Damage { get; set; }
         public decimal Fined { get; set; }
+        public string ImageCarDamage { get; set; }
         public virtual BookingDetail BookingDetail { get; set; }
+
     }
 }
