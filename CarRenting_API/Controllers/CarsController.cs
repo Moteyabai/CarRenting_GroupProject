@@ -29,16 +29,16 @@ namespace CarRenting_API.Controllers
         }
        
         // GET: api/Cars
-        [HttpGet("car-list")]
+        [HttpGet("Carlist")]
         public ActionResult<IEnumerable<CarViewModels>> GetListCars()
         {
             try
             {
                 List<CarViewModels> list = new List<CarViewModels>();
                 var cars = _carRepository.GetListCar();
-                if (list == null)
+                if (cars == null)
                 {
-                    return NotFound("No cars found!");
+                    return NotFound("No Cars Found!");
                 }
                 else
                 {
@@ -56,13 +56,13 @@ namespace CarRenting_API.Controllers
         [HttpGet("Search/{name}")]
         public ActionResult<IEnumerable<Car>> SearchCarByName(string name)
         {
-            List<Car> list = new List<Car>();
-            list = _carRepository.SearchCarByName(name);
-            if (list.Count == 0) {
+            List<Car> list = _carRepository.SearchCarByName(name);
+            var carList = _mapper.Map<List<CarDisplayDTO>>(list);
+            if (carList.Count == 0) {
                 Message = "No Car Found";
                 return NotFound(Message);
             }
-            return Ok(list);
+            return Ok(carList);
         }
 
         // PUT: api/Cars/5
@@ -70,50 +70,53 @@ namespace CarRenting_API.Controllers
         [HttpGet("GetCar{id}")]
         public ActionResult<Car> GetCarByID(int id)
         {
-            var u = _carRepository.GetCarByID(id);
-            if (u == null) {
-                return NotFound("No user found!");
+            var car = _carRepository.GetCarByID(id);
+            var c = _mapper.Map<CarDisplayDTO>(car);
+            if (c == null) {
+                Message = "No Car Found!";
+
+                return NotFound(Message);
             }
-            return Ok(u);
+            return Ok(c);
         }
 
         // POST: api/Cars
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("AddCar")]
-        public ActionResult<Car> Register(UserRegisterDTO userRegisterDTO)
+        public ActionResult<CarAddDTO> Addcar(CarAddDTO carAddDTO)
         {
-            var car = _mapper.Map<Car>(userRegisterDTO);
+            var car = _mapper.Map<Car>(carAddDTO);
             var list = _carRepository.GetListCar();
-            foreach (Car us in list) {
-                if (us.CarName.Equals(car.CarName)) {
-                    Message = "CarName existed!";
+            foreach (Car c in list) {
+                if (c.CarName.Equals(car.CarName)) {
+                    Message = "CarName Existed!";
                     return NotFound(Message);
                 }
             }
             
            
             _carRepository.AddCar(car);
-            Message = "New User Added!";
+            Message = "New Car Added!";
             return Ok(Message);
         }
 
         // DELETE: api/Cars/5
         [HttpDelete("Delete{id}")]
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteCar(int id)
         {
-            var u = _carRepository.GetCarByID(id);
-            if (u == null) {
-                Message = "No User Found!";
+            var c = _carRepository.GetCarByID(id);
+            if (c == null) {
+                Message = "No Car Found!";
                 return NotFound(Message);
             }
-            Message = "Deleted " + u.CarName;
+            Message = "Deleted " + c.CarName;
             _carRepository.DeleteCar(id);
             return Ok(Message);
         }
 
         // UPDATE: api/Cars/5
         [HttpPut("Update")]
-        public IActionResult UpdateUser(CarUpdateDTO carUpdateDTO)
+        public IActionResult UpdateCar(CarUpdateDTO carUpdateDTO)
         {
             var car = _mapper.Map<Car>(carUpdateDTO);
             var u = _carRepository.GetCarByID(car.CarID);

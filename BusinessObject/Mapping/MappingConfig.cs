@@ -20,6 +20,9 @@ namespace BusinessObject.Mapping
             Map_Booking();
             Map_Car_CarViewModels();
             Map_Display_User();
+            Map_Display_Car();
+            Map_Update_Car();
+            Map_Add_Car();
         }
 
         private void Map_Register_User()
@@ -81,7 +84,23 @@ namespace BusinessObject.Mapping
                 destination.Deposit = source.Deposit;
                 destination.PricePerDay = source.PricePerDay;
                 destination.Status = source.Status;
+                destination.ImageCar = source.ImageCar;
+                destination.Seat = source.Seat;
+                destination.Description = source.Description;
             }
         }
+        private void Map_Display_Car()
+        {
+            CreateMap<Car, CarDisplayDTO>();
+        }
+        private void Map_Update_Car()
+        {
+            CreateMap<CarUpdateDTO, Car>();
+        }
+        private void Map_Add_Car()
+        {
+            CreateMap<CarAddDTO, Car>();
+        }
+        
     }
 }

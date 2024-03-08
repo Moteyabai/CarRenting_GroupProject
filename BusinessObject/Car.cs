@@ -21,7 +21,12 @@ namespace BusinessObject
         public decimal PricePerDay { get; set; }
         [Required]
         public int Status { get; set; }
-
+        [Required]
+        public string ImageCar { get; set; }
+        [Required]
+        public int  Seat {  get; set; }
+        [Required]
+        public string Description {  get; set; }
         public virtual CarBrand CarBrand { get; set; }
         public virtual BookingDetail BookingDetail { get; set; }
     }
