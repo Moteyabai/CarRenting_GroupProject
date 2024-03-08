@@ -8,6 +8,8 @@ using Microsoft.Extensions.Options;
 using Stripe.Checkout;
 using Stripe;
 using BusinessObject.DTO;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 
 namespace CarRenting_Client.Pages
 {
@@ -16,6 +18,7 @@ namespace CarRenting_Client.Pages
         private readonly string apiUrl = "http://localhost:5209/odata/CarDamage?$expand=BookingDetail&$filter=BookingDetailID eq ";
         private readonly string apiUrlUpdate = "http://localhost:5209/odata/CarDamage/";
         private readonly string apiUrlBooking = "http://localhost:5209/odata/Booking?$filter=BookingID eq ";
+        private readonly string apiUrlCreatePayment = "http://localhost:5209/odata/Transaction";
         private readonly StripeSettings _stripeSettings;
         public CarDamageModel(IOptions<StripeSettings> stripeSettings)
         {
@@ -100,8 +103,10 @@ namespace CarRenting_Client.Pages
                 {
                     booking = Booking.TotalPrice,
                     damage = fined,
-                    total = Booking.TotalPrice + fined
+                    total = Booking.TotalPrice + fined,
+                    Status = Booking.Status,
                 };
+                HttpContext.Session.SetInt32("Total", (int)PaymentDTO.total);
             }
         }
 
@@ -167,7 +172,33 @@ namespace CarRenting_Client.Pages
 
             var service = new SessionService();
             var session = service.Create(option);
+
             return Redirect(session.Url);
+        }
+
+        private async Task CreatePayment()
+        {
+            string userIDString = HttpContext.Session.GetString("ID");
+            int userID = int.Parse(userIDString);
+            var paymentDto = new TransactionDTO
+            {
+                UserID = userID,
+                Price = PaymentDTO.total,
+            };
+            using (var httpClient = new HttpClient())
+            {
+                // Send a POST request to the API to create room information
+                var response = await httpClient.PostAsJsonAsync(apiUrlCreatePayment, paymentDto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+            }
         }
     }
 }

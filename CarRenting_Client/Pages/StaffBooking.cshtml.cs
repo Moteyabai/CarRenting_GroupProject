@@ -1,26 +1,27 @@
+using BusinessObject;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System.Xml.Linq;
-using BusinessObject;
 
 namespace CarRenting_Client.Pages
 {
-    public class BookingModel : PageModel
+    public class StaffBookingModel : PageModel
     {
-        private readonly string apiUrl = "http://localhost:5209/odata/Booking?$filter=UserID eq ";
+        private readonly string apiUrl = "http://localhost:5209/odata/Booking?$expand=User";
+        private readonly string apiSearch = "http://localhost:5209/odata/Booking?$expand=User&$filter=contains(tolower(User/UserName), '";
 
         public List<Booking> Bookings { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string Name { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
-            string userIDString = HttpContext.Session.GetString("ID");
-            int userID = int.Parse(userIDString);
+
             using (var httpClient = new HttpClient())
             {
-                // Append the search parameter to the API URL if a name is provided
-                string url = $"{apiUrl}{userID}";
+                string url = string.IsNullOrEmpty(Name) ? apiUrl : $"{apiSearch}{Name}')";
 
                 using (HttpResponseMessage response = await httpClient.GetAsync(url))
                 {
