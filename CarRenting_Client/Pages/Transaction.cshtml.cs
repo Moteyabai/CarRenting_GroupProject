@@ -1,22 +1,23 @@
+using BusinessObject;
+using BusinessObject.DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
-using BusinessObject;
 
 namespace CarRenting_Client.Pages
 {
-    public class BookingModel : PageModel
+    public class TransactionModel : PageModel
     {
-        private readonly string apiUrl = "http://localhost:5209/odata/Booking?$filter=UserID eq ";
+        private readonly string apiUrl = "http://localhost:5209/odata/Transaction?$filter=UserID eq ";
 
-        public List<Booking> Bookings { get; set; }
+        public List<TransactionViewDTO> Transactions { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            string userIDString = HttpContext.Session.GetString("ID");
-            int userID = int.Parse(userIDString);
+            string userID = HttpContext.Session.GetString("ID");
             using (var httpClient = new HttpClient())
             {
                 // Append the search parameter to the API URL if a name is provided
@@ -31,11 +32,10 @@ namespace CarRenting_Client.Pages
                     if (roomArray is JArray)
                     {
                         // Deserialize as a list if it's an array
-                        Bookings = JsonConvert.DeserializeObject<List<Booking>>(roomArray.ToString())!;
+                        Transactions = JsonConvert.DeserializeObject<List<TransactionViewDTO>>(roomArray.ToString())!;
                     }
                 }
             }
-
 
             return Page();
         }

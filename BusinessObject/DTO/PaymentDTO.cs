@@ -11,5 +11,6 @@ namespace BusinessObject.DTO
         public decimal booking { get;set; }
         public decimal damage { get; set; }
         public decimal total { get; set; }
+        public int Status { get; set; }
     }
 }
