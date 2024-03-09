@@ -10,5 +10,6 @@ namespace BusinessObject.DTO
     {
         public string Damage { get; set; }
         public decimal Fined { get; set; }
+        public string ImageCarDamage { get; set; }
     }
 }

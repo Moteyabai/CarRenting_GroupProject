@@ -87,19 +87,23 @@
                     </div>
                 </form>
             </div>
-            <form asp-page-handler="Accept" asp-route-contractID="@Model.Contract.ContractID">
-                <input type="hidden" name="ContractID" value="@Model.Contract.ContractID" />
-                <button type="submit" class="btn btn-default">Accept</button>
-            </form>
-            <form asp-page-handler="Reject" asp-route-contractID="@Model.Contract.ContractID"
-                  onclick="return confirm('Are you sure you want to reject this?')">
-                <input type="hidden" name="ContractID" value="@Model.Contract.ContractID" />
-                <button type="submit" class="btn btn-default">Reject</button>
-            </form>
+            @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1") && Model.Contract.Status == 1)
+            {
+                <form asp-page-handler="Accept" asp-route-contractID="@Model.Contract.ContractID">
+                    <input type="hidden" name="ContractID" value="@Model.Contract.ContractID" />
+                    <button type="submit" class="btn btn-default">Accept</button>
+                </form>
+                <form asp-page-handler="Reject" asp-route-contractID="@Model.Contract.ContractID"
+                      onclick="return confirm('Are you sure you want to reject this?')">
+                    <input type="hidden" name="ContractID" value="@Model.Contract.ContractID" />
+                    <button type="submit" class="btn btn-default">Reject</button>
+                </form>
+            }
+            
         </section>
     </div>
 
-    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3"))
+    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3") && Model.Contract.Status==1)
     {
         <button class="open-button" onclick="openForm()">Update</button>
     }

@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using BusinessObject.DTO;
+using BusinessObject.Models.CarModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace CarRenting_Client.Pages.Users
     public class CarModel : PageModel
     {
 
-        private readonly string apiUrl = "http://localhost:5209/api/Cars/car-list";
+        private readonly string apiUrl = "http://localhost:5209/api/Cars/Carlist";
         private readonly string apiUrlSearch = "http://localhost:5209/api/Cars/Search/";
         private readonly string apiUrlId = "http://localhost:5209/api/Cars/GetCar";
         private readonly string apiUrlBooking = "http://localhost:5209/odata/Booking";
@@ -33,7 +34,7 @@ namespace CarRenting_Client.Pages.Users
 
         public Car Car { get; set; }
 
-        public List<Car> Cars { get; set; }
+        public List<CarViewModels> Cars { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -45,7 +46,7 @@ namespace CarRenting_Client.Pages.Users
                 using (HttpResponseMessage response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    Cars = JsonConvert.DeserializeObject<List<Car>>(apiResponse);
+                    Cars = JsonConvert.DeserializeObject<List<CarViewModels>>(apiResponse);
                 }
             }
 
@@ -62,6 +63,8 @@ namespace CarRenting_Client.Pages.Users
             try
             {
                 string url = apiUrlId;
+                string userIDString = HttpContext.Session.GetString("ID");
+                int userID = int.Parse(userIDString);
 
                 using (var httpClient = new HttpClient()) // Declare and initialize httpClient
                 {
@@ -81,7 +84,7 @@ namespace CarRenting_Client.Pages.Users
                 };
                 var booking = new BookingDTO
                 {
-                    UserID = 1,
+                    UserID = userID,
                     BookingDetails = new List<BookingDetailDTO> { bookingDetail }, // Initialize as a list and add bookingDetail to it
                 };
                 Booking = booking;
