@@ -4,10 +4,16 @@
 
 namespace BusinessObject.Migrations
 {
-    public partial class AddSeatNDesCar : Migration
+    public partial class GroupProject_HireCar : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "Status",
+                table: "Contracts",
+                type: "int",
+                nullable: true);
+
             migrationBuilder.AddColumn<string>(
                 name: "Description",
                 table: "Cars",
@@ -25,6 +31,10 @@ namespace BusinessObject.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "Status",
+                table: "Contracts");
+
             migrationBuilder.DropColumn(
                 name: "Description",
                 table: "Cars");

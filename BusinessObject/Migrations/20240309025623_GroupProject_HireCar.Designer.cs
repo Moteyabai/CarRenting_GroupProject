@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(CarRentingDBContext))]
-    [Migration("20240307132755_AddSeatNDesCar")]
-    partial class AddSeatNDesCar
+    [Migration("20240309025623_GroupProject_HireCar")]
+    partial class GroupProject_HireCar
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -208,6 +208,9 @@ namespace BusinessObject.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("ContractID");
 
