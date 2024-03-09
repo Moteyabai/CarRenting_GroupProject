@@ -101,7 +101,7 @@ namespace CarRenting_API.Controllers
         }
 
         // DELETE: api/Cars/5
-        [HttpDelete("Delete{id}")]
+        [HttpDelete("DeleteCar{id}")]
         public IActionResult DeleteCar(int id)
         {
             var c = _carRepository.GetCarByID(id);
@@ -115,7 +115,7 @@ namespace CarRenting_API.Controllers
         }
 
         // UPDATE: api/Cars/5
-        [HttpPut("Update")]
+        [HttpPut("UpdateCar")]
         public IActionResult UpdateCar(CarUpdateDTO carUpdateDTO)
         {
             var car = _mapper.Map<Car>(carUpdateDTO);

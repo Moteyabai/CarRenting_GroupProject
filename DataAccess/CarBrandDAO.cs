@@ -7,30 +7,30 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class CarDAO
+    public class CarBrandDAO
     {
-        private static CarDAO instance = null;
+        private static CarBrandDAO instance = null;
         private static readonly object instanceLock = new object();
-        public CarDAO() { }
-        public static CarDAO Instance
+        public CarBrandDAO() { }
+        public static CarBrandDAO Instance
         {
             get
             {
                 lock (instanceLock) {
                     if (instance == null) {
-                        instance = new CarDAO();
+                        instance = new CarBrandDAO();
                     }
                     return instance;
                 }
             }
         }
 
-        public List<Car> GetCar()
+        public List<CarBrand> GetCarBrand()
         {
-            var list = new List<Car>();
+            var list = new List<CarBrand>();
             try {
                 using (var context = new CarRentingDBContext()) {
-                    list = context.Cars.ToList();
+                    list = context.CarBrands.ToList();
                 }
             }
             catch (Exception ex) {
@@ -39,12 +39,12 @@ namespace DataAccess
             return list;
         }
 
-        public List<Car> SearchCarByName(string name)
+        public List<CarBrand> SearchCarBrandByName(string name)
         {
-            var list = new List<Car>();
+            var list = new List<CarBrand>();
             try {
                 using (var context = new CarRentingDBContext()) {
-                    list = context.Cars.Where(u => u.CarName.Contains(name)).ToList();
+                    list = context.CarBrands.Where(u => u.Name.Contains(name)).ToList();
                 }
             }
             catch (Exception ex) {
@@ -53,12 +53,12 @@ namespace DataAccess
             return list;
         }
 
-        public Car GetCarByID(int cID)
+        public CarBrand GetCarBrandByID(int cID)
         {
-            Car car = new Car();
+            CarBrand car = new CarBrand();
             try {
                 using (var context = new CarRentingDBContext()) {
-                    car = context.Cars.SingleOrDefault(x => x.CarID == cID);
+                    car = context.CarBrands.SingleOrDefault(x => x.CarBrandID == cID);
 
                 }
             }
@@ -68,11 +68,11 @@ namespace DataAccess
             return car;
         }
 
-        public void AddCar(Car car)
+        public void AddCarBrand(CarBrand carBrand)
         {
             try {
                 using (var context = new CarRentingDBContext()) {
-                    context.Cars.Add(car);
+                    context.CarBrands.Add(carBrand);
                     context.SaveChanges();
                 }
             }
@@ -81,23 +81,23 @@ namespace DataAccess
             }
         }
 
-        public void DeleteCar(int id)
+        public void DeleteCarBrand(int id)
         {
-            var car = GetCarByID(id);
-            if (car != null) {
+            var carBrand = GetCarBrandByID(id);
+            if (carBrand != null) {
                 using (var context = new CarRentingDBContext()) {
-                    var c = context.Cars.SingleOrDefault(x => x.CarID == car.CarID);
-                    context.Cars.Remove(c);
+                    var carB = context.CarBrands.SingleOrDefault(x => x.CarBrandID == carBrand.CarBrandID);
+                    context.CarBrands.Remove(carB);
                     context.SaveChanges();
                 }
             }
         }
 
-        public void UpdateCar(Car car)
+        public void UpdateCarBrand(CarBrand carBrand)
         {
             try {
                 using (var context = new CarRentingDBContext()) {
-                    context.Entry<Car>(car).State =
+                    context.Entry<CarBrand>(carBrand).State =
                         Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
@@ -106,6 +106,5 @@ namespace DataAccess
                 throw new Exception(ex.Message);
             }
         }
-
     }
 }

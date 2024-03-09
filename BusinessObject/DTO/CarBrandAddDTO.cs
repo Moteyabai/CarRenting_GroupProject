@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.DTO
 {
-    public class BrandCarDTO
+    public class CarBrandAddDTO
     {
-        public int CarBrandID { get; set; }
         public string Name { get; set; }
     }
 }
