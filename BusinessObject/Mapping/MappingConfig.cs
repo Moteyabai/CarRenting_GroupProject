@@ -23,6 +23,9 @@ namespace BusinessObject.Mapping
             Map_Display_Car();
             Map_Update_Car();
             Map_Add_Car();
+            Map_BrandCar();
+            Map_Add_CarBrand();
+            Map_Update_CarBrand();
         }
 
         private void Map_Register_User()
@@ -101,6 +104,19 @@ namespace BusinessObject.Mapping
         {
             CreateMap<CarAddDTO, Car>();
         }
-        
+        private void Map_BrandCar()
+        {
+            CreateMap<CarBrand, BrandCarDTO>();
+        }
+        private void Map_Add_CarBrand()
+        {
+            CreateMap<CarBrandAddDTO, CarBrand>();
+        }
+        private void Map_Update_CarBrand()
+        {
+            CreateMap<CarBrandUpdateDTO, CarBrand>();
+        }
+
+
     }
 }
