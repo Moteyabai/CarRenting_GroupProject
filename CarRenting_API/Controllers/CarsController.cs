@@ -12,6 +12,8 @@ using Repositories.Repository;
 using AutoMapper;
 using BusinessObject.DTO;
 using BusinessObject.Models.CarModels;
+using GrpcService;
+using GrpcService.Services;
 
 namespace CarRenting_API.Controllers
 {
@@ -22,12 +24,21 @@ namespace CarRenting_API.Controllers
         private ICarRepository _carRepository = new CarRepository();
         private readonly IMapper _mapper;
         private string Message;
+        CarService _carService = new CarService();
 
         public CarsController(IMapper mapper)
         {
             _mapper = mapper;
         }
-       
+
+        [HttpGet("grpc")]
+        public CarListResponse GetCarList(int carId)
+        {
+            CarRequest carRequest = new CarRequest();
+            carRequest.ID = carId;
+            return _carService.GetCar(carRequest, null).Result;
+        }
+
         // GET: api/Cars
         [HttpGet("Carlist")]
         public ActionResult<IEnumerable<CarViewModels>> GetListCars()

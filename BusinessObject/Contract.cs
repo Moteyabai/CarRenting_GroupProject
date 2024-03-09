@@ -11,6 +11,7 @@ namespace BusinessObject
         public string CarInformation { get; set; }
         public decimal Deposit { get; set; }
         public string? Note { get; set; }
+        public int? Status { get; set; }
         public virtual BookingDetail BookingDetail { get; set; }
     }
 }

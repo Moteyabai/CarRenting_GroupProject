@@ -40,6 +40,7 @@ namespace DataAccess
                 {
                     CarInformation = "",
                     Deposit = 0,
+                    Status = 1,
                     Note = "",
                 };
 

@@ -207,6 +207,9 @@ namespace BusinessObject.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("ContractID");
 
                     b.ToTable("Contracts");
