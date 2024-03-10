@@ -17,7 +17,7 @@ namespace CarRenting_API.Controllers
         public FirebaseApp App => throw new NotImplementedException();
 
         [HttpPost]
-        public async Task<IActionResult> Upload(IFormFile file)
+        public async Task<IActionResult> Upload([FromForm(Name = "stream")] IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("File not selected or empty.");

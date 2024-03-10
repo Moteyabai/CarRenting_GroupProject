@@ -12,5 +12,6 @@ namespace BusinessObject.DTO
         public string CarInformation { get; set; }
         public decimal Deposit { get; set; }
         public string? Note { get; set; }
+        public int? Status { get; set; }
     }
 }

@@ -63,10 +63,50 @@ namespace DataAccess
 
                 if (existingContract != null)
                 {
-                    var config = new MapperConfiguration(cfg => cfg.AddProfile<ContractMapping>());
-                    var mapper = new AutoMapper.Mapper(config);
 
-                    mapper.Map(dto, existingContract);
+                    if (dto.CarInformation != null)
+                    {
+                        existingContract.CarInformation = dto.CarInformation;
+                    }
+
+                    if (dto.Deposit != 0)
+                    {
+                        existingContract.Deposit = dto.Deposit;
+                    }
+
+                    if (dto.Note != null)
+                    {
+                        existingContract.Note = dto.Note;
+                    }
+
+                    if (dto.Status != 0)
+                    {
+                        existingContract.Status = dto.Status;
+                    }
+
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Contract not found for update.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to update contract: {ex.Message}");
+            }
+        }
+
+        public void UpdateStatus(int contractId, BookingUpdateDTO dto)
+        {
+            try
+            {
+                using var context = new CarRentingDBContext();
+                var existingContract = context.Contracts.Find(contractId);
+
+                if (existingContract != null)
+                {
+                    existingContract.Status = dto.Status;
 
                     context.SaveChanges();
                 }

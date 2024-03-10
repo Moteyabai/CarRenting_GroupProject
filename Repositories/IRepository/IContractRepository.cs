@@ -12,6 +12,7 @@ namespace Repositories.IRepository
     {
         int Create();
         void Update(int contractId, ContractDTO dto);
+        void UpdateStatus(int contractId, BookingUpdateDTO dto);  
         List<Contract> Contracts();
     }
 }
