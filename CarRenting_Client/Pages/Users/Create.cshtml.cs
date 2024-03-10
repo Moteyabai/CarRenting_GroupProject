@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessObject.DTO;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using BusinessObject;
-using System.Net.Http.Headers;
-using BusinessObject.DTO;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
-using NuGet.Protocol.Plugins;
 
 namespace CarRenting_Client.Pages.Users
 {
@@ -24,20 +21,26 @@ namespace CarRenting_Client.Pages.Users
             Client.DefaultRequestHeaders.Accept.Add(contentType);
         }
 
-/*        public IActionResult OnGet()
+        public IActionResult OnGet()
         {
-        ViewData["RoleID"] = new SelectList(_context.Roles, "RoleID", "Name");
+            /*var role = HttpContext.Session.GetString("RoleID");
+
+            if (role == null)
+            {
+                return RedirectToPage("/Login");
+            }*/
+
             return Page();
-        }*/
+        }
 
         [BindProperty]
         public UserRegisterDTO User { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }

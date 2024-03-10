@@ -12,7 +12,9 @@ namespace BusinessObject.DTO
         [Required]
         public string Email { get; set; }
         public string Phone { get; set; }
+        [StringLength(12)]
         public string Identification { get; set; }
+        [StringLength(10)]
         public string License { get; set; }
     }
 }
