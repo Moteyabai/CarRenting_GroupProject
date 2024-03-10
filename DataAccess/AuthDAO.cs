@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using BusinessObject;
 using BusinessObject.Mapping;
 using BusinessObject.Models.JwtTokenModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -82,13 +85,33 @@ namespace DataAccess
 
         private TokenModels LoginAsync(LoginModel loginUser)
         {
-            var db = new CarRentingDBContext();
-            var user = db.Users.FirstOrDefault(x => x.Email == loginUser.Email && x.Password == loginUser.Password);
-            if (user == null)
+            var tokenizedData = new TokenModels();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            if (loginUser.Email == configuration["Admin:email"] && loginUser.Password == configuration["Admin:password"])
             {
-                throw new KeyNotFoundException("User with this Email or Password not found");
+                var user = new User()
+                {
+                    UserID = 9999,
+                    UserName = "admin",
+                    Email = "admin",
+                    RoleID = (int)BusinessObject.Models.Enum.Role.Admin
+                };
+                tokenizedData = _mapper.Map<TokenModels>(user);
             }
-            var tokenizedData = _mapper.Map<TokenModels>(user);
+            else
+            {
+                var db = new CarRentingDBContext();
+                var user = db.Users.FirstOrDefault(x => x.Email == loginUser.Email && x.Password == loginUser.Password);
+                if (user == null)
+                {
+                    throw new KeyNotFoundException("User with this Email or Password not found");
+                }
+                tokenizedData = _mapper.Map<TokenModels>(user);
+            }
+            
             return tokenizedData;
         }
 

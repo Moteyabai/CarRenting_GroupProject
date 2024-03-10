@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using BusinessObject.Models.JwtTokenModels;
+using BusinessObject.Models.UserModels;
 
 namespace Repositories
 {
@@ -13,5 +14,6 @@ namespace Repositories
         List<User> SearchUsersByName(string name);
         User CheckLogin(string email, string password);
         string Login(LoginModel model);
+        void AdminUpdateUser(UserUpdateModel model);
     }
 }

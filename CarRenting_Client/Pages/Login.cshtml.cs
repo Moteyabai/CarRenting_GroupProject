@@ -61,51 +61,41 @@ namespace CarRenting_Client.Pages
             {
                 using (HttpClient Client = new HttpClient())
                 {
-                    var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                    IConfigurationRoot configuration = builder.Build();
-                    if (Email == configuration["Admin:email"] && Password == configuration["Admin:password"])
+                    HttpResponseMessage response = await Client.GetAsync(ApiUrl + "?email=" + Email + "&&password=" + Password);
+                    if (response.IsSuccessStatusCode)
                     {
-                        HttpContext.Session.SetString("ID", "ADMIN");
-                        HttpContext.Session.SetString("userName", "ADMIN");
-                        HttpContext.Session.SetString("email", "ADMIN");
-                        HttpContext.Session.SetString("RoleID", "ADMIN");
+                        string token = await response.Content.ReadAsStringAsync();
+                        var handler = new JwtSecurityTokenHandler();
+                        var jsonToken = handler.ReadJwtToken(token);
+                        var userId = jsonToken.Claims.First(claims => claims.Type == "userID").Value;
+                        var userName = jsonToken.Claims.First(claims => claims.Type == "userName").Value;
+                        var email = jsonToken.Claims.First(claims => claims.Type == "email").Value;
+                        var roleID = jsonToken.Claims.First(claims => claims.Type == "roleID").Value;
+                        HttpContext.Session.SetString("ID", userId);
+                        HttpContext.Session.SetString("userName", userName);
+                        HttpContext.Session.SetString("email", email);
+                        HttpContext.Session.SetString("RoleID", roleID);
+                        HttpContext.Session.SetString("Token", token);
+
+                        if (roleID == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
+                        {
+                            return RedirectToPage("/Users/Index");
+                        }
+
+                        
+                        //get role staff
+                        string role = HttpContext.Session.GetString("RoleID");
+                        int rl = int.Parse(role);
+                        if (rl == 3)
+                        {
+                            return RedirectToPage("./StaffBooking");
+                        }
                         return RedirectToPage("./Car");
                     }
                     else
                     {
-                        HttpResponseMessage response = await Client.GetAsync(ApiUrl + "?email=" + Email + "&&password=" + Password);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string token = await response.Content.ReadAsStringAsync();
-                            var handler = new JwtSecurityTokenHandler();
-                            var jsonToken = handler.ReadJwtToken(token);
-                            var userId = jsonToken.Claims.First(claims => claims.Type == "userID").Value;
-                            var userName = jsonToken.Claims.First(claims => claims.Type == "userName").Value;
-                            var email = jsonToken.Claims.First(claims => claims.Type == "email").Value;
-                            var roleID = jsonToken.Claims.First(claims => claims.Type == "roleID").Value;
-                            HttpContext.Session.SetString("ID", userId);
-                            HttpContext.Session.SetString("userName", userName);
-                            HttpContext.Session.SetString("email", email);
-                            HttpContext.Session.SetString("RoleID", roleID);
-
-                            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                            //get role staff
-                            string role = HttpContext.Session.GetString("RoleID");
-                            int rl = int.Parse(role);
-                            if (rl == 3)
-                            {
-                                return RedirectToPage("./StaffBooking");
-                            }
-                            return RedirectToPage("./Car");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError(string.Empty, "Wrong email or password!");
-                            return Page();
-                        }
+                        ModelState.AddModelError(string.Empty, "Wrong email or password!");
+                        return Page();
                     }
                 }
             }

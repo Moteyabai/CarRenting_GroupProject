@@ -1,4 +1,6 @@
-﻿using BusinessObject;
+﻿using AutoMapper;
+using BusinessObject;
+using BusinessObject.Models.UserModels;
 using System.Text.Json;
 
 namespace DataAccess
@@ -6,6 +8,7 @@ namespace DataAccess
     public class UserDAO
     {
         //Singleton Pattern
+        private readonly IMapper _mapper;
         private static UserDAO instance;
         private static readonly object instanceLock = new object();
         public static UserDAO Instance
@@ -145,6 +148,20 @@ namespace DataAccess
                 throw new Exception(ex.Message);
             }
         }
-
+        
+        public void AdminUpdateUser(UserUpdateModel model)
+        {
+            try
+            {
+                var db = new CarRentingDBContext();
+                var user = _mapper.Map<User>(model);
+                db.Users.Update(user);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        } 
     }
 }
