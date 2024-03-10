@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRenting_API", "CarRentin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRenting_Client", "CarRenting_Client\CarRenting_Client.csproj", "{E95B0C0F-AFD2-4A47-BE18-71EFB011E362}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcService", "GrpcService\GrpcService.csproj", "{8FA7E281-6AC9-4C22-B5A0-DA09FD0A925F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcService", "GrpcService\GrpcService.csproj", "{8FA7E281-6AC9-4C22-B5A0-DA09FD0A925F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
