@@ -99,7 +99,7 @@ namespace DataAccess
                 DateTime nowUtc = DateTime.UtcNow;
 
                 // Kiểm tra xem ngày kết thúc và ngày bắt đầu có phù hợp không
-                if (startUtc < nowUtc || endUtc <= startUtc)
+                if (startUtc < nowUtc || endUtc < startUtc)
                 {
                     // Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại
                     // Ngày kết thúc phải lớn hơn ngày bắt đầu

@@ -19,6 +19,7 @@ namespace CarRenting_Client.Pages
         private readonly string apiUrlUpdate = "http://localhost:5209/odata/CarDamage/";
         private readonly string apiUrlBooking = "http://localhost:5209/odata/Booking?$filter=BookingID eq ";
         private readonly string apiUrlCreatePayment = "http://localhost:5209/odata/Transaction";
+        private readonly string apiUrlFirebase = "http://localhost:5209/api/Firebase";
         private readonly StripeSettings _stripeSettings;
         public CarDamageModel(IOptions<StripeSettings> stripeSettings)
         {
@@ -36,6 +37,10 @@ namespace CarRenting_Client.Pages
 
         [BindProperty(SupportsGet = true)]
         public BookingPayDTO Booking { get; set; }
+
+        [BindProperty]
+        public IFormFile File { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync(int damageID)
         {
@@ -114,6 +119,13 @@ namespace CarRenting_Client.Pages
         {
             try
             {
+                string image;
+                if (File != null && File.Length > 0)
+                {
+                    image = await UploadImage();
+                    CarDamage.ImageCarDamage = image;
+                }
+                
                 using (var httpClient = new HttpClient())
                 {
                     HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlUpdate}{CarDamage.CarDamageID}", CarDamage);
@@ -121,7 +133,7 @@ namespace CarRenting_Client.Pages
                     if (response.IsSuccessStatusCode)
                     {
                         // Reload the page after successful deletion
-                        return RedirectToPage();
+                        return RedirectToPage("StaffBooking");
                     }
                     else
                     {
@@ -176,29 +188,30 @@ namespace CarRenting_Client.Pages
             return Redirect(session.Url);
         }
 
-        private async Task CreatePayment()
+        private async Task<string> UploadImage()
         {
-            string userIDString = HttpContext.Session.GetString("ID");
-            int userID = int.Parse(userIDString);
-            var paymentDto = new TransactionDTO
+            if (File != null && File.Length > 0)
             {
-                UserID = userID,
-                Price = PaymentDTO.total,
-            };
-            using (var httpClient = new HttpClient())
-            {
-                // Send a POST request to the API to create room information
-                var response = await httpClient.PostAsJsonAsync(apiUrlCreatePayment, paymentDto);
+                using (var httpClient = new HttpClient())
+                using (var formData = new MultipartFormDataContent())
+                {
+                    formData.Add(new StreamContent(File.OpenReadStream()), "stream", File.FileName);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    
-                }
-                else
-                {
-                    
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrlFirebase, formData);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string errorMessage = await response.Content.ReadAsStringAsync();
+                        return errorMessage;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
+            return null;
         }
+
     }
 }

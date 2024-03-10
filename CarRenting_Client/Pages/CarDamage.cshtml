@@ -72,6 +72,13 @@
                 <form method="post" enctype="multipart/form-data">
                     <div style="display: flex;">
                         <div style="width: 49%;height: 25%; padding-right: 1%; text-align: left;">
+                            <h1>Image</h1>
+                            @if (@Model.CarDamage.ImageCarDamage == null)
+                            {
+                                <img src="https://static.vecteezy.com/system/resources/thumbnails/025/019/602/small/camping-hiking-nature-mountain-river-graphic-illustration-vector-art-t-shirt-design-generative-ai-png.png" style="width: 50%; text-align: center;">
+                            }else{
+                                <img src="@Model.CarDamage.ImageCarDamage" style="width: 50%; text-align: center;">
+                            }
                             <div>
                                 <label>Booking: </label>
                                 <p>@Model.PaymentDTO.booking</p>
@@ -97,7 +104,7 @@
                 </form>
 
                 
-                @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1") && Model.PaymentDTO.Status != 4 && Model.PaymentDTO.Status != 2)
+                @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1") && Model.PaymentDTO.Status != 4 && Model.PaymentDTO.Status != 3)
                 {
                     <form method="post" asp-page-handler="CreateCheckOutSession">
                         <div class="search_bar">
@@ -111,14 +118,16 @@
         </section>
     </div>
 
-    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3") && Model.PaymentDTO.Status != 4 && Model.PaymentDTO.Status != 2)
+    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3") && Model.PaymentDTO.Status != 4 && Model.PaymentDTO.Status != 3)
     {
         <button class="open-button" onclick="openForm()">Update</button>
     }
     
 
     <div class="form-popup" id="myForm">
-        <form method="post" class="form-container">
+        <form method="post" class="form-container" enctype="multipart/form-data">
+            <label for="file">Select Image:</label>
+            <input type="file" id="file" name="file" accept=".jpg, .jpeg, .png" />
 
             <label for="RoomNumber"><b>Damage</b></label><br></br>
             <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="CarDamage.Damage" required></textarea>

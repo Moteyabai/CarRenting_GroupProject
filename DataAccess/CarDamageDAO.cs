@@ -48,7 +48,8 @@ namespace DataAccess
                     {
                         BookingDetailID = detailsId,
                         Damage = " ",
-                        Fined = 0
+                        Fined = 0,
+                        ImageCarDamage = " ",
                     };
 
                     context.CarDamages.Add(carDamage);

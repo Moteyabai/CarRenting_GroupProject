@@ -20,5 +20,8 @@ namespace Repositories.Repository
 
         public void Update(int contractId, ContractDTO dto)
         => ContractDAO.Instance.Update(contractId,dto);
+
+        public void UpdateStatus(int contractId, BookingUpdateDTO dto)
+        => ContractDAO.Instance.UpdateStatus(contractId,dto);
     }
 }
