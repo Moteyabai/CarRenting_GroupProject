@@ -7,6 +7,7 @@ using BusinessObject.Models.JwtTokenModels;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using BusinessObject.Models.UserModels;
+using DataAccess;
 
 namespace CarRenting_API.Controllers
 {
@@ -117,8 +118,6 @@ namespace CarRenting_API.Controllers
             _userRepository.Update(user);
             Message = "User Updated!";
             return Ok(Message);
-
-
         }
 
         // POST: api/Users/Register
@@ -156,6 +155,20 @@ namespace CarRenting_API.Controllers
             Message = "Deleted " + u.UserName;
             _userRepository.Delete(id);
             return Ok(Message);
+        }
+
+        [HttpPut("admin-update-user")]
+        public IActionResult AdminUpdateUser(UserUpdateModel model)
+        {
+            try
+            {
+                _userRepository.AdminUpdateUser(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

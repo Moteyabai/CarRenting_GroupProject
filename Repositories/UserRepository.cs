@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using BusinessObject.Models.JwtTokenModels;
+using BusinessObject.Models.UserModels;
 using DataAccess;
 
 namespace Repositories
@@ -20,5 +21,7 @@ namespace Repositories
 
         public User CheckLogin(string email, string password) => UserDAO.Instance.CheckLogin(email, password);
         public string Login(LoginModel model) => AuthDAO.Instance.Login(model);
+
+        public void AdminUpdateUser(UserUpdateModel model) => UserDAO.Instance.AdminUpdateUser(model);
     }
 }

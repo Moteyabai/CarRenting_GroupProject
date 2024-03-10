@@ -29,8 +29,9 @@ namespace CarRenting_Client.Pages.Users
 
         public async Task OnGetAsync()
         {
+            var token = HttpContext.Session.GetString("Token");
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await Client.GetAsync(ApiUrl + "UserList");
-
             if (response.IsSuccessStatusCode)
             {
                 string strData = await response.Content.ReadAsStringAsync();
