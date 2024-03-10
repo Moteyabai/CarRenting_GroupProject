@@ -6,6 +6,7 @@ using BusinessObject.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
+using BusinessObject.Models.UserModels;
 
 namespace CarRenting_Client.Pages.Users
 {
@@ -23,7 +24,7 @@ namespace CarRenting_Client.Pages.Users
             Client.DefaultRequestHeaders.Accept.Add(contentType);
         }
 
-        public IList<UserDisplayDTO> User { get;set; } = default!;
+        public IList<UserViewModel> User { get;set; } = default!;
         [BindProperty]
         public string Search {  get; set; }
 
@@ -40,7 +41,7 @@ namespace CarRenting_Client.Pages.Users
                 {
                     PropertyNameCaseInsensitive = true,
                 };
-                User = System.Text.Json.JsonSerializer.Deserialize<List<UserDisplayDTO>>(strData, options);
+                User = System.Text.Json.JsonSerializer.Deserialize<List<UserViewModel>>(strData, options);
 
                 RedirectToPage("./Index");
             }
@@ -59,7 +60,7 @@ namespace CarRenting_Client.Pages.Users
             var options = new JsonSerializerOptions {       
                 PropertyNameCaseInsensitive = true,
             };
-                User = System.Text.Json.JsonSerializer.Deserialize<List<UserDisplayDTO>>(strData, options);
+                User = System.Text.Json.JsonSerializer.Deserialize<List<UserViewModel>>(strData, options);
  
             RedirectToPage("./Index");
             }

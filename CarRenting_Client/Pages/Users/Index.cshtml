@@ -1,91 +1,154 @@
 ﻿@page
 @model CarRenting_Client.Pages.Users.IndexModel
-
 @{
-    ViewData["Title"] = "Index";
+    Layout = null;
 }
 
-<h1>Index</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<form method="post">
-    <input asp-for="Search" type="text" value="@Model.Search" />
-    <button type="submit">Search</button>
-</form>
-@if (Model.User == null)
-{
-    <p> No Users found!
-    </p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.User[0].UserName)
-                </th>
-@*                 <th>
-                    @Html.DisplayNameFor(model => model.User[0].Password)
-                </th> *@
-                <th>
-                    @Html.DisplayNameFor(model => model.User[0].Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.User[0].Phone)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.User[0].Identification)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.User[0].License)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.User[0].Status)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.User[0].RoleID)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.User)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
-@*                     <td>
-                        @Html.DisplayFor(modelItem => item.Password)
-                    </td> *@
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Identification)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.License)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoleID)
-                    </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.UserID">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.UserID">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.UserID">Delete</a>
-                    </td>
-                </tr>
+<head>
+    <title>Job Dashboard | By Code Info</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
+    <style>
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f1f1f1;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+            .notification.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
             }
-        </tbody>
-    </table>
+
+    </style>
+    <!-- Font Awesome Cdn Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <div class="navbar">
+                <div class="logo">
+                    <img src="/pic/logo.jpg" alt="">
+                    <h1>HCAR - ADMIN</h1>
+                </div>
+                <ul>
+                    <li>
+                        <a href="Car">
+                            <i class="fas fa-user"></i>
+                            <span class="nav-item">Car</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Booking">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="nav-item">Booking</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Transaction">
+                            <i class="fas fa-tasks"></i>
+                            <span class="nav-item">Transaction</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Profile">
+                            <i class="fab fa-dochub"></i>
+                            <span class="nav-item">Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Login" class="logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="nav-item">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <section class="main">
+            <div class="main-top">
+                <p>ADMIN</p>
+            </div>
+            <div class="main-body">
+                <h1>User</h1>
+
+                @foreach (var user in Model.User)
+                {
+                    <div class="job_card">
+                        <div class="job_details">
+                            <div class="text">
+                                <div>
+                                    <span style="font-weight: bold;">ID: </span>
+                                    <span>@user.UserID</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">Name: </span>
+                                    <span>@user.UserName</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">Email: </span>
+                                    <span>@user.Email</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">Phone: </span>
+                                    <span>@user.Phone</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">Identification: </span>
+                                    <span>@user.Identification</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">License: </span>
+                                    <span>@user.License</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">Role ID: </span>
+                                    <span>@user.RoleID</span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bold;">Status: </span>
+                                    <span>@user.Status</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="job_salary">
+                            <div class="job_salary" onclick="openFormUpdate('@user.UserID')">
+                                Update
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="notification">
+                    <p>@TempData["Message"]</p>
+                </div>
+            }
+        </section>
+    </div>
+
+
+</body>
+
+</html>
+
 }
