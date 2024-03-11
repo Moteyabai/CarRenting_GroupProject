@@ -82,14 +82,7 @@ namespace CarRenting_Client.Pages
                             return RedirectToPage("/Users/Index");
                         }
 
-                        
-                        //get role staff
-                        string role = HttpContext.Session.GetString("RoleID");
-                        int rl = int.Parse(role);
-                        if (rl == 3)
-                        {
-                            return RedirectToPage("./StaffBooking");
-                        }
+                       
                         return RedirectToPage("./Car");
                     }
                     else

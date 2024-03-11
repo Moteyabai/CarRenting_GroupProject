@@ -1,5 +1,5 @@
 ﻿@page
-@model CarRenting_Client.Pages.ContractModel
+@model CarRenting_Client.Pages.ViewCarModel
 @{
     Layout = null;
 }
@@ -11,29 +11,6 @@
     <title>Job Dashboard | By Code Info</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/popup.css" />
-    <style>
-        .button-accept {
-            background-color: #04AA6D; /* Green */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-
-        .button-reject {
-            background-color: red; /* Green */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-    </style>
     <!-- Font Awesome Cdn Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>
@@ -151,63 +128,94 @@
 
 
 
-                <h1>Upload Profile Image</h1>
+                <h1>Car Detail</h1>
 
                 <form method="post" enctype="multipart/form-data">
                     <div style="display: flex;">
-                        <div style="width: 49%; padding-right: 1%; text-align: right;">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/025/019/602/small/camping-hiking-nature-mountain-river-graphic-illustration-vector-art-t-shirt-design-generative-ai-png.png" style="width: 100%; text-align: center;">
-                        </div>
+                        @if (Model.Cars.ImageCar == null)
+                        {
+                            <div style="width: 49%; padding-right: 1%; text-align: right;">
+                                <img src="https://static.vecteezy.com/system/resources/thumbnails/025/019/602/small/camping-hiking-nature-mountain-river-graphic-illustration-vector-art-t-shirt-design-generative-ai-png.png" style="width: 100%; text-align: center;">
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="width: 49%; padding-right: 1%; text-align: right;">
+                                <img src="@Model.Cars.ImageCar" style="width: 100%; text-align: center;">
+                            </div>
+                            
+                        }
+                        
                         <div style="width: 49%; padding-left: 1%;">
-                            <input type="hidden" asp-for="Contract.ContractID">
-                            <label for="fname">Car Information:</label><br>
-                            <input disabled asp-for="Contract.CarInformation" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <input type="hidden" asp-for="Cars.CarID">
+                            <label for="fname">CarName:</label><br>
+                            <input disabled asp-for="Cars.CarName" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="lname">CarPlate:</label><br>
+                            <input disabled asp-for="Cars.CarPlate" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
                             <label for="lname">Deposit:</label><br>
-                            <textarea disabled asp-for="Contract.Deposit" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
-                            <label for="lname">Note:</label><br>
-                            <textarea disabled asp-for="Contract.Note" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
+                            <input disabled asp-for="Cars.Deposit" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="fname">Price Per Day:</label><br>
+                            <input disabled asp-for="Cars.PricePerDay" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="fname">Seatn:</label><br>
+                            <input disabled asp-for="Cars.Seat" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="fname">Brand name:</label><br>
+                            <input disabled asp-for="Cars.CarBrand" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                            <label for="fname">Description:</label><br>
+                            <textarea disabled asp-for="Cars.Description" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;height:30%;"></textarea><br>
                         </div>
 
                     </div>
                 </form>
+
+
             </div>
-            @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1") && Model.Contract.Status == 3)
-            {
-                <form asp-page-handler="Accept" asp-route-contractID="@Model.Contract.ContractID">
-                    <input type="hidden" name="ContractID" value="@Model.Contract.ContractID" />
-                    <button type="submit" class="button-accept">Accept</button>
-                </form>
-                <form asp-page-handler="Reject" asp-route-contractID="@Model.Contract.ContractID"
-                      onclick="return confirm('Are you sure you want to reject this?')">
-                    <input type="hidden" name="ContractID" value="@Model.Contract.ContractID" />
-                    <button type="submit" class="button-reject">Reject</button>
-                </form>
-            }
-            
         </section>
     </div>
 
-    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3") && Model.Contract.Status==1)
+    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("2"))
     {
         <button class="open-button" onclick="openForm()">Update</button>
     }
+  
 
     <div class="form-popup" id="myForm">
-        <form method="post" class="form-container">
+        <form method="post" class="form-container" enctype="multipart/form-data">
 
-            <label for="RoomNumber"><b>Car Information</b></label><br></br>
-            <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.CarInformation" required></textarea>
-            <span asp-validation-for="Contract.CarInformation" class="text-danger"></span><br />
+            <label for="file">Select Image:</label>
+            <input type="file" id="file" name="file" accept=".jpg, .jpeg, .png" /><br />
 
-            <label for="RoomDetailDescription"><b>Deposit</b></label>
-            <input type="text" asp-for="Contract.Deposit" required>
-            <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
+            <label for="RoomNumber"><b>Full Name</b></label>
+            <input type="text" asp-for="Cars.CarName" required><br />
+            <span asp-validation-for="Cars.CarName" class="text-danger"></span>
 
-            <label for="RoomNumber"><b>Note</b></label><br></br>
-            <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
-            <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
+            <label for="RoomDetailDescription"><b>Car Plate </b></label>
+            <input type="text" asp-for="Cars.CarPlate" required><br />
+            <span asp-validation-for="Cars.CarPlate" class="text-danger"></span>
 
-            <input type="hidden" asp-for="Contract.ContractID" required>
+            <label for="RoomMaxCapacity"><b>Deposit</b></label>
+            <input type="number" asp-for="Cars.Deposit" required> <br />
+            <span asp-validation-for="Cars.Deposit" class="text-danger"></span>
+
+            <label for="RoomPricePerDay"><b>Price Per Day</b></label>
+            <input type="number" asp-for="Cars.PricePerDay" required><br />
+            <span asp-validation-for="Cars.PricePerDay" class="text-danger"></span>
+
+            <label for="RoomPricePerDay"><b>Seat</b></label>
+            <input type="number" asp-for="Cars.Seat" required><br />
+            <span asp-validation-for="Cars.Seat" class="text-danger"></span>
+
+            <label for="CarBrand"><b>Brand</b></label>
+            <select asp-for="Cars.CarBrandID" asp-items="@(ViewData["BrandCar"] as SelectList)" required>
+                <option value="">Select Type</option>
+            </select><br />
+
+            <label for="RoomPricePerDay"><b>Description</b></label><br />
+            <textarea asp-for="Cars.Description" required></textarea><br />
+            <span asp-validation-for="Cars.Description" class="text-danger"></span>
+
+            <input type="hidden" asp-for="Cars.Status" value="1" required>
+
+            <input type="hidden" asp-for="Cars.CarID" required>
 
             <button type="submit" class="btn">Update</button>
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
@@ -226,5 +234,3 @@
 
 </body>
 </html>
-
-

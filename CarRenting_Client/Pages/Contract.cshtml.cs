@@ -121,6 +121,7 @@ namespace CarRenting_Client.Pages
                     if (response.IsSuccessStatusCode)
                     {
                         // Reload the page after successful deletion
+                        LoadAsync1(Contract.ContractID);
                         return Page();
                     }
                     else
@@ -166,6 +167,38 @@ namespace CarRenting_Client.Pages
             catch (Exception ex)
             {
                 
+            }
+        }
+
+        private async Task LoadAsync1(int contractID)
+        {
+            try
+            {
+                string token = HttpContext.Session.GetString("Token");
+                var cotract = new Contract
+                {
+                    Status = 3
+                };
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlUpdate}{contractID}", cotract);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reload the page after successful deletion
+                    }
+                    else
+                    {
+                        string errorMessage = await response.Content.ReadAsStringAsync();
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }
