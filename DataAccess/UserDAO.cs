@@ -43,14 +43,15 @@ namespace DataAccess
             }
             return list;
         }
-        public List<User> SearchUsersByName(string name)
+        public List<UserViewModel> SearchUsersByName(string name)
         {
-            var list = new List<User>();
+            var list = new List<UserViewModel>();
             try
             {
                 using (var context = new CarRentingDBContext())
                 {
-                    list = context.Users.Where(u => u.UserName.Contains(name)).ToList();
+                    var result = context.Users.Where(u => u.UserName.Contains(name)).ToList();
+                    list = _mapper.Map<List<UserViewModel>>(result);
                 }
             }
             catch (Exception ex)
