@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using BusinessObject;
-using Repositories;
-using AutoMapper;
 using BusinessObject.DTO;
 using BusinessObject.Models.JwtTokenModels;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using BusinessObject.Models.UserModels;
-using DataAccess;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Repositories;
 
 namespace CarRenting_API.Controllers
 {
@@ -50,8 +48,9 @@ namespace CarRenting_API.Controllers
         }
 
         [HttpGet("Search/{name}")]
+        [Authorize]
         public ActionResult<IEnumerable<User>> SearchByName(string name)
-        {           
+        {
             List<User> list = _userRepository.SearchUsersByName(name);
             var nList = _mapper.Map<List<UserDisplayDTO>>(list);
 
@@ -104,6 +103,7 @@ namespace CarRenting_API.Controllers
         // PUT: api/Users/Update
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update")]
+        [Authorize]
         public IActionResult UpdateUser(UserUpdateDTO userUpdateDTO)
         {
             var user = _mapper.Map<User>(userUpdateDTO);
@@ -144,6 +144,7 @@ namespace CarRenting_API.Controllers
 
         // DELETE: api/Users/Delete/5
         [HttpDelete("Delete/{id}")]
+        [Authorize]
         public IActionResult DeleteUser(int id)
         {
             var u = _userRepository.GetUserByID(id);
@@ -158,6 +159,7 @@ namespace CarRenting_API.Controllers
         }
 
         [HttpPut("admin-update-user")]
+        [Authorize]
         public IActionResult AdminUpdateUser(UserUpdateModel model)
         {
             try
