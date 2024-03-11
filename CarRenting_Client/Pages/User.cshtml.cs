@@ -31,8 +31,9 @@ namespace CarRenting_Client.Pages
         public async Task OnGetAsync()
         {
             var token = HttpContext.Session.GetString("Token");
+            var role = HttpContext.Session.GetInt32("RoleID");
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            if (token == null)
+            if (token == null && role != 1)
             {
                 RedirectToPage("/Login");
             }
