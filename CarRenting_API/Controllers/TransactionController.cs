@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using BusinessObject.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Repositories.IRepository;
@@ -11,13 +12,14 @@ namespace CarRenting_API.Controllers
     {
         private ITransactionRepository transactionRepository = new TransactionRepository();
 
-
+        [Authorize]
         [EnableQuery]
         public ActionResult<IQueryable<Transaction>> Get()
         {
             return Ok(transactionRepository.Transactions());
         }
 
+        [Authorize]
         [EnableQuery]
         public ActionResult Post([FromBody] TransactionDTO dto)
         {

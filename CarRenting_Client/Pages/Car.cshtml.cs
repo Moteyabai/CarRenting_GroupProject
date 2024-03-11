@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 namespace CarRenting_Client.Pages.Users
 {
@@ -37,11 +38,12 @@ namespace CarRenting_Client.Pages.Users
 
         public async Task<IActionResult> OnGetAsync()
         {
+            string token = HttpContext.Session.GetString("Token");
             using (var httpClient = new HttpClient())
             {
                 // Append the search parameter to the API URL if a name is provided
                 string url = string.IsNullOrEmpty(Name) ? apiUrl : $"{apiUrlSearch}{Name}";
-
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 using (HttpResponseMessage response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -72,9 +74,10 @@ namespace CarRenting_Client.Pages.Users
                 string url = apiUrlId;
                 string userIDString = HttpContext.Session.GetString("ID");
                 int userID = int.Parse(userIDString);
-
+                string token = HttpContext.Session.GetString("Token");
                 using (var httpClient = new HttpClient()) // Declare and initialize httpClient
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.GetAsync($"{url}{CarID}");
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     Car = JsonConvert.DeserializeObject<Car>(apiResponse);

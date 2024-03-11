@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 using System.Xml.Linq;
 
 namespace CarRenting_Client.Pages
@@ -18,11 +19,12 @@ namespace CarRenting_Client.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             string userID = HttpContext.Session.GetString("ID");
+            string token = HttpContext.Session.GetString("Token");
             using (var httpClient = new HttpClient())
             {
                 // Append the search parameter to the API URL if a name is provided
                 string url = $"{apiUrl}{userID}";
-
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 using (HttpResponseMessage response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();

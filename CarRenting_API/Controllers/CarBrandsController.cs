@@ -12,6 +12,7 @@ using Repositories.IRepository;
 using Repositories.Repository;
 using BusinessObject.Models.CarModels;
 using BusinessObject.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarRenting_API.Controllers
 {
@@ -27,6 +28,7 @@ namespace CarRenting_API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         // GET: api/CarBrands
         [HttpGet("CarBrandlist")]
         public ActionResult<IEnumerable<BrandCarDTO>> GetListCars()
@@ -47,6 +49,7 @@ namespace CarRenting_API.Controllers
             }
         }
 
+        [Authorize]
         // GET: api/CarBrands/5
         [HttpGet("Search/{name}")]
         public ActionResult<IEnumerable<CarBrand>> SearchCarBrandByName(string name)
@@ -62,7 +65,8 @@ namespace CarRenting_API.Controllers
 
         // PUT: api/CarBrands/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-       
+
+        [Authorize]
         [HttpGet("GetCar{id}")]
         public ActionResult<CarBrand> GetCarByID(int id)
         {
@@ -76,6 +80,7 @@ namespace CarRenting_API.Controllers
             return Ok(c);
         }
 
+        [Authorize]
         // POST: api/CarBrands
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("AddCarBrand")]

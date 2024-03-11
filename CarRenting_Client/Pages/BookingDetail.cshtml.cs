@@ -6,6 +6,7 @@ using BusinessObject;
 using BusinessObject.DTO;
 using BusinessObject.Models.Enum;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace CarRenting_Client.Pages
 {
@@ -18,10 +19,12 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnGetAsync(int bookingID)
         {
+            string token = HttpContext.Session.GetString("Token");
             List<BookingViewDto> bookingViews = null;
             using (var httpClient = new HttpClient())
             {
                 string apiUrl1 = $"{apiUrl}{bookingID}";
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 using (HttpResponseMessage response = await httpClient.GetAsync(apiUrl1))
                 {
