@@ -3,6 +3,7 @@ using BusinessObject.DTO;
 using BusinessObject.Models.CarModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
@@ -16,6 +17,9 @@ namespace CarRenting_Client.Pages.Users
         private readonly string apiUrlSearch = "http://localhost:5209/api/Cars/Search/";
         private readonly string apiUrlId = "http://localhost:5209/api/Cars/GetCar";
         private readonly string apiUrlBooking = "http://localhost:5209/odata/Booking";
+        private readonly string apiUrlBrands = "http://localhost:5209/api/CarBrands/CarBrandlist";
+        private readonly string apiUrlAddCars = "http://localhost:5209/api/Cars/AddCar";
+        private readonly string apiUrlFirebase = "http://localhost:5209/api/Firebase";
 
         [BindProperty(SupportsGet = true)]
         public string Name { get; set; }
@@ -32,7 +36,16 @@ namespace CarRenting_Client.Pages.Users
         [BindProperty(SupportsGet = true)]
         public DateTime EndDate { get; set; }
 
-        public Car Car { get; set; }
+        public CarViewModels Car { get; set; }
+
+        [BindProperty]
+        public List<BrandCarDTO> BrandCars { get; set; }
+
+        [BindProperty]
+        public CarAddDTO RoomInformationDto { get; set; }
+
+        [BindProperty]
+        public IFormFile File { get; set; }
 
         public List<CarViewModels> Cars { get; set; }
 
@@ -63,8 +76,31 @@ namespace CarRenting_Client.Pages.Users
             {
                 return RedirectToPage("./Login");
             }
-
+            await LoadRoomTypesAsync();
             return Page();
+        }
+
+        private async Task LoadRoomTypesAsync()
+        {
+            string token = HttpContext.Session.GetString("Token");
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await httpClient.GetAsync(apiUrlBrands);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var roomTypesJson = await response.Content.ReadAsStringAsync();
+                    BrandCars = JsonConvert.DeserializeObject<List<BrandCarDTO>>(roomTypesJson);
+
+                    // Use ViewData to store the SelectList for the dropdown
+                    ViewData["BrandCar"] = new SelectList(BrandCars, "CarBrandID", "Name");
+                }
+                else
+                {
+                    // Handle error, e.g., log or display a message
+                }
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(int CarID)
@@ -80,7 +116,7 @@ namespace CarRenting_Client.Pages.Users
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.GetAsync($"{url}{CarID}");
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    Car = JsonConvert.DeserializeObject<Car>(apiResponse);
+                    Car = JsonConvert.DeserializeObject<CarViewModels>(apiResponse);
                 }
 
                 var bookingDetail = new BookingDetailDTO
@@ -100,6 +136,7 @@ namespace CarRenting_Client.Pages.Users
                 Booking = booking;
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.PostAsJsonAsync(apiUrlBooking, Booking);
 
                     if (response.IsSuccessStatusCode)
@@ -126,6 +163,67 @@ namespace CarRenting_Client.Pages.Users
             }
 
             return RedirectToPage("Car"); // Trả về trang hiện tại sau khi đã xử lý các ngoại lệ
+        }
+
+        public async Task<IActionResult> OnPostCreateRoomInformationAsync()
+        {
+            try
+            {
+                string token = HttpContext.Session.GetString("Token");
+                string image;
+                if (File != null && File.Length > 0)
+                {
+                    image = await UploadImage();
+                    RoomInformationDto.ImageCar = image;
+                }
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    // Send a POST request to the API to create room information
+                    var response = await httpClient.PostAsJsonAsync(apiUrlAddCars, RoomInformationDto);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reload the page after successful creation
+                        return RedirectToPage();
+                    }
+                    else
+                    {
+                        string errorMessage = await response.Content.ReadAsStringAsync();
+                        return BadRequest($"Failed to create room information: {errorMessage}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        private async Task<string> UploadImage()
+        {
+            string token = HttpContext.Session.GetString("Token");
+            if (File != null && File.Length > 0)
+            {
+                using (var httpClient = new HttpClient())
+                using (var formData = new MultipartFormDataContent())
+                {
+                    formData.Add(new StreamContent(File.OpenReadStream()), "stream", File.FileName);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrlFirebase, formData);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string errorMessage = await response.Content.ReadAsStringAsync();
+                        return errorMessage;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            return null;
         }
 
     }

@@ -1,5 +1,5 @@
 ﻿@page
-@model CarRenting_Client.Pages.StaffBookingModel
+@model CarRenting_Client.Pages.PaymentModel
 @{
     Layout = null;
 }
@@ -10,7 +10,7 @@
 <head>
     <title>Job Dashboard | By Code Info</title>
     <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/popupFull.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
     <!-- Font Awesome Cdn Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>
@@ -21,7 +21,7 @@
             <div class="navbar">
                 <div class="logo">
                     <img src="/pic/logo.jpg" alt="">
-                    <h1>Hotel</h1>
+                    <h1>HCAR</h1>
                 </div>
                 <ul>
                     <li>
@@ -57,72 +57,39 @@
                 <p>Dam Anh Bang SE150648 University</p>
             </div>
             <div class="main-body">
-                <h1>Booking</h1>
-
-                <form method="get">
-                    <div class="search_bar">
-                        <input asp-for="Name" placeholder="Search name customer...">
-                        <input type="submit" value="Search" />
-                    </div>
-                </form>
-
-                <div class="row">
-                </div>
-                @foreach (var booking in Model.Bookings)
+                <h1>Payments</h1>
+                @foreach (var car in Model.Transactions)
                 {
                     <div class="job_card">
                         <div class="job_details">
                             <div class="text">
                                 <div>
-                                    <span style="font-weight: bold;">Full Name: </span>
-                                    <span>@booking.User.UserName</span>
+                                    <span style="font-weight: bold;">Transaction code: </span>
+                                    <span>@car.TransactionID</span>
                                 </div>
                                 <div>
-                                    <span style="font-weight: bold;">Email: </span>
-                                    <span>@booking.User.Email</span>
+                                    <span style="font-weight: bold;">Date: </span>
+                                    <span>@car.PaymentDate</span>
                                 </div>
                                 <div>
-                                    <span style="font-weight: bold;">Phone: </span>
-                                    <span>@booking.User.Phone</span>
-                                </div>
-                                <div>
-                                    <span style="font-weight: bold;">Booking Date: </span>
-                                    <span>@booking.BookingDate</span>
-                                </div>
-                                <div>
-                                    <span style="font-weight: bold;">Total Price: </span>
-                                    <span>@booking.TotalPrice</span>
+                                    <span style="font-weight: bold;">Price: </span>
+                                    <span>@car.Price</span>
                                 </div>
                                 <div>
                                     <span style="font-weight: bold;">Status: </span>
-                                    @if (booking.Status == 1)
+                                    @if (car.Status == 1)
                                     {
-                                        <span>Processing</span>
-                                    }
-                                    else if (booking.Status == 2)
-                                    {
-                                        <span style="color: greenyellow">Accept</span>
-                                    }
-                                    else if (booking.Status == 3)
-                                    {
-                                        <span style="color: red">Reject</span>
-                                    }
-                                    else
-                                    {
-                                        <span style="color: green">Completed</span>
+                                        <span style="color: green;">Successful</span>
                                     }
 
                                 </div>
-
                             </div>
-                        </div>
-                        <div class="job_salary">
-                            <a asp-page="BookingDetail" asp-route-bookingID="@booking.BookingID">View</a>
                         </div>
 
 
                     </div>
                 }
+
             </div>
         </section>
     </div>
