@@ -143,7 +143,7 @@ namespace CarRenting_API.Controllers
         }
 
         // DELETE: api/Users/Delete/5
-        [HttpDelete("Delete")]
+        [HttpDelete("Delete/{id}")]
         public IActionResult DeleteUser(int id)
         {
             var u = _userRepository.GetUserByID(id);

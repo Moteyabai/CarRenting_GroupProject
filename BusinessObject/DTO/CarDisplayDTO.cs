@@ -18,12 +18,14 @@ namespace BusinessObject.DTO
         public string CarPlate { get; set; }
        
         public decimal Deposit { get; set; }
-       
-        public decimal PricePerDay { get; set; }
-       
         public int Status { get; set; }
-        
         public string ImageCar { get; set; }
-      
+
+        public decimal PricePerDay { get; set; }
+        public string Description { get; set; }
+
+        public int Seat { get; set; }
+
+
     }
 }

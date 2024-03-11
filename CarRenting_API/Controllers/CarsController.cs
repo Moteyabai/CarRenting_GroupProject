@@ -68,7 +68,7 @@ namespace CarRenting_API.Controllers
         public ActionResult<IEnumerable<Car>> SearchCarByName(string name)
         {
             List<Car> list = _carRepository.SearchCarByName(name);
-            var carList = _mapper.Map<List<CarDisplayDTO>>(list);
+            var carList = _mapper.Map<List<CarViewModels>>(list);
             if (carList.Count == 0) {
                 Message = "No Car Found";
                 return NotFound(Message);
@@ -78,11 +78,11 @@ namespace CarRenting_API.Controllers
 
         // PUT: api/Cars/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpGet("GetCar{id}")]
+        [HttpGet("GetCar/{id}")]
         public ActionResult<Car> GetCarByID(int id)
         {
             var car = _carRepository.GetCarByID(id);
-            var c = _mapper.Map<CarDisplayDTO>(car);
+            var c = _mapper.Map<CarViewModels>(car);
             if (c == null) {
                 Message = "No Car Found!";
 
@@ -104,15 +104,15 @@ namespace CarRenting_API.Controllers
                     return NotFound(Message);
                 }
             }
+            car.Status = 1;
             
-           
             _carRepository.AddCar(car);
             Message = "New Car Added!";
             return Ok(Message);
         }
 
         // DELETE: api/Cars/5
-        [HttpDelete("DeleteCar{id}")]
+        [HttpDelete("DeleteCar/{id}")]
         public IActionResult DeleteCar(int id)
         {
             var c = _carRepository.GetCarByID(id);
@@ -135,7 +135,7 @@ namespace CarRenting_API.Controllers
                 Message = "No Car Found!";
                 return NotFound(Message);
             }
-            car.CarBrandID = u.CarBrandID;
+            
             car.Status = u.Status;
             _carRepository.UpdateCar(car);
             Message = "Car Updated!";
