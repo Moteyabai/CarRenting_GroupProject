@@ -68,7 +68,6 @@ namespace CarRenting_Client.Pages.Cars
                 RedirectToPage("./Index");
             }
             RedirectToPage("./Index");
-
         }
     }
 }

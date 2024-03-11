@@ -50,7 +50,8 @@ namespace DataAccess
             {
                 using (var context = new CarRentingDBContext())
                 {
-                    list = context.Users.Where(u => u.UserName.Contains(name)).ToList();
+                    var result = context.Users.Where(u => u.UserName.Contains(name)).ToList();
+                    list = _mapper.Map<List<User>>(result);
                 }
             }
             catch (Exception ex)
