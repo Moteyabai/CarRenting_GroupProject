@@ -15,7 +15,7 @@ namespace Repositories
 
         public User GetUserByID(int id) => UserDAO.Instance.GetUserByID(id);
 
-        public List<UserViewModel> SearchUsersByName(string name) => UserDAO.Instance.SearchUsersByName(name);
+        public List<User> SearchUsersByName(string name) => UserDAO.Instance.SearchUsersByName(name);
 
         public void Update(User user) => UserDAO.Instance.UpdateUser(user);
 
