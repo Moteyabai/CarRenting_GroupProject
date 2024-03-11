@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using BusinessObject.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,13 +13,14 @@ namespace CarRenting_API.Controllers
     {
         private ICarDamageRepository carDamageRepository = new CarDamageRepository();
 
+        [Authorize]
         [EnableQuery]
         public ActionResult<IQueryable<CarDamage>> Get()
         {
             return Ok(carDamageRepository.CarDamages());
         }
 
-
+        [Authorize]
         [EnableQuery]
         public ActionResult Put([FromRoute] int key, [FromBody] CarDamageDTO dto)
         {
@@ -36,6 +38,7 @@ namespace CarRenting_API.Controllers
             }
         }
 
+        [Authorize]
         [EnableQuery]
         public ActionResult Post(int key)
         {

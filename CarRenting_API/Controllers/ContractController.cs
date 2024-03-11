@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using BusinessObject.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,12 +13,14 @@ namespace CarRenting_API.Controllers
     {
         private IContractRepository contractRepository = new ContractRepository();
 
+        [Authorize]
         [EnableQuery]
         public ActionResult<IQueryable<Contract>> Get()
         {
             return Ok(contractRepository.Contracts());
         }
 
+        [Authorize]
         [EnableQuery]
         public ActionResult Post()
         {
@@ -35,6 +38,7 @@ namespace CarRenting_API.Controllers
             }
         }
 
+        [Authorize]
         [EnableQuery]
         public ActionResult Put([FromRoute] int key, [FromBody] ContractDTO dto)
         {
