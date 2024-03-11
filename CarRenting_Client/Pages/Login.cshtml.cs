@@ -39,7 +39,19 @@ namespace CarRenting_Client.Pages
             }
             else
             {
-                return RedirectToPage("./Car");
+                if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Customer).ToString())
+                {
+                    return RedirectToPage("./Car");
+                }
+                else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
+                {
+                    return RedirectToPage("./User");
+                }
+                else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Manager).ToString())
+                {
+                    return RedirectToPage("/Car/Index");
+                };
+                return Page();
             }
         }
 
@@ -77,12 +89,20 @@ namespace CarRenting_Client.Pages
                         HttpContext.Session.SetString("RoleID", roleID);
                         HttpContext.Session.SetString("Token", token);
 
-                        if (roleID == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
+                        if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Customer).ToString())
                         {
-                            return RedirectToPage("/Users/Index");
+                            return RedirectToPage("./Car");
                         }
+                        else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
+                        {
+                            return RedirectToPage("./User");
+                        }
+                        else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Manager).ToString())
+                        {
+                            return RedirectToPage("/Car/Index");
+                        };
 
-                        
+
                         //get role staff
                         string role = HttpContext.Session.GetString("RoleID");
                         int rl = int.Parse(role);
