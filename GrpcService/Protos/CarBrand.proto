@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcService";
+
+package CarBrand;
+
+message CarBrandRequest{
+	int32 ID =  1;
+}
+
+message CarBrandResponse{
+	int32 CarBrandID = 1;
+	string Name = 2;
+
+}
+
+message CarBrandListResponse{
+	repeated CarBrandResponse carBrands = 1;
+}
+
+service CarBrandDetails{
+	rpc GetCarBrand(CarBrandRequest) returns (CarBrandListResponse);
+}
