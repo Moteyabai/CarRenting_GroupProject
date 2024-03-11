@@ -79,7 +79,7 @@ namespace CarRenting_Client.Pages
 
                 RedirectToPage("/User");
             }
-            RedirectToPage("/Users");
+            RedirectToPage("/User");
 
         }
 
@@ -90,7 +90,7 @@ namespace CarRenting_Client.Pages
             HttpResponseMessage response = await Client.PutAsync(ApiUrl + "Update", content);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToPage("./Index");
+                return RedirectToPage("./User");
             }
             return BadRequest();
         }
