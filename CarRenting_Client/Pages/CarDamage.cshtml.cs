@@ -10,6 +10,7 @@ using Stripe;
 using BusinessObject.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace CarRenting_Client.Pages
 {
@@ -44,12 +45,13 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnGetAsync(int damageID)
         {
+            string token = HttpContext.Session.GetString("Token");
             List<CarDamage> roomInformations = null;
             using (var httpClient = new HttpClient())
             {
                 // Append the search parameter to the API URL if a name is provided
                 string url = $"{apiUrl}{damageID}";
-
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 using (HttpResponseMessage response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -77,11 +79,12 @@ namespace CarRenting_Client.Pages
 
         private async Task LoadAsync(int bookingID, decimal fined)
         {
+            string token = HttpContext.Session.GetString("Token");
             using (var httpClient = new HttpClient())
             {
                 // Append the search parameter to the API URL if a name is provided
                 string url = $"{apiUrlBooking}{bookingID}";
-
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 using (HttpResponseMessage response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -117,6 +120,7 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            string token = HttpContext.Session.GetString("Token");
             try
             {
                 string image;
@@ -128,6 +132,7 @@ namespace CarRenting_Client.Pages
                 
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlUpdate}{CarDamage.CarDamageID}", CarDamage);
 
                     if (response.IsSuccessStatusCode)
@@ -190,13 +195,14 @@ namespace CarRenting_Client.Pages
 
         private async Task<string> UploadImage()
         {
+            string token = HttpContext.Session.GetString("Token");
             if (File != null && File.Length > 0)
             {
                 using (var httpClient = new HttpClient())
                 using (var formData = new MultipartFormDataContent())
                 {
                     formData.Add(new StreamContent(File.OpenReadStream()), "stream", File.FileName);
-
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.PostAsync(apiUrlFirebase, formData);
 
                     if (response.IsSuccessStatusCode)

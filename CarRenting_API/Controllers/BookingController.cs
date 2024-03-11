@@ -18,12 +18,14 @@ namespace CarRenting_API.Controllers
         private ICarDamageRepository carDamageRepository = new CarDamageRepository();
         private IContractRepository contractRepository = new ContractRepository();
 
+        [Authorize]
         [EnableQuery]
         public ActionResult<IQueryable<Booking>> Get()
         {
             return Ok(bookingRepository.Bookings());
         }
 
+        [Authorize]
         [EnableQuery]
         public ActionResult Post([FromBody] BookingDTO dto)
         {

@@ -12,6 +12,9 @@ using Repositories.IRepository;
 using Repositories.Repository;
 using BusinessObject.Models.CarModels;
 using BusinessObject.DTO;
+using Microsoft.AspNetCore.Authorization;
+using GrpcService.Services;
+using GrpcService;
 
 namespace CarRenting_API.Controllers
 {
@@ -22,11 +25,13 @@ namespace CarRenting_API.Controllers
         private ICarBrandRepository _carbrandRepository = new CarBrandRepository();
         private readonly IMapper _mapper;
         private string Message;
+        CarBrandService _carBrandService = new CarBrandService();
         public CarBrandsController(IMapper mapper)
         {
             _mapper = mapper;
         }
 
+        [Authorize]
         // GET: api/CarBrands
         [HttpGet("CarBrandlist")]
         public ActionResult<IEnumerable<BrandCarDTO>> GetListCars()
@@ -47,6 +52,7 @@ namespace CarRenting_API.Controllers
             }
         }
 
+        [Authorize]
         // GET: api/CarBrands/5
         [HttpGet("Search/{name}")]
         public ActionResult<IEnumerable<CarBrand>> SearchCarBrandByName(string name)
@@ -62,20 +68,17 @@ namespace CarRenting_API.Controllers
 
         // PUT: api/CarBrands/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-       
-        [HttpGet("GetCar{id}")]
-        public ActionResult<CarBrand> GetCarByID(int id)
-        {
-            var car = _carbrandRepository.GetCarBrandByID(id);
-            var c = _mapper.Map<BrandCarDTO>(car);
-            if (c == null) {
-                Message = "No CarBrand Found!";
 
-                return NotFound(Message);
-            }
-            return Ok(c);
+        [Authorize]
+        [HttpGet("GetCar{id}")]
+        public CarBrandListResponse GetCarByID(int id)
+        {
+            CarBrandRequest carRequest = new CarBrandRequest();
+            carRequest.ID = id;
+            return _carBrandService.GetCarBrand(carRequest, null).Result;
         }
 
+        [Authorize]
         // POST: api/CarBrands
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("AddCarBrand")]

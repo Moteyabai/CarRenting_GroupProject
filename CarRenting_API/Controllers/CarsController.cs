@@ -14,6 +14,7 @@ using BusinessObject.DTO;
 using BusinessObject.Models.CarModels;
 using GrpcService;
 using GrpcService.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarRenting_API.Controllers
 {
@@ -31,6 +32,7 @@ namespace CarRenting_API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet("grpc")]
         public CarListResponse GetCarList(int carId)
         {
@@ -39,6 +41,7 @@ namespace CarRenting_API.Controllers
             return _carService.GetCar(carRequest, null).Result;
         }
 
+        [Authorize]
         // GET: api/Cars
         [HttpGet("Carlist")]
         public ActionResult<IEnumerable<CarViewModels>> GetListCars()
@@ -63,6 +66,7 @@ namespace CarRenting_API.Controllers
             }
         }
 
+        [Authorize]
         // GET: api/Cars/5
         [HttpGet("Search/{name}")]
         public ActionResult<IEnumerable<Car>> SearchCarByName(string name)
@@ -78,7 +82,8 @@ namespace CarRenting_API.Controllers
 
         // PUT: api/Cars/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpGet("GetCar/{id}")]
+        [Authorize]
+        [HttpGet("GetCar{id}")]
         public ActionResult<Car> GetCarByID(int id)
         {
             var car = _carRepository.GetCarByID(id);
@@ -93,6 +98,7 @@ namespace CarRenting_API.Controllers
 
         // POST: api/Cars
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost("AddCar")]
         public ActionResult<CarAddDTO> Addcar(CarAddDTO carAddDTO)
         {
@@ -112,7 +118,8 @@ namespace CarRenting_API.Controllers
         }
 
         // DELETE: api/Cars/5
-        [HttpDelete("DeleteCar/{id}")]
+        [Authorize]
+        [HttpDelete("DeleteCar{id}")]
         public IActionResult DeleteCar(int id)
         {
             var c = _carRepository.GetCarByID(id);
@@ -126,6 +133,7 @@ namespace CarRenting_API.Controllers
         }
 
         // UPDATE: api/Cars/5
+        [Authorize]
         [HttpPut("UpdateCar")]
         public IActionResult UpdateCar(CarUpdateDTO carUpdateDTO)
         {

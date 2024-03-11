@@ -1,6 +1,7 @@
 ﻿using Firebase.Auth;
 using Firebase.Storage;
 using FirebaseAdmin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRenting_API.Controllers
@@ -16,6 +17,7 @@ namespace CarRenting_API.Controllers
 
         public FirebaseApp App => throw new NotImplementedException();
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Upload([FromForm(Name = "stream")] IFormFile file)
         {

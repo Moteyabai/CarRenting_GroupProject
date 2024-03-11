@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using BusinessObject.DTO;
+using System.Net.Http.Headers;
 
 namespace CarRenting_Client.Pages
 {
@@ -22,12 +23,13 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnGetAsync(int contractID)
         {
+            string token = HttpContext.Session.GetString("Token");
             List<Contract> roomInformations = null;
             using (var httpClient = new HttpClient())
             {
                 // Append the search parameter to the API URL if a name is provided
                 string url = $"{apiUrl}{contractID}";
-
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 using (HttpResponseMessage response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -50,9 +52,11 @@ namespace CarRenting_Client.Pages
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
                 BookingUpdate = new BookingUpdateDTO { Status = 2 };
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlAccept}{contractID}", BookingUpdate);
 
                     if (response.IsSuccessStatusCode)
@@ -78,9 +82,11 @@ namespace CarRenting_Client.Pages
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
                 BookingUpdate = new BookingUpdateDTO { Status = 3 };
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlReject}{contractID}", BookingUpdate);
 
                     if (response.IsSuccessStatusCode)
@@ -106,8 +112,10 @@ namespace CarRenting_Client.Pages
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlUpdate}{Contract.ContractID}", Contract);
 
                     if (response.IsSuccessStatusCode)
@@ -133,12 +141,14 @@ namespace CarRenting_Client.Pages
         {
             try
             {
+                string token = HttpContext.Session.GetString("Token");
                 var cotract = new Contract
                 {
                     Status = 2
                 };
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlUpdate}{contractID}", cotract);
 
                     if (response.IsSuccessStatusCode)
