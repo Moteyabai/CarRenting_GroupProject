@@ -11,7 +11,7 @@ namespace Repositories
         void Delete(int id);
         List<User> GetAllUsers();
         User GetUserByID(int id);
-        List<User> SearchUsersByName(string name);
+        List<UserViewModel> SearchUsersByName(string name);
         User CheckLogin(string email, string password);
         string Login(LoginModel model);
         void AdminUpdateUser(UserUpdateModel model);

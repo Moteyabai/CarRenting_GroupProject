@@ -39,7 +39,19 @@ namespace CarRenting_Client.Pages
             }
             else
             {
-                return RedirectToPage("./Car");
+                if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Customer).ToString())
+                {
+                    return RedirectToPage("./Car");
+                }
+                else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
+                {
+                    return RedirectToPage("/Users/Index");
+                }
+                else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Manager).ToString())
+                {
+                    return RedirectToPage("./Manager_CarList");
+                };
+                return Page();
             }
         }
 
@@ -81,7 +93,10 @@ namespace CarRenting_Client.Pages
                         {
                             return RedirectToPage("/Users/Index");
                         }
-
+                        else if (roleID == ((int)BusinessObject.Models.Enum.Role.Manager).ToString()) 
+                        {
+                            return RedirectToPage("./Manager_CarList");
+                        }
                         
                         //get role staff
                         string role = HttpContext.Session.GetString("RoleID");

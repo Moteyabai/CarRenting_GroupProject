@@ -50,9 +50,9 @@ namespace CarRenting_API.Controllers
         }
 
         [HttpGet("Search/{name}")]
-        public ActionResult<IEnumerable<User>> SearchByName(string name)
+        public ActionResult<IEnumerable<UserViewModel>> SearchByName(string name)
         {           
-            List<User> list = _userRepository.SearchUsersByName(name);
+            List<UserViewModel> list = _userRepository.SearchUsersByName(name);
             var nList = _mapper.Map<List<UserDisplayDTO>>(list);
 
             if (nList.Count == 0)

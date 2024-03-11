@@ -7,40 +7,75 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObject;
 using DataAccess;
+using BusinessObject.DTO;
 
 namespace CarRenting_Client.Pages
 {
     public class RegisterUserModel : PageModel
     {
-        private readonly DataAccess.CarRentingDBContext _context;
-
-        public RegisterUserModel(DataAccess.CarRentingDBContext context)
+        private string ApiUrl = "http://localhost:5209/api/Users/Register";
+        public RegisterUserModel()
         {
-            _context = context;
+
         }
 
         public IActionResult OnGet()
         {
-        ViewData["RoleID"] = new SelectList(_context.Roles, "RoleID", "Name");
-            return Page();
+            if (HttpContext.Session.GetString("ID") == null)
+            {
+                return Page();
+            }
+            else
+            {
+                if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Customer).ToString())
+                {
+                    return RedirectToPage("./Car");
+                }
+                else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
+                {
+                    return RedirectToPage("/Users/Index");
+                }
+                else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Manager).ToString())
+                {
+                    return RedirectToPage("./Manager_CarList");
+                }
+                return Page();
+            }
         }
 
         [BindProperty]
-        public User User { get; set; } = default!;
+        public UserRegisterDTO User { get; set; } = default!;
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Users == null || User == null)
+            if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Users.Add(User);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+            try
+            {
+                using (HttpClient Client = new HttpClient())
+                {
+                    HttpResponseMessage response = await Client.PostAsJsonAsync(ApiUrl, User);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToPage("./Login");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Register fail!");
+                        return Page();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

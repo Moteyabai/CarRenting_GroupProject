@@ -50,22 +50,40 @@ namespace CarRenting_Client.Pages.Users
 
         public async Task OnPostAsync()
         {
+            var token = HttpContext.Session.GetString("Token");
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             /*string json = JsonConvert.SerializeObject(Search);*/;
-            HttpResponseMessage response = await Client.GetAsync(ApiUrl + "Search/" + Search);
-
-            if(response.IsSuccessStatusCode)
+            if (Search != null)
             {
-                string strData = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await Client.GetAsync(ApiUrl + "Search/" + Search);
 
-            var options = new JsonSerializerOptions {       
-                PropertyNameCaseInsensitive = true,
-            };
-                User = System.Text.Json.JsonSerializer.Deserialize<List<UserViewModel>>(strData, options);
- 
-            RedirectToPage("./Index");
+                if (response.IsSuccessStatusCode)
+                {
+                    string strData = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    };
+                    User = System.Text.Json.JsonSerializer.Deserialize<List<UserViewModel>>(strData, options);
+                    RedirectToPage("./Index");
+                }
+            }
+            else
+            {
+                HttpResponseMessage response = await Client.GetAsync(ApiUrl + "UserList");
+                if (response.IsSuccessStatusCode)
+                {
+                    string strData = await response.Content.ReadAsStringAsync();
+
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    };
+                    User = System.Text.Json.JsonSerializer.Deserialize<List<UserViewModel>>(strData, options);
+                    RedirectToPage("./Index");
+                }
             }
             RedirectToPage("./Index");
-
         }
             
     }

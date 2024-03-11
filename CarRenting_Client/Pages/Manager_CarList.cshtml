@@ -1,14 +1,14 @@
 ﻿@page
-@model CarRenting_Client.Pages.Users.IndexModel
+@model CarRenting_Client.Pages.Manager_CarListModel
+
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <title>Job Dashboard | By Code Info</title>
+    <head>
+    <title>Car Management</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/popup.css" />
     <style>
@@ -35,21 +35,21 @@
     <!-- Font Awesome Cdn Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-</head>
+    </head>
 
-<body>
-    <div class="container">
-        <nav>
-            <div class="navbar">
+    <body>
+        <div class="container">
+            <nav>
+                <div class="navbar">
                 <div class="logo">
                     <img src="/pic/logo.jpg" alt="">
-                    <h1>HCAR - ADMIN</h1>
+                    <h1>HCAR</h1>
                 </div>
                 <ul>
                     <li>
-                        <a href="User">
+                        <a href="Car">
                             <i class="fas fa-user"></i>
-                            <span class="nav-item">User</span>
+                            <span class="nav-item">Car</span>
                         </a>
                     </li>
                     <li>
@@ -64,6 +64,7 @@
                             <span class="nav-item">Transaction</span>
                         </a>
                     </li>
+
                     <li>
                         <a href="Profile">
                             <i class="fab fa-dochub"></i>
@@ -77,67 +78,43 @@
                         </a>
                     </li>
                 </ul>
-            </div>
-        </nav>
+                </div>
+            </nav>
 
-        <section class="main">
+            <section class="main">
             <div class="main-top">
-                <p>ADMIN</p>
+                <p>MANAGER - CAR MANAGEMENT</p>
             </div>
             <div class="main-body">
-                <h1>User</h1>
-                <form method="post">
-                    <div class="search_bar">
-                        <input asp-for="Search" placeholder="Search name user...">
-                        <input type="submit" value="Search" />000
-                    </div>
-                </form>
+                <h1>Cars</h1>
 
-                @foreach (var user in Model.User)
+                @foreach (var car in Model.Car)
                 {
                     <div class="job_card">
                         <div class="job_details">
                             <div class="text">
                                 <div>
-                                    <span style="font-weight: bold;">ID: </span>
-                                    <span>@user.UserID</span>
-                                </div>
-                                <div>
                                     <span style="font-weight: bold;">Name: </span>
-                                    <span>@user.UserName</span>
+                                    <span>@car.CarName</span>
                                 </div>
                                 <div>
-                                    <span style="font-weight: bold;">Email: </span>
-                                    <span>@user.Email</span>
+                                    <span style="font-weight: bold;">Car Plate: </span>
+                                    <span>@car.CarPlate</span>
                                 </div>
                                 <div>
-                                    <span style="font-weight: bold;">Phone: </span>
-                                    <span>@user.Phone</span>
-                                </div>
-                                <div>
-                                    <span style="font-weight: bold;">Identification: </span>
-                                    <span>@user.Identification</span>
-                                </div>
-                                <div>
-                                    <span style="font-weight: bold;">License: </span>
-                                    <span>@user.License</span>
-                                </div>
-                                <div>
-                                    <span style="font-weight: bold;">Role ID: </span>
-                                    <span>@user.RoleID</span>
-                                </div>
-                                <div>
-                                    <span style="font-weight: bold;">Status: </span>
-                                    <span>@user.Status</span>
+                                    <span style="font-weight: bold;">Deposit: </span>
+                                    <span>@car.Deposit</span>
                                 </div>
                             </div>
                         </div>
                         <div class="job_salary">
-                            <div class="job_salary" onclick="openFormUpdate('@user.UserID')">
-                                Update
+                            <div class="job_salary" onclick="openFormUpdate('@car.CarID')">
+                                Booking
                             </div>
 
                         </div>
+
+
                     </div>
                 }
 
@@ -149,12 +126,35 @@
                     <p>@TempData["Message"]</p>
                 </div>
             }
+
         </section>
-    </div>
+
+        </div>
+
+    <script>
+        function openFormUpdate(roomId) {
+            document.getElementById("myFormUpdate_" + roomId).style.display = "block";
+        }
+
+        function closeFormUpdate(roomId) {
+            document.getElementById("myFormUpdate_" + roomId).style.display = "none";
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const notification = document.querySelector('.notification');
+
+            setTimeout(function () {
+                notification.classList.add('show');
+                setTimeout(function () {
+                    notification.classList.remove('show');
+                }, 3000);
+            }, 1000); // Show notification after 1 second
+        });
 
 
-</body>
+    </script>
 
+    </body>
 </html>
-
-}
