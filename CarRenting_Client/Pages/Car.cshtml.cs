@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net.Http;
 
 namespace CarRenting_Client.Pages.Users
 {
@@ -46,7 +45,15 @@ namespace CarRenting_Client.Pages.Users
                 using (HttpResponseMessage response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    Cars = JsonConvert.DeserializeObject<List<CarViewModels>>(apiResponse);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Cars = JsonConvert.DeserializeObject<List<CarViewModels>>(apiResponse);
+                    }
+                    else
+                    {
+                        Cars = null;
+                    }
+
                 }
             }
 
