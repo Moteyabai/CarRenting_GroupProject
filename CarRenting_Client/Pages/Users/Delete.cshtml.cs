@@ -25,13 +25,6 @@ namespace CarRenting_Client.Pages.Users
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            /*var role = HttpContext.Session.GetString("RoleID");
-            if (role == null || role != "2")
-            {
-                return RedirectToPage("/Login");
-            }
-            else
-            {*/
             HttpResponseMessage response = await Client.GetAsync(ApiUrl + "GetUser/" + id);
 
             string strData = await response.Content.ReadAsStringAsync();
@@ -50,17 +43,20 @@ namespace CarRenting_Client.Pages.Users
                 User = System.Text.Json.JsonSerializer.Deserialize<UserDisplayDTO>(strData, options);
                 return Page();
             }
-            /*}*/
 
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
+            var token = HttpContext.Session.GetString("Token");
+            var role = HttpContext.Session.GetInt32("RoleID");
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            if (User == null || token == null) { return Page(); }
             HttpResponseMessage response = await Client.DeleteAsync(ApiUrl + "Delete/" + id);
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToPage("./Index");
+                return RedirectToPage("/User");
             }
 
             return NotFound();
