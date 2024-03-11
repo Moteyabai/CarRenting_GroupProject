@@ -59,7 +59,11 @@ namespace CarRenting_Client.Pages.Users
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            var token = HttpContext.Session.GetString("Token");
+            var role = HttpContext.Session.GetInt32("RoleID");
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            if (!ModelState.IsValid || token == null)
             {
                 return Page();
             }
@@ -69,7 +73,7 @@ namespace CarRenting_Client.Pages.Users
             HttpResponseMessage response = await Client.PutAsync(ApiUrl + "Update", content);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToPage("./Index");
+                return RedirectToPage("/User");
             }
             return BadRequest();
         }
