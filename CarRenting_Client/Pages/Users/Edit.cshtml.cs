@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BusinessObject.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BusinessObject;
-using DataAccess;
-using System.Net.Http.Headers;
-using BusinessObject.DTO;
-using System.Text.Json;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 
 namespace CarRenting_Client.Pages.Users
 {
@@ -35,6 +27,12 @@ namespace CarRenting_Client.Pages.Users
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            /*            var role = HttpContext.Session.GetString("RoleID");
+                        if (role == null || role != "2")
+                        {
+                            return RedirectToPage("/Login");
+                        }else 
+                        {*/
             HttpResponseMessage response = await Client.GetAsync(ApiUrl + "GetUser/" + id);
 
             string strData = await response.Content.ReadAsStringAsync();
@@ -53,6 +51,8 @@ namespace CarRenting_Client.Pages.Users
                 User = System.Text.Json.JsonSerializer.Deserialize<UserUpdateDTO>(strData, options);
                 return Page();
             }
+            /*}*/
+
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.

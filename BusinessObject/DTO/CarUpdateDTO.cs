@@ -9,11 +9,12 @@ namespace BusinessObject.DTO
 {
     public class CarUpdateDTO
     {
-      
+        [Required]
+        public int CarID { get; set; }   
         public string CarName { get; set; }
         public int CarBrandID { get; set; }
         public string CarPlate {  get; set; }
-        public string Deposit { get; set; }
+        public decimal Deposit { get; set; }
         public double PricePerDay { get; set;}
         public string ImageCar { get; set; }      
         public int Seat { get; set; }    

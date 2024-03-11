@@ -91,7 +91,7 @@ namespace CarRenting_Client.Pages
 
                         if (roleID == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
                         {
-                            return RedirectToPage("/Users/Index");
+                            return RedirectToPage("./User");
                         }
                         else if (roleID == ((int)BusinessObject.Models.Enum.Role.Manager).ToString()) 
                         {
