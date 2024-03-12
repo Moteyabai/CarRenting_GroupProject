@@ -113,8 +113,6 @@ namespace CarRenting_API.Controllers
                 Message = "No User Found!";
                 return NotFound(Message);
             }
-            user.RoleID = u.RoleID;
-            user.Status = u.Status;
             _userRepository.Update(user);
             Message = "User Updated!";
             return Ok(Message);

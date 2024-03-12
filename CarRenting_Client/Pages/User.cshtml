@@ -3,182 +3,157 @@
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
 
-<head>
-    <title>Job Dashboard | By Code Info</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/popup.css" />
-    <style>
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f1f1f1;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-            .notification.show {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
+    <head>
+        <title>Job Dashboard | By Code Info</title>
+        <link rel="stylesheet" href="/css/style.css" />
+        <link rel="stylesheet" href="/css/popup.css" />
+        <style>
+            .notification {
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #f1f1f1;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.3s ease;
             }
 
-    </style>
-    <!-- Font Awesome Cdn Link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+                .notification.show {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
 
-</head>
+        </style>
+        <!-- Font Awesome Cdn Link -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-<body>
-    <div class="container">
-        <nav>
-            <div class="navbar">
-                <div class="logo">
-                    <img src="/pic/logo.jpg" alt="">
-                    <h1>HCAR</h1>
-                </div>
-                <ul>
-                    <li>
-                        <a href="Car">
-                            <i class="fas fa-car"></i>
-                            <span class="nav-item">Car</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="Booking">
-                            <i class="fas fa-chart-bar"></i>
-                            <span class="nav-item">Booking</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="Transaction">
-                            <i class="fas fa-tasks"></i>
-                            <span class="nav-item">Transaction</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="User">
-                            <i class="fas fa-user"></i>
-                            <span class="nav-item">Users</span>
-                        </a>
-                    </li>
+    </head>
 
-                    <li>
-                        <a href="Profile">
-                            <i class="fab fa-dochub"></i>
-                            <span class="nav-item">Profile</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="Login" class="logout">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span class="nav-item">Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <section class="main">
-            <div class="main-top">
-                <p>Dam Anh Bang SE150648 University</p>
-            </div>
-            <div class="main-body">
-                <h1>Users Management</h1>
-
-                <p>
-                    <a asp-page="/Users/Create">Create New</a>
-                </p>
-                <form method="post">
-                    <div class="search_bar">
-                        <input asp-for="Search" type="text" value="@Model.Search" />
-                        <input type="submit" value="Search" />
+    <body>
+        <div class="container">
+            <nav>
+                <div class="navbar">
+                    <div class="logo">
+                        <img src="/pic/logo.jpg" alt="">
+                        <h1>HCAR</h1>
                     </div>
+                    <ul>
 
-                </form>
-                @if (Model.User == null)
-                {
-                    <p>
-                        No Users found!
-                    </p>
-                }
-                else
-                {
-                    @foreach (var item in Model.User)
-                    {
-                        <div class="job_card">
-                            <div class="job_details">
-                                <div class="text">
-                                    <div>
-                                        <span style="font-weight: bold;">UserName: </span>
-                                        <span>@item.UserName</span>
-                                    </div>
-                                    <div>
-                                        <span style="font-weight: bold;">Password: </span>
-                                        <span>@item.Password</span>
-                                    </div>
-                                    <div>
-                                        <span style="font-weight: bold;">Email: </span>
-                                        <span>@item.Email</span>
-                                    </div>
-                                    <div>
-                                        <span style="font-weight: bold;">Phone: </span>
-                                        <span>@item.Phone</span>
-                                    </div>
-                                    <div>
-                                        <span style="font-weight: bold;">Identification: </span>
-                                        <span>@item.Identification</span>
-                                    </div><div>
-                                        <span style="font-weight: bold;">License: </span>
-                                        <span>@item.License</span>
-                                    </div>
-                                    <div>
-                                        <span style="font-weight: bold;">RoleID: </span>
-                                        <span>@item.RoleID</span>
-                                    </div>
-                                    <div>
-                                        <span style="font-weight: bold;">Status: </span>
-                                        <span>@item.Status</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: grid">
-                                <div style="margin-top: 30px; text-align: center">
-                                    <a asp-page="Users/Edit" asp-route-id="@item.UserID">Update</a>
-                                </div>
-                                <div style="margin-top: 30px; text-align: center">
-                                    <a asp-page="Users/Delete" asp-route-id="@item.UserID">Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    }                 
-                }
-
-            </div>
-
-            @if (TempData["Message"] != null)
-            {
-                <div class="notification">
-                    <p>@TempData["Message"]</p>
+                        <li>
+                            <a href="User">
+                                <i class="fas fa-user"></i>
+                                <span class="nav-item">Users</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Login" class="logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span class="nav-item">Logout</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            }
+            </nav>
 
-        </section>
+            <section class="main">
+                <div class="main-top">
+                    <p>Dam Anh Bang SE150648 University</p>
+                </div>
+                <div class="main-body">
+                    <h1>Users Management</h1>
+
+                    <p>
+                        <a asp-page="Create">Create New</a>
+                    </p>
+                    <form method="post">
+                        <div class="search_bar">
+                            <input asp-for="Search" type="text" value="@Model.Search" />
+                            <input type="submit" value="Search" />
+                        </div>
+
+                    </form>
+                    @if (Model.User == null)
+                    {
+                        <p>
+                            No Users found!
+                        </p>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.User)
+                        {
+                            <div class="job_card">
+                                <div class="job_details">
+                                    <div class="text">
+                                        <div>
+                                            <span style="font-weight: bold;">UserName: </span>
+                                            <span>@item.UserName</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-weight: bold;">Password: </span>
+                                            <span>@item.Password</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-weight: bold;">Email: </span>
+                                            <span>@item.Email</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-weight: bold;">Phone: </span>
+                                            <span>@item.Phone</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-weight: bold;">Identification: </span>
+                                            <span>@item.Identification</span>
+                                        </div><div>
+                                            <span style="font-weight: bold;">License: </span>
+                                            <span>@item.License</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-weight: bold;">RoleID: </span>
+                                            <span>@item.RoleID</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-weight: bold;">Status: </span>
+                                            <span>@item.Status</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: grid">
+                                    <div style="margin-top: 30px; text-align: center">
+                                        <a asp-page="Edit" asp-route-id="@item.UserID">Update</a>
+                                    </div>
+                                    <div style="margin-top: 30px; text-align: center">
+                                        <a asp-page="Delete" asp-route-id="@item.UserID">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+
+                </div>
+
+                @if (TempData["Message"] != null)
+                {
+                    <div class="notification">
+                        <p>@TempData["Message"]</p>
+                    </div>
+                }
+
+            </section>
 
 
 
 
-    </div>
+        </div>
 
-</body>
+    </body>
 
-</html>
+    </html>

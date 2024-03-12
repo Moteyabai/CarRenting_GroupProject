@@ -50,8 +50,7 @@ namespace DataAccess
             {
                 using (var context = new CarRentingDBContext())
                 {
-                    var result = context.Users.Where(u => u.UserName.Contains(name)).ToList();
-                    list = _mapper.Map<List<User>>(result);
+                    list = context.Users.Where(u => u.UserName.Contains(name)).ToList();
                 }
             }
             catch (Exception ex)
@@ -86,6 +85,7 @@ namespace DataAccess
             List<User> users = GetUsers();
             if (admin.Email.Equals(email) && admin.Password.Equals(password))
             {
+                admin.RoleID = 4;
                 return admin;
 
             }
@@ -149,7 +149,7 @@ namespace DataAccess
                 throw new Exception(ex.Message);
             }
         }
-        
+
         public void AdminUpdateUser(UserUpdateModel model)
         {
             try
@@ -163,6 +163,6 @@ namespace DataAccess
             {
                 throw new Exception(ex.Message);
             }
-        } 
+        }
     }
 }
