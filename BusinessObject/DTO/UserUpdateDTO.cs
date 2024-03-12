@@ -16,5 +16,7 @@ namespace BusinessObject.DTO
         public string Identification { get; set; }
         [StringLength(10)]
         public string License { get; set; }
+        public int RoleID { get; set; }
+        public int Status { get; set; }
     }
 }

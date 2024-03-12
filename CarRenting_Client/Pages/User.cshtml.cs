@@ -33,7 +33,7 @@ namespace CarRenting_Client.Pages
             var token = HttpContext.Session.GetString("Token");
             var role = HttpContext.Session.GetInt32("RoleID");
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            if (token == null && role != 1)
+            if (token == null && role != 4)
             {
                 RedirectToPage("/Login");
             }
@@ -90,7 +90,7 @@ namespace CarRenting_Client.Pages
             HttpResponseMessage response = await Client.PutAsync(ApiUrl + "Update", content);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToPage("./User");
+                return RedirectToPage("/User");
             }
             return BadRequest();
         }
