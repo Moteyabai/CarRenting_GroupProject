@@ -15,26 +15,7 @@ namespace CarRenting_Client.Pages
 
         public IActionResult OnGet()
         {
-            if (HttpContext.Session.GetString("ID") == null)
-            {
-                return Page();
-            }
-            else
-            {
-                if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Customer).ToString())
-                {
-                    return RedirectToPage("/Car");
-                }
-                else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
-                {
-                    return RedirectToPage("/User");
-                }
-                else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Manager).ToString())
-                {
-                    return RedirectToPage("/Car");
-                };
-                return Page();
-            }
+            return Page();
         }
 
         [BindProperty]
@@ -73,19 +54,19 @@ namespace CarRenting_Client.Pages
 
                         if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Customer).ToString())
                         {
-                            return RedirectToPage("/Car");
+                            return RedirectToPage("./Car");
                         }
                         else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
                         {
-                            return RedirectToPage("/User");
+                            return RedirectToPage("./User");
                         }
                         else if (HttpContext.Session.GetString("RoleID") == ((int)BusinessObject.Models.Enum.Role.Manager).ToString())
                         {
-                            return RedirectToPage("/Car");
+                            return RedirectToPage("./Car");
                         };
 
 
-                        return RedirectToPage("/Car");
+                        return RedirectToPage("./Car");
                     }
                     else
                     {
