@@ -13,6 +13,18 @@
     <link rel="stylesheet" href="/css/popup.css" />
     <!-- Font Awesome Cdn Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        .button-123 {
+            background-color: #04AA6D; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
 </head>
 
 <body>
@@ -154,9 +166,15 @@
                     </div>
 
                 </div>
-                <a asp-page="Contract" asp-route-contractID="@Model.Booking.BookingDetails[0].ContractID">Contract</a>
-                <a asp-page="CarDamage" asp-route-damageID="@Model.Booking.BookingDetails[0].DetailsID">Car Damage</a>
+                <div style="display:flex; justify-content:space-around">
 
+                    <button class="button-123">
+                        <a asp-page="Contract" asp-route-contractID="@Model.Booking.BookingDetails[0].ContractID">Contract</a>
+                    </button>
+                    <button class="button-123">
+                        <a asp-page="CarDamage" asp-route-damageID="@Model.Booking.BookingDetails[0].DetailsID">Car Damage</a>
+                    </button>
+                </div>            
             </div>
         </section>
     </div>
