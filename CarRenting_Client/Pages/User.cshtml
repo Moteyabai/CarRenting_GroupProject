@@ -128,14 +128,66 @@
                                     </div>
                                 </div>
                                 <div style="display: grid">
-                                    <div style="margin-top: 30px; text-align: center">
-                                        <a asp-page="Edit" asp-route-id="@item.UserID">Update</a>
+                                <div style="margin-top: 30px; text-align: center" onclick="openRegForm(('@item.UserID'))">
+                                        Update
                                     </div>
                                     <div style="margin-top: 30px; text-align: center">
                                         <a asp-page="Delete" asp-route-id="@item.UserID">Delete</a>
                                     </div>
                                 </div>
                             </div>
+                        <div class="form-popup" id="myRegForm_@item.UserID">
+                            <form method="post" asp-page-handler="Update" class="regForm-container">
+                                <h1>User</h1>
+
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="UserUpdate.UserID" value="@item.UserID" />
+                                <div class="form-group">
+                                    <label asp-for="UserUpdate.UserName" class="control-label"></label>
+                                    <input asp-for="UserUpdate.UserName" class="form-control" value="@item.UserName"/>
+                                    <span asp-validation-for="UserUpdate.UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="UserUpdate.Password" class="control-label"></label>
+                                    <input asp-for="UserUpdate.Password" class="form-control" type="password" value="@item.Password" />
+                                    <span asp-validation-for="UserUpdate.Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="UserUpdate.Email" class="control-label"></label>
+                                    <input asp-for="UserUpdate.Email" class="form-control" value="@item.Email"/>
+                                    <span asp-validation-for="UserUpdate.Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="UserUpdate.Phone" class="control-label"></label>
+                                    <input asp-for="UserUpdate.Phone" class="form-control" value="@item.Phone"/>
+                                    <span asp-validation-for="UserUpdate.Phone" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="UserUpdate.Identification" class="control-label"></label>
+                                    <input asp-for="UserUpdate.Identification" class="form-control" value="@item.Identification"/>
+                                    <span asp-validation-for="UserUpdate.Identification" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="UserUpdate.License" class="control-label"></label>
+                                    <input asp-for="UserUpdate.License" class="form-control" value="@item.License"/>
+                                    <span asp-validation-for="UserUpdate.License" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="UserUpdate.Status" class="control-label"></label>
+                                    <input asp-for="UserUpdate.Status" class="form-control" value="@item.Status"/>
+                                    <span asp-validation-for="UserUpdate.Status" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="UserUpdate.RoleID" class="control-label"></label>
+                                    <input asp-for="UserUpdate.RoleID" class="form-control" value="@item.RoleID"/>
+                                    <span asp-validation-for="UserUpdate.RoleID" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn">Update</button>
+                                    <button type="button" class="btn cancel" onclick="closeRegForm()">Close</button>
+                                </div>
+                            </form>
+                        </div>
 
                         }
                     }
@@ -150,51 +202,6 @@
                 }
 
             </section>
-
-
-        <div class="form-popup" id="myRegForm">
-            <form method="post" asp-page-handler="CreateUser" class="regForm-container">
-                <h1>Create New User</h1>
-
-                <div asp-validation-summary="ModelOnly" class="text-danger">
-
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserReg.UserName" class="control-label"></label>
-                    <input asp-for="UserReg.UserName" class="form-control" />
-                    <span asp-validation-for="UserReg.UserName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserReg.Password" class="control-label"></label>
-                    <input asp-for="UserReg.Password" class="form-control" />
-                    <span asp-validation-for="UserReg.Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserReg.Email" class="control-label"></label>
-                    <input asp-for="UserReg.Email" class="form-control" type="email" />
-                    <span asp-validation-for="UserReg.Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserReg.Phone" class="control-label"></label>
-                    <input asp-for="UserReg.Phone" class="form-control" type="number" />
-                    <span asp-validation-for="UserReg.Phone" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserReg.Identification" class="control-label"></label>
-                    <input asp-for="UserReg.Identification" class="form-control" type="number" />
-                    <span asp-validation-for="UserReg.Identification" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserReg.License" class="control-label"></label>
-                    <input asp-for="UserReg.License" class="form-control" type="number" />
-                    <span asp-validation-for="UserReg.License" class="text-danger"></span>
-                </div>
-                <div>
-                    <button type="submit" class="btn">Add</button>
-                    <button type="button" class="btn cancel" onclick="closeRegForm()">Close</button>
-                </div>
-            </form>
-        </div>
 
         </div>
     <script>

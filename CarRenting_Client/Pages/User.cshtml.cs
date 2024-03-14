@@ -24,6 +24,7 @@ namespace CarRenting_Client.Pages
 
         public IList<UserDisplayDTO> User { get; set; } = default!;
         public UserRegisterDTO UserReg { get; set; }
+        public UserUpdateDTO UserUpdate { get; set; }
         [BindProperty]
         public string Search { get; set; }
         [BindProperty]
@@ -86,7 +87,11 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnUpdateAsync()
         {
-            string json = JsonConvert.SerializeObject(User);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            string json = JsonConvert.SerializeObject(UserUpdate);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PutAsync(ApiUrl + "Update", content);
             if (response.IsSuccessStatusCode)
