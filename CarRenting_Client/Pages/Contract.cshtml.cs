@@ -74,6 +74,7 @@ namespace CarRenting_Client.Pages
                     else
                     {
                         string errorMessage = await response.Content.ReadAsStringAsync();
+                        TempData["Message"] = "accept contract fail.";
                         return BadRequest($"Failed to update booking: {errorMessage}");
                     }
                 }
@@ -133,6 +134,7 @@ namespace CarRenting_Client.Pages
                     else
                     {
                         string errorMessage = await response.Content.ReadAsStringAsync();
+                        TempData["Message"] = "update contract fail.";
                         return BadRequest($"Failed to update contract: {errorMessage}");
                     }
                 }
