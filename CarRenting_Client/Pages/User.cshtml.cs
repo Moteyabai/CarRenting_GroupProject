@@ -28,17 +28,17 @@ namespace CarRenting_Client.Pages
         [BindProperty]
         public int UserID { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            var token = HttpContext.Session.GetString("Token");
-            var role = HttpContext.Session.GetInt32("RoleID");
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            if (token == null && role != 4)
+            if (HttpContext.Session.GetString("RoleID") == null && HttpContext.Session.GetString("RoleID") != ((int)BusinessObject.Models.Enum.Role.Admin).ToString())
             {
-                RedirectToPage("/Login");
+                return RedirectToPage("./Login");
             }
             else
             {
+                var token = HttpContext.Session.GetString("Token");
+                var role = HttpContext.Session.GetInt32("RoleID");
+                Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await Client.GetAsync(ApiUrl + "UserList");
 
                 if (response.IsSuccessStatusCode)
@@ -50,8 +50,8 @@ namespace CarRenting_Client.Pages
                         PropertyNameCaseInsensitive = true,
                     };
                     User = System.Text.Json.JsonSerializer.Deserialize<List<UserDisplayDTO>>(strData, options);
-
                 }
+                return Page();
             }
 
         }

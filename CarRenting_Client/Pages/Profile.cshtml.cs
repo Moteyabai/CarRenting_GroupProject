@@ -16,23 +16,30 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            string userIDString = HttpContext.Session.GetString("ID");
-            int userID = int.Parse(userIDString);
-            using (var httpClient = new HttpClient())
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-                // Append the search parameter to the API URL if a name is provided
-                string url = $"{apiUrl}{userID}";
-
-
-                using (HttpResponseMessage response = await httpClient.GetAsync(url))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    Customer = JsonConvert.DeserializeObject<User>(apiResponse);
-                }
+                return RedirectToPage("./Login");
             }
+            else
+            {
+                string userIDString = HttpContext.Session.GetString("ID");
+                int userID = int.Parse(userIDString);
+                using (var httpClient = new HttpClient())
+                {
+                    // Append the search parameter to the API URL if a name is provided
+                    string url = $"{apiUrl}{userID}";
 
 
-            return Page();
+                    using (HttpResponseMessage response = await httpClient.GetAsync(url))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        Customer = JsonConvert.DeserializeObject<User>(apiResponse);
+                    }
+                }
+
+
+                return Page();
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
