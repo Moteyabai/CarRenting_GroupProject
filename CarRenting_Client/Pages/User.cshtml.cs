@@ -23,6 +23,7 @@ namespace CarRenting_Client.Pages
         }
 
         public IList<UserDisplayDTO> User { get; set; } = default!;
+        public UserRegisterDTO UserReg { get; set; }
         [BindProperty]
         public string Search { get; set; }
         [BindProperty]
@@ -90,6 +91,23 @@ namespace CarRenting_Client.Pages
             HttpResponseMessage response = await Client.PutAsync(ApiUrl + "Update", content);
             if (response.IsSuccessStatusCode)
             {
+                return RedirectToPage("/User");
+            }
+            return BadRequest();
+        }
+
+        public async Task<IActionResult> OnPostCreateUser()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            string json = JsonConvert.SerializeObject(User);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(ApiUrl + "Register", content);
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "Created a new user!";
                 return RedirectToPage("/User");
             }
             return BadRequest();
