@@ -11,6 +11,27 @@
     <title>Job Dashboard | By Code Info</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/popup.css" />
+    <style>
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f1f1f1;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+            .notification.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+    </style>
     <!-- Font Awesome Cdn Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>

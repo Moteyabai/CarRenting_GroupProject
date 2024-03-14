@@ -138,11 +138,13 @@ namespace CarRenting_Client.Pages
                     if (response.IsSuccessStatusCode)
                     {
                         // Reload the page after successful deletion
+                        TempData["Message"] = "update car damage successful.";
                         return RedirectToPage("StaffBooking");
                     }
                     else
                     {
                         string errorMessage = await response.Content.ReadAsStringAsync();
+                        TempData["Message"] = "update car damage fail.";
                         return BadRequest($"Failed to update car damage: {errorMessage}");
                     }
                 }
