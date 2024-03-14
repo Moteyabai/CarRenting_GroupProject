@@ -36,26 +36,33 @@ namespace CarRenting_Client.Pages
         public CarBrandAddDTO CarBrandAdd { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
-            string token = HttpContext.Session.GetString("Token");
-            using (var httpClient = new HttpClient())
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-                // Append the search parameter to the API URL if a name is provided
-                string url = string.IsNullOrEmpty(Name) ? apiList : $"{apiSearch}{Name}";
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                using (HttpResponseMessage response = await httpClient.GetAsync(url))
+                return RedirectToPage("./Login");
+            }
+            else
+            {
+                string token = HttpContext.Session.GetString("Token");
+                using (var httpClient = new HttpClient())
                 {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
+                    // Append the search parameter to the API URL if a name is provided
+                    string url = string.IsNullOrEmpty(Name) ? apiList : $"{apiSearch}{Name}";
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    using (HttpResponseMessage response = await httpClient.GetAsync(url))
                     {
-                        CarBrands = JsonConvert.DeserializeObject<List<BrandCarDTO>>(apiResponse);
-                    }
-                    else
-                    {
-                        CarBrands = null;
-                    }
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            CarBrands = JsonConvert.DeserializeObject<List<BrandCarDTO>>(apiResponse);
+                        }
+                        else
+                        {
+                            CarBrands = null;
+                        }
 
+                    }
+                    return Page();
                 }
-                return Page();
             }
         }
 
