@@ -23,29 +23,35 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnGetAsync(int contractID)
         {
-            string token = HttpContext.Session.GetString("Token");
-            List<Contract> roomInformations = null;
-            using (var httpClient = new HttpClient())
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-                // Append the search parameter to the API URL if a name is provided
-                string url = $"{apiUrl}{contractID}";
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                using (HttpResponseMessage response = await httpClient.GetAsync(url))
+                return RedirectToPage("./Login");
+            }
+            else
+            {
+                string token = HttpContext.Session.GetString("Token");
+                List<Contract> roomInformations = null;
+                using (var httpClient = new HttpClient())
                 {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-
-                    var roomArray = JObject.Parse(apiResponse)["value"];
-
-                    if (roomArray is JArray)
+                    // Append the search parameter to the API URL if a name is provided
+                    string url = $"{apiUrl}{contractID}";
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    using (HttpResponseMessage response = await httpClient.GetAsync(url))
                     {
-                        // Deserialize as a list if it's an array
-                        roomInformations = JsonConvert.DeserializeObject<List<Contract>>(roomArray.ToString())!;
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+
+                        var roomArray = JObject.Parse(apiResponse)["value"];
+
+                        if (roomArray is JArray)
+                        {
+                            // Deserialize as a list if it's an array
+                            roomInformations = JsonConvert.DeserializeObject<List<Contract>>(roomArray.ToString())!;
+                        }
+                        Contract = roomInformations.FirstOrDefault();
+                        return Page();
                     }
-                    Contract = roomInformations.FirstOrDefault();
-                    return Page();
                 }
             }
-
         }
 
         public async Task<IActionResult> OnPostAcceptAsync(int contractID)

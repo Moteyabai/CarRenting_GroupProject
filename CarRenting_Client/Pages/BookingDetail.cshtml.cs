@@ -19,31 +19,38 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnGetAsync(int bookingID)
         {
-            string token = HttpContext.Session.GetString("Token");
-            List<BookingViewDto> bookingViews = null;
-            using (var httpClient = new HttpClient())
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-                string apiUrl1 = $"{apiUrl}{bookingID}";
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                using (HttpResponseMessage response = await httpClient.GetAsync(apiUrl1))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    var apiResponseObject = JObject.Parse(apiResponse);
-
-                    if (apiResponseObject["value"] is JArray bookingReservationsArray)
-                    {
-                        bookingViews = JsonConvert.DeserializeObject<List<BookingViewDto>>(bookingReservationsArray.ToString())!;
-                        // Deserialize as a list if it's an array
-
-                    }
-                    Booking = bookingViews.FirstOrDefault();
-                    HttpContext.Session.SetInt32("DetailsID", Booking.BookingID);
-                }
+                return RedirectToPage("./Login");
             }
+            else
+            {
+                string token = HttpContext.Session.GetString("Token");
+                List<BookingViewDto> bookingViews = null;
+                using (var httpClient = new HttpClient())
+                {
+                    string apiUrl1 = $"{apiUrl}{bookingID}";
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            // Now 'booking' contains the deserialized JSON data
-            return Page();
+                    using (HttpResponseMessage response = await httpClient.GetAsync(apiUrl1))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        var apiResponseObject = JObject.Parse(apiResponse);
+
+                        if (apiResponseObject["value"] is JArray bookingReservationsArray)
+                        {
+                            bookingViews = JsonConvert.DeserializeObject<List<BookingViewDto>>(bookingReservationsArray.ToString())!;
+                            // Deserialize as a list if it's an array
+
+                        }
+                        Booking = bookingViews.FirstOrDefault();
+                        HttpContext.Session.SetInt32("DetailsID", Booking.BookingID);
+                    }
+                }
+
+                // Now 'booking' contains the deserialized JSON data
+                return Page();
+            }
         }
     }
 

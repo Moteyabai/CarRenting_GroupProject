@@ -19,27 +19,32 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            string token = HttpContext.Session.GetString("Token");
-            using (var httpClient = new HttpClient())
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-                string url = string.IsNullOrEmpty(Name) ? apiUrl : $"{apiSearch}{Name}')";
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                using (HttpResponseMessage response = await httpClient.GetAsync(url))
+                return RedirectToPage("./Login");
+            }
+            else
+            {
+                string token = HttpContext.Session.GetString("Token");
+                using (var httpClient = new HttpClient())
                 {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-
-                    var roomArray = JObject.Parse(apiResponse)["value"];
-
-                    if (roomArray is JArray)
+                    string url = string.IsNullOrEmpty(Name) ? apiUrl : $"{apiSearch}{Name}')";
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    using (HttpResponseMessage response = await httpClient.GetAsync(url))
                     {
-                        // Deserialize as a list if it's an array
-                        Bookings = JsonConvert.DeserializeObject<List<Booking>>(roomArray.ToString())!;
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+
+                        var roomArray = JObject.Parse(apiResponse)["value"];
+
+                        if (roomArray is JArray)
+                        {
+                            // Deserialize as a list if it's an array
+                            Bookings = JsonConvert.DeserializeObject<List<Booking>>(roomArray.ToString())!;
+                        }
                     }
                 }
+                return Page();
             }
-
-
-            return Page();
         }
     }
 }

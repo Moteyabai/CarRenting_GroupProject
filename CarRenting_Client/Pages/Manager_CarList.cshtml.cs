@@ -28,27 +28,33 @@ namespace CarRenting_Client.Pages
 
         public List<CarViewModels> Car { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            var token = HttpContext.Session.GetString("Token");
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            HttpResponseMessage response = await Client.GetAsync(ApiUrl + "CarList");
-            if (response.IsSuccessStatusCode)
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-                var strData = await response.Content.ReadAsStringAsync();
-                
-                var listCar = JsonSerializer.Deserialize<List<CarViewModels>>(strData);
-                if (listCar != null)
-                {
-                    Car = listCar;
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "No Car Found");
-                }
-                RedirectToPage("./Manager_CarListModel");
+                return RedirectToPage("./Login");
             }
-            RedirectToPage("./Manager_CarListModel");
+            else
+            {
+                var token = HttpContext.Session.GetString("Token");
+                Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage response = await Client.GetAsync(ApiUrl + "CarList");
+                if (response.IsSuccessStatusCode)
+                {
+                    var strData = await response.Content.ReadAsStringAsync();
+
+                    var listCar = JsonSerializer.Deserialize<List<CarViewModels>>(strData);
+                    if (listCar != null)
+                    {
+                        Car = listCar;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "No Car Found");
+                    }
+                }
+                return Page();
+            }
         }
     }
 }

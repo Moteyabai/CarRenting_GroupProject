@@ -23,14 +23,14 @@ namespace CarRenting_Client.Pages.Users
 
         public IActionResult OnGet()
         {
-            /*var role = HttpContext.Session.GetString("RoleID");
-
-            if (role == null)
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-                return RedirectToPage("/Login");
-            }*/
-
-            return Page();
+                return RedirectToPage("./Login");
+            }
+            else
+            {
+                return Page();
+            }
         }
 
         [BindProperty]
@@ -49,7 +49,7 @@ namespace CarRenting_Client.Pages.Users
             HttpResponseMessage response = await Client.PostAsync(ApiUrl + "Register", content);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToPage("./Index");
+                return RedirectToPage("/User");
             }
             return BadRequest();
         }
