@@ -1,4 +1,5 @@
 using BusinessObject.DTO;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -120,5 +121,10 @@ namespace CarRenting_Client.Pages
             return NotFound();
         }
 
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("./Login");
+        }
     }
 }
