@@ -23,7 +23,7 @@ namespace CarRenting_Client.Pages
         }
 
         public IList<UserDisplayDTO> User { get; set; } = default!;
-        public UserRegisterDTO UserReg { get; set; }
+        [BindProperty]
         public UserUpdateDTO UserUpdate { get; set; }
         [BindProperty]
         public string Search { get; set; }
@@ -85,37 +85,39 @@ namespace CarRenting_Client.Pages
 
         }
 
-        public async Task<IActionResult> OnUpdateAsync()
+        public async Task<IActionResult> OnPostUpdateAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+            var token = HttpContext.Session.GetString("Token");
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             string json = JsonConvert.SerializeObject(UserUpdate);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PutAsync(ApiUrl + "Update", content);
             if (response.IsSuccessStatusCode)
             {
+                TempData["message"] = "Update User Successfully!";
                 return RedirectToPage("/User");
             }
             return BadRequest();
         }
 
-        public async Task<IActionResult> OnPostCreateUser()
+        public async Task<IActionResult> OnPostDeleteAsync()
         {
-            if (!ModelState.IsValid)
+            var token = HttpContext.Session.GetString("Token");
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            if (UserID == null || token == null)
             {
-                return BadRequest(ModelState);
-            }
-            string json = JsonConvert.SerializeObject(User);
-            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync(ApiUrl + "Register", content);
-            if (response.IsSuccessStatusCode)
-            {
-                TempData["Message"] = "Created a new user!";
+                TempData["Message"] = "User not found!";
                 return RedirectToPage("/User");
             }
-            return BadRequest();
+            HttpResponseMessage response = await Client.DeleteAsync(ApiUrl + "Delete/" + UserUpdate.UserID);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "User deleted!";
+                return RedirectToPage("/User");
+            }
+
+            return NotFound();
         }
 
     }
