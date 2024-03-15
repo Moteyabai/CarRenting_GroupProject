@@ -75,5 +75,11 @@ namespace CarRenting_Client.Pages
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("./Login");
+        }
     }
 }

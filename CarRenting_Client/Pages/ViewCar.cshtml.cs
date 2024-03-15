@@ -133,5 +133,11 @@ namespace CarRenting_Client.Pages
             }
             return null;
         }
+
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("./Login");
+        }
     }
 }

@@ -70,10 +70,12 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Login" class="logout">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span class="nav-item">Logout</span>
-                        </a>
+                        <form method="post" asp-page-handler="Logout">
+                            <button type="submit" class="logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span class="nav-item">Logout</span>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
