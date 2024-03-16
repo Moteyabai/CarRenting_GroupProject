@@ -190,6 +190,25 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="job_salary">
+                                <button onclick="openForm1()">Edit</button>
+                            </div>
+                        </div>
+                       
+
+
+                        <div class="form-popup" id="myForm1">
+                            <form method="post" asp-page-handler="Update" class="form-container">
+
+                                <label for="RoomNumber"><b>Brand name</b></label>
+                                <input type="text" asp-for="@car.Name" required>
+                                <span asp-validation-for="@car.Name" class="text-danger"></span>
+
+                                <input type="hidden" asp-for="@car.CarBrandID" required>
+
+                                <button type="submit" class="btn">Update</button>
+                                <button type="button" class="btn cancel" onclick="closeForm1()">Close</button>
+                            </form>
                         </div>
                         
                     }
@@ -212,12 +231,12 @@
     </div>
 
     <script>
-        function openFormUpdate(roomId) {
-            document.getElementById("myFormUpdate_" + roomId).style.display = "block";
+        function openForm1() {
+            document.getElementById("myForm").style.display = "block";
         }
 
-        function closeFormUpdate(roomId) {
-            document.getElementById("myFormUpdate_" + roomId).style.display = "none";
+        function closeForm1() {
+            document.getElementById("myForm").style.display = "none";
         }
     </script>
 
@@ -236,11 +255,7 @@
 
     </script>
 
-    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID")
-                                                                    .Equals(
-                                                                        ((int)BusinessObject.Models.Enum.Role.Manager).ToString()
-                                                                    )
-        )
+    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("2"))
     {
         <button class="open-button" onclick="openForm()">Add New Brand</button>
     }
