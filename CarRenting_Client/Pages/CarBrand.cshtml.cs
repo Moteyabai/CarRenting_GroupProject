@@ -100,5 +100,32 @@ namespace CarRenting_Client.Pages
             HttpContext.Session.Clear();
             return RedirectToPage("./Login");
         }
+
+        public async Task<IActionResult> OnPostUpdateAsync()
+        {
+            try
+            {
+                string token = HttpContext.Session.GetString("Token");
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    var response = await httpClient.PostAsJsonAsync(apiAdd, CarBrandAdd);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reload the page after successful creation
+                        return RedirectToPage();
+                    }
+                    else
+                    {
+                        string errorMessage = await response.Content.ReadAsStringAsync();
+                        return BadRequest($"Failed to add new brand: {errorMessage}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
     }
 }
