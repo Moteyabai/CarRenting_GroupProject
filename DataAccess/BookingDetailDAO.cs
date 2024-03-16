@@ -93,16 +93,22 @@ namespace DataAccess
             {
                 using var context = new CarRentingDBContext();
 
-                // Chuyển đổi thời gian đầu vào sang múi giờ UTC
-                DateTime startUtc = start.ToUniversalTime();
-                DateTime endUtc = end.ToUniversalTime();
-                DateTime nowUtc = DateTime.UtcNow;
+                DateTime nowUtc = DateTime.Now.Date;
+                DateTime startUtcDate = start.Date;
+                DateTime endUtcDate = end.Date;
 
-                // Kiểm tra xem ngày kết thúc và ngày bắt đầu có phù hợp không
-                if (startUtc < nowUtc || endUtc < startUtc)
+                if (startUtcDate < nowUtc)
                 {
-                    // Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại
-                    // Ngày kết thúc phải lớn hơn ngày bắt đầu
+                    return true;
+                }
+
+                if (endUtcDate < startUtcDate)
+                {
+                    return true;
+                }
+
+                if (endUtcDate < nowUtc)
+                {
                     return true;
                 }
 
@@ -110,7 +116,7 @@ namespace DataAccess
                 bool isCarBooked = context.BookingDetails
                     .Any(b =>
                         b.CarID == carId &&
-                        ((startUtc >= b.StartDate && startUtc < b.EndDate) || (endUtc > b.StartDate && endUtc <= b.EndDate) || (startUtc <= b.StartDate && endUtc >= b.EndDate))
+                        ((startUtcDate >= b.StartDate && startUtcDate < b.EndDate) || (endUtcDate > b.StartDate && endUtcDate <= b.EndDate) || (startUtcDate <= b.StartDate && endUtcDate >= b.EndDate))
                     );
 
                 return isCarBooked; // Trả về true nếu chiếc xe đã được đặt trong khoảng thời gian cụ thể
