@@ -76,6 +76,7 @@ namespace CarRenting_Client.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            string token = HttpContext.Session.GetString("Token");
             try
             {
                 string image;
@@ -86,6 +87,7 @@ namespace CarRenting_Client.Pages
                 }
                 using (var httpClient = new HttpClient())
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     // Send a DELETE request to the API to delete the customer
                     HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{apiUrlUpdateCar}", Cars);
 
