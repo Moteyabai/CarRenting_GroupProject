@@ -131,12 +131,6 @@
                             </a>
                         </li>
                         <li>
-                            <a href="CarBrand">
-                                <i class="fas fa-chart-bar"></i>
-                                <span class="nav-item">Car Brand</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="StaffBooking">
                                 <i class="fas fa-chart-bar"></i>
                                 <span class="nav-item">Booking</span>
@@ -212,9 +206,12 @@
                                 </div>
                             </div>
                             <div class="job_salary">
-                                <div class="job_salary" onclick="openFormUpdate('@car.CarID')">
-                                    Booking
-                                </div>
+                                @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1"))
+                                {
+                                    <div class="job_salary" onclick="openFormUpdate('@car.CarID')">
+                                        Booking
+                                    </div>
+                                }
                                 <a asp-page="ViewCar" asp-route-CarID="@car.CarID">View</a>
 
                             </div>
@@ -279,7 +276,7 @@
 
     </script>
 
-    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3"))
+    @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("2"))
     {
         <button class="open-button" onclick="openForm()">Create Car</button>
     }

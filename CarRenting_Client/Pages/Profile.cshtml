@@ -43,41 +43,112 @@
                     <img src="/pic/logo.jpg" alt="">
                     <h1>HCAR</h1>
                 </div>
-                <ul>
-                    <li>
-                        <a href="Car">
-                            <i class="fas fa-user"></i>
-                            <span class="nav-item">Car</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="Booking">
-                            <i class="fas fa-chart-bar"></i>
-                            <span class="nav-item">Booking</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="Transaction">
-                            <i class="fas fa-tasks"></i>
-                            <span class="nav-item">Transaction</span>
-                        </a>
-                    </li>
+                @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1"))
+                {
+                    <ul>
+                        <li>
+                            <a href="Car">
+                                <i class="fas fa-car"></i>
+                                <span class="nav-item">Car</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Booking">
+                                <i class="fas fa-chart-bar"></i>
+                                <span class="nav-item">Booking</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Transaction">
+                                <i class="fas fa-tasks"></i>
+                                <span class="nav-item">Transaction</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Profile">
+                                <i class="fab fa-dochub"></i>
+                                <span class="nav-item">Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <form method="post" asp-page-handler="Logout">
+                                <button type="submit" class="logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span class="nav-item">Logout</span>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                }
+                else if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("2"))
+                {
+                    <ul>
+                        <li>
+                            <a href="Car">
+                                <i class="fas fa-car"></i>
+                                <span class="nav-item">Car</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="CarBrand">
+                                <i class="fas fa-chart-bar"></i>
+                                <span class="nav-item">Car Brand</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="StaffBooking">
+                                <i class="fas fa-chart-bar"></i>
+                                <span class="nav-item">Booking</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Payment">
+                                <i class="fas fa-tasks"></i>
+                                <span class="nav-item">Transaction</span>
+                            </a>
+                        </li>
+                        <li>
+                            <form method="post" asp-page-handler="Logout">
+                                <button type="submit" class="logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span class="nav-item">Logout</span>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                }
+                else if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3"))
+                {
+                    <ul>
+                        <li>
+                            <a href="Car">
+                                <i class="fas fa-car"></i>
+                                <span class="nav-item">Car</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="StaffBooking">
+                                <i class="fas fa-chart-bar"></i>
+                                <span class="nav-item">Booking</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Payment">
+                                <i class="fas fa-tasks"></i>
+                                <span class="nav-item">Transaction</span>
+                            </a>
+                        </li>
+                        <li>
+                            <form method="post" asp-page-handler="Logout">
+                                <button type="submit" class="logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span class="nav-item">Logout</span>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                }
 
-                    <li>
-                        <a href="Profile">
-                            <i class="fab fa-dochub"></i>
-                            <span class="nav-item">Profile</span>
-                        </a>
-                    </li>
-                    <li>
-                        <form method="post" asp-page-handler="Logout">
-                            <button type="submit" class="logout">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span class="nav-item">Logout</span>
-                            </button>
-                        </form>
-                    </li>
-                </ul>
             </div>
         </nav>
 
