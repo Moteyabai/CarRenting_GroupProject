@@ -12,6 +12,7 @@ namespace Repositories.Repository
     public class CarRepository : ICarRepository
     {
         public List<Car> GetListCar() => CarDAO.Instance.GetCar();
+       /* public List<Car> GetActiveCars() => CarDAO.Instance.GetActiveCars();*/
         public List<Car> SearchCarByName(string name) => CarDAO.Instance.SearchCarByName(name);
         public Car GetCarByID(int cID) => CarDAO.Instance.GetCarByID(cID);
         public void AddCar(Car car) => CarDAO.Instance.AddCar(car);
