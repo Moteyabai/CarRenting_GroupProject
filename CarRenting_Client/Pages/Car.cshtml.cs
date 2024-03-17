@@ -52,33 +52,42 @@ namespace CarRenting_Client.Pages.Users
         public async Task<IActionResult> OnGetAsync()
         {
             string token = HttpContext.Session.GetString("Token");
-            using (var httpClient = new HttpClient())
-            {
+            using (var httpClient = new HttpClient()) {
                 // Append the search parameter to the API URL if a name is provided
                 string url = string.IsNullOrEmpty(Name) ? apiUrl : $"{apiUrlSearch}{Name}";
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                using (HttpResponseMessage response = await httpClient.GetAsync(url))
-                {
+                using (HttpResponseMessage response = await httpClient.GetAsync(url)) {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
+                    if (response.IsSuccessStatusCode) {
                         Cars = JsonConvert.DeserializeObject<List<CarViewModels>>(apiResponse);
                     }
-                    else
-                    {
+                    else {
                         Cars = null;
                     }
-
                 }
             }
 
-            if (HttpContext.Session.GetString("ID") == null)
-            {
+            // Filter the list of cars based on user role and car status
+            if (HttpContext.Session.GetString("RoleID") != null) {
+                string roleID = HttpContext.Session.GetString("RoleID");
+
+                // If the user is role 1 or 3, filter cars with status 1
+                if (roleID.Equals("1") || roleID.Equals("3")) {
+                    Cars = Cars.Where(car => car.Status == 1).ToList();
+                }
+                // If the user is role 2, show all cars
+                else if (roleID.Equals("2")) {
+                    // Do nothing, show all cars regardless of status
+                }
+            }
+
+            if (HttpContext.Session.GetString("ID") == null) {
                 return RedirectToPage("./Login");
             }
             await LoadRoomTypesAsync();
             return Page();
         }
+
 
         private async Task LoadRoomTypesAsync()
         {
@@ -231,5 +240,28 @@ namespace CarRenting_Client.Pages.Users
             HttpContext.Session.Clear();
             return RedirectToPage("./Login");
         }
+        public async Task<IActionResult> OnPostDeleteAsync(int carID)
+        {
+            try {
+                string token = HttpContext.Session.GetString("Token");
+                using (var httpClient = new HttpClient()) {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    HttpResponseMessage response = await httpClient.DeleteAsync($"http://localhost:5209/api/Cars/DeleteCar/{carID}");
+
+                    if (response.IsSuccessStatusCode) {
+                        TempData["Message"] = "Car successfully deleted.";
+                    }
+                    else {
+                        TempData["Message"] = "The car's status has changed to 0.";
+                    }
+                }
+            }
+            catch (Exception ex) {
+                TempData["Message"] = "An error occurred while deleting the car.";
+            }
+
+            return RedirectToPage();
+        }
+
     }
 }

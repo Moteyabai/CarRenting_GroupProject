@@ -10,6 +10,7 @@ namespace Repositories.IRepository
     public interface ICarRepository
     {
         public List<Car> GetListCar();
+       /* public List<Car> GetActiveCars();*/
         public List<Car> SearchCarByName(string name);
         public Car GetCarByID(int cID);
         public void AddCar(Car car);

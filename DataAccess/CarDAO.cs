@@ -82,15 +82,22 @@ namespace DataAccess
         }
 
         public void DeleteCar(int id)
-        {
-            var car = GetCarByID(id);
-            if (car != null) {
-                using (var context = new CarRentingDBContext()) {
-                    var c = context.Cars.SingleOrDefault(x => x.CarID == car.CarID);
-                    context.Cars.Remove(c);
-                    context.SaveChanges();
+        {         
+                var car = GetCarByID(id);
+                if (car != null) {
+                    using (var context = new CarRentingDBContext()) {
+                        var c = context.Cars.SingleOrDefault(x => x.CarID == car.CarID);
+                        if (c != null) {
+                            if (c.Status == 0) {                              
+                                Console.WriteLine("Currently the Car's status is 0");
+                            }
+                            else {                              
+                                c.Status = 0;
+                                context.SaveChanges();
+                            }
+                        }
+                    }
                 }
-            }
         }
 
         public void UpdateCar(Car car)
@@ -106,6 +113,20 @@ namespace DataAccess
                 throw new Exception(ex.Message);
             }
         }
+
+        /*public List<Car> GetActiveCars()
+        {
+            var activeCars = new List<Car>();
+            try {
+                using (var context = new CarRentingDBContext()) {
+                    activeCars = context.Cars.Where(car => car.Status == 1).ToList();
+                }
+            }
+            catch (Exception ex) {
+                throw new Exception(ex.Message);
+            }
+            return activeCars;
+        }*/
 
     }
 }

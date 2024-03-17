@@ -213,8 +213,15 @@
                                     </div>
                                 }
                                 <a asp-page="ViewCar" asp-route-CarID="@car.CarID">View</a>
-
+                                @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("2")) {
+                                    <form method="post" asp-page-handler="Delete" asp-route-carID="@car.CarID">
+                                        <button type="submit" class="btn-delete">Delete</button>
+                                    </form>
+                                }
                             </div>
+                           
+
+                            
 
 
                         </div>
@@ -275,6 +282,8 @@
 
 
     </script>
+ 
+
 
     @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("2"))
     {

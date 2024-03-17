@@ -66,6 +66,26 @@ namespace CarRenting_API.Controllers
             }
         }
 
+
+       /* [HttpGet("ActiveCarsList")]
+        public ActionResult<IEnumerable<CarViewModels>> GetActiveCars()
+        {
+            try {
+                var activeCars = _carRepository.GetActiveCars();
+                if (activeCars == null || !activeCars.Any()) {
+                    return NotFound("No Active Cars Found!");
+                }
+
+                var activeCarViewModels = _mapper.Map<List<CarViewModels>>(activeCars);
+                return Ok(activeCarViewModels);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }*/
+
+
+
         [Authorize]
         // GET: api/Cars/5
         [HttpGet("Search/{name}")]
@@ -117,20 +137,37 @@ namespace CarRenting_API.Controllers
             return Ok(Message);
         }
 
-        // DELETE: api/Cars/5
+        // DELETE: api/Cars/DeleteCar/5
         [Authorize]
-        [HttpDelete("DeleteCar{id}")]
+        [HttpDelete("DeleteCar/{id}")]
         public IActionResult DeleteCar(int id)
         {
-            var c = _carRepository.GetCarByID(id);
-            if (c == null) {
-                Message = "No Car Found!";
-                return NotFound(Message);
+            try {
+                var car = _carRepository.GetCarByID(id);
+                if (car == null) {
+                    Message = "No Car Found!";
+                    return NotFound(Message);
+                }
+
+                if (car.Status == 0) {
+                    Message = "Status of " + car.CarName + " is already 0";
+                    return BadRequest(Message); // Trả về BadRequest nếu trạng thái của xe đã là 0
+                }
+
+                // Trạng thái của xe không phải là 0, tiến hành xóa xe
+                _carRepository.DeleteCar(id);
+                Message = "Car successfully deleted.";
+                return Ok(Message);
             }
-            Message = "Deleted " + c.CarName;
-            _carRepository.DeleteCar(id);
-            return Ok(Message);
+            catch (Exception ex) {
+                Message = "An error occurred while deleting the car.";
+                return StatusCode(500, Message);
+            }
         }
+
+
+
+
 
         // UPDATE: api/Cars/5
         [Authorize]
