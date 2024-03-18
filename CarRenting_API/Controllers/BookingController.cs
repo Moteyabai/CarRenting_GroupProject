@@ -18,8 +18,7 @@ namespace CarRenting_API.Controllers
         private ICarDamageRepository carDamageRepository = new CarDamageRepository();
         private IContractRepository contractRepository = new ContractRepository();
 
-        [Authorize]
-        [EnableQuery]
+        [EnableQuery(MaxExpansionDepth = 3)]
         public ActionResult<IQueryable<Booking>> Get()
         {
             return Ok(bookingRepository.Bookings());

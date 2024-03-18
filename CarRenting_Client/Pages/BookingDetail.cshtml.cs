@@ -12,10 +12,10 @@ namespace CarRenting_Client.Pages
 {
     public class BookingDetailModel : PageModel
     {
-        private readonly string apiUrl = "http://localhost:5209/odata/Booking?$expand=BookingDetails&$filter=BookingID eq ";
+        private readonly string apiUrl = "http://localhost:5209/odata/Booking?$expand=BookingDetails($expand=Car($expand=CarBrand)),User&$filter=BookingID eq ";
 
         [BindProperty]
-        public BookingViewDto Booking { get; set; }
+        public BookingDetailsDto Booking { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int bookingID)
         {
@@ -26,7 +26,7 @@ namespace CarRenting_Client.Pages
             else
             {
                 string token = HttpContext.Session.GetString("Token");
-                List<BookingViewDto> bookingViews = null;
+                List<BookingDetailsDto> bookingViews = null;
                 using (var httpClient = new HttpClient())
                 {
                     string apiUrl1 = $"{apiUrl}{bookingID}";
@@ -39,7 +39,7 @@ namespace CarRenting_Client.Pages
 
                         if (apiResponseObject["value"] is JArray bookingReservationsArray)
                         {
-                            bookingViews = JsonConvert.DeserializeObject<List<BookingViewDto>>(bookingReservationsArray.ToString())!;
+                            bookingViews = JsonConvert.DeserializeObject<List<BookingDetailsDto>>(bookingReservationsArray.ToString())!;
                             // Deserialize as a list if it's an array
 
                         }
