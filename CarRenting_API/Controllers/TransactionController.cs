@@ -12,7 +12,6 @@ namespace CarRenting_API.Controllers
     {
         private ITransactionRepository transactionRepository = new TransactionRepository();
 
-        [Authorize]
         [EnableQuery]
         public ActionResult<IQueryable<Transaction>> Get()
         {

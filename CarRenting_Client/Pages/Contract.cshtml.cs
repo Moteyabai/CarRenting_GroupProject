@@ -69,7 +69,7 @@ namespace CarRenting_Client.Pages
                     {
                         // Reload the page after successful deletion
                         await LoadAsync(contractID);
-                        return Page();
+                        return RedirectToPage("Booking");
                     }
                     else
                     {
@@ -100,7 +100,7 @@ namespace CarRenting_Client.Pages
                     {
                         // Reload the page after successful deletion
                         await LoadAsync(contractID);
-                        return Page();
+                        return RedirectToPage("Booking");
                     }
                     else
                     {
@@ -129,7 +129,7 @@ namespace CarRenting_Client.Pages
                     {
                         // Reload the page after successful deletion
                         LoadAsync1(Contract.ContractID);
-                        return Page();
+                        return RedirectToPage("StaffBooking");
                     }
                     else
                     {

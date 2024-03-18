@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using BusinessObject;
 
 namespace CarRenting_Client.Pages
 {
     public class PaymentModel : PageModel
     {
-        private readonly string apiUrl = "http://localhost:5209/odata/Transaction?";
+        private readonly string apiUrl = "http://localhost:5209/odata/Transaction?$expand=Users";
 
-        public List<TransactionViewDTO> Transactions { get; set; }
+        public List<Transaction> Transactions { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -36,7 +37,7 @@ namespace CarRenting_Client.Pages
                         if (roomArray is JArray)
                         {
                             // Deserialize as a list if it's an array
-                            Transactions = JsonConvert.DeserializeObject<List<TransactionViewDTO>>(roomArray.ToString())!;
+                            Transactions = JsonConvert.DeserializeObject<List<Transaction>>(roomArray.ToString())!;
                         }
                     }
                 }
