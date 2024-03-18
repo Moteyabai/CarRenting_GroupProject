@@ -314,8 +314,11 @@
             <span asp-validation-for="RoomInformationDto.PricePerDay" class="text-danger"></span>
 
             <label for="RoomPricePerDay"><b>Seat</b></label>
-            <input type="number" asp-for="RoomInformationDto.Seat" required><br />
+            <select asp-for="RoomInformationDto.Seat" asp-items="@(ViewData["SeatNumbers"] as IEnumerable<SelectListItem>)" required>
+                <option value="">Select Seat</option>
+            </select><br />
             <span asp-validation-for="RoomInformationDto.Seat" class="text-danger"></span>
+
 
             <label for="CarBrand"><b>Brand</b></label>
             <select asp-for="RoomInformationDto.CarBrandID" asp-items="@(ViewData["BrandCar"] as SelectList)" required>
@@ -340,6 +343,7 @@
             document.getElementById("myForm").style.display = "none";
         }
     </script>
+    
 
 </body>
 
