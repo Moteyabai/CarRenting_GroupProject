@@ -9,8 +9,8 @@ namespace BusinessObject.Models.Enum
     public enum Role
     {
         Customer = 1,
-        Staff = 2,
-        Manager = 3,
+        Staff = 3,
+        Manager = 2,
         Admin = 4,
     }
 }
