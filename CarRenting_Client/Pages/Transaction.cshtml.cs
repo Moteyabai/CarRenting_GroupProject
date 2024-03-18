@@ -14,7 +14,7 @@ namespace CarRenting_Client.Pages
     {
         private readonly string apiUrl = "http://localhost:5209/odata/Transaction?$filter=UserID eq ";
 
-        public List<TransactionViewDTO> Transactions { get; set; }
+        public List<Transaction> Transactions { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -29,7 +29,7 @@ namespace CarRenting_Client.Pages
                 using (var httpClient = new HttpClient())
                 {
                     // Append the search parameter to the API URL if a name is provided
-                    string url = $"{apiUrl}{userID}";
+                    string url = $"{apiUrl}{userID}&$expand=Users";
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     using (HttpResponseMessage response = await httpClient.GetAsync(url))
                     {
@@ -40,7 +40,7 @@ namespace CarRenting_Client.Pages
                         if (roomArray is JArray)
                         {
                             // Deserialize as a list if it's an array
-                            Transactions = JsonConvert.DeserializeObject<List<TransactionViewDTO>>(roomArray.ToString())!;
+                            Transactions = JsonConvert.DeserializeObject<List<Transaction>>(roomArray.ToString())!;
                         }
                     }
                 }
