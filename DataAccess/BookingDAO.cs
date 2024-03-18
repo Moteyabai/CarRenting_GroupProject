@@ -74,7 +74,12 @@ namespace DataAccess
             try
             {
                 using var context = new CarRentingDBContext();
-                bookings = context.Bookings.Include(c => c.BookingDetails).Include(d=>d.User).AsQueryable().ToList();
+                bookings = context.Bookings
+                    .Include(b => b.BookingDetails)
+                        .ThenInclude(bd => bd.Car)
+                            .ThenInclude(c => c.CarBrand) // Thêm ThenInclude cho CarBrand
+                    .Include(b => b.User)
+                    .ToList();
             }
             catch (Exception ex)
             {

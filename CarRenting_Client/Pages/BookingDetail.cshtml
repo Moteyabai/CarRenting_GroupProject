@@ -157,7 +157,66 @@
                     <label style="font-weight: bold;" for="fname">Total Price:</label>
                     <span>@Model.Booking.TotalPrice</span>
                     <br>
+                    <h1>Information Car</h1>
+                    @foreach (var bookingDetail in Model.Booking.BookingDetails)
+                    {
+                        <div style="margin-left: 15px;">
+                            <label style="font-weight: bold;" for="fname">Car Name:</label>
+                            <span>@bookingDetail.Car.CarName</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Plate:</label>
+                            <span>@bookingDetail.Car.CarPlate</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Deposit:</label>
+                            <span>@bookingDetail.Car.Deposit</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Price Per Day:</label>
+                            <span>@bookingDetail.Car.PricePerDay</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Status:</label>
+                            <span>@bookingDetail.Car.Status</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Image:</label>
+                            <img src="@bookingDetail.Car.ImageCar" alt="Car Image" style="width: 100px; height: auto;">
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Seat:</label>
+                            <span>@bookingDetail.Car.Seat</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Description:</label>
+                            <span>@bookingDetail.Car.Description</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Car Brand:</label>
+                            <span>@bookingDetail.Car.CarBrand.Name</span>
+                            <br>
+                        </div>
+                    }
+
+                    <h1>User Information</h1>
+                    <label style="font-weight: bold;" for="fname">User ID:</label>
+                    <span>@Model.Booking.User.UserID</span>
+                    <br>
+                    <label style="font-weight: bold;" for="fname">User Name:</label>
+                    <span>@Model.Booking.User.UserName</span>
+                    <br>
+                    <label style="font-weight: bold;" for="fname">User Email:</label>
+                    <span>@Model.Booking.User.Email</span>
+                    <br>
+                    <label style="font-weight: bold;" for="fname">User Phone:</label>
+                    <span>@Model.Booking.User.Phone</span>
+                    <br>
+                    <label style="font-weight: bold;" for="fname">User Identification:</label>
+                    <span>@Model.Booking.User.Identification</span>
+                    <br>
+                    <label style="font-weight: bold;" for="fname">User License:</label>
+                    <span>@Model.Booking.User.License</span>
+                    <br>
+                    <label style="font-weight: bold;" for="fname">User Role ID:</label>
+                    <span>@Model.Booking.User.RoleID</span>
+                    <br>
+                    <label style="font-weight: bold;" for="fname">User Status:</label>
+                    <span>@Model.Booking.User.Status</span>
                 </div>
+
                 <h3>Booking Detail</h3>
                 <div class="job_card">
                     <div class="job_details">
