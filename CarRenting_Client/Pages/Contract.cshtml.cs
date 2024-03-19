@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using BusinessObject.DTO;
 using System.Net.Http.Headers;
+using writehtml;
 
 namespace CarRenting_Client.Pages
 {
@@ -115,7 +116,7 @@ namespace CarRenting_Client.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostUpdateAsync()
         {
             try
             {
@@ -214,6 +215,23 @@ namespace CarRenting_Client.Pages
         {
             HttpContext.Session.Clear();
             return RedirectToPage("./Login");
+        }
+
+        public async Task<IActionResult> OnPostExportAsync()
+        {
+            try
+            {
+                string htmlContent = Contract.CarInformation;
+                string fileName = "HopDongThueXe23111.docx";
+                string outputPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+                Writing11.ConvertHtmlToDocx(htmlContent, outputPath);
+                Console.WriteLine(outputPath);
+                return RedirectToPage("Car");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to export contract: {ex.Message}");
+            }
         }
     }
 }

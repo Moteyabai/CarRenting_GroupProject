@@ -7,7 +7,7 @@ namespace BusinessObject
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ContractID { get; set; }
-        [StringLength(50)]
+        [Column(TypeName = "ntext")]
         public string CarInformation { get; set; }
         public decimal Deposit { get; set; }
         public string? Note { get; set; }

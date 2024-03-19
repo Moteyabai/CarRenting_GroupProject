@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(CarRentingDBContext))]
-    [Migration("20240309025623_GroupProject_HireCar")]
-    partial class GroupProject_HireCar
+    [Migration("20240319044652_GroupProject_Hire")]
+    partial class GroupProject_Hire
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -200,8 +200,7 @@ namespace BusinessObject.Migrations
 
                     b.Property<string>("CarInformation")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("ntext");
 
                     b.Property<decimal>("Deposit")
                         .HasColumnType("decimal(18,2)");

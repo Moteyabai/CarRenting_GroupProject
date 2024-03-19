@@ -198,8 +198,7 @@ namespace BusinessObject.Migrations
 
                     b.Property<string>("CarInformation")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("ntext");
 
                     b.Property<decimal>("Deposit")
                         .HasColumnType("decimal(18,2)");

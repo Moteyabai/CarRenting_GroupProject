@@ -76,6 +76,8 @@
     </style>
     <!-- Font Awesome Cdn Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+
 </head>
 <body>
 
@@ -200,28 +202,73 @@
                 <p>Car Renting</p>
             </div>
             <div class="main-body">
+                <div>
+                    <form asp-page-handler="Update">
+
+                        <label for="RoomNumber"><b>Car Information</b></label><br></br>
+                        <textarea class="form-control1" asp-for="Contract.CarInformation" ></textarea>
 
 
+                        <label for="RoomDetailDescription"><b>Deposit</b></label>
+                        <input type="text" asp-for="Contract.Deposit" required>
+                        <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
+
+                        <label for="RoomNumber"><b>Note</b></label><br></br>
+                        <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
+                        <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
+
+                        <input type="hidden" asp-for="Contract.ContractID" required>
+
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+
+                <form asp-page-handler="Export"
+                  onclick="return confirm('Are you sure you want to expert file this?')">
+                <label for="RoomNumber"><b>Car Information</b></label><br></br>
+                        <textarea class="form-control1" asp-for="Contract.CarInformation" ></textarea>
+
+
+                        <label for="RoomDetailDescription"><b>Deposit</b></label>
+                        <input type="text" asp-for="Contract.Deposit" required>
+                        <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
+
+                        <label for="RoomNumber"><b>Note</b></label><br></br>
+                        <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
+                        <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
+
+                        <input type="hidden" asp-for="Contract.ContractID" required><label for="RoomNumber"><b>Car Information</b></label><br></br>
+                        <textarea class="form-control1" asp-for="Contract.CarInformation" ></textarea>
+
+
+                        <label for="RoomDetailDescription"><b>Deposit</b></label>
+                        <input type="text" asp-for="Contract.Deposit" required>
+                        <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
+
+                        <label for="RoomNumber"><b>Note</b></label><br></br>
+                        <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
+                        <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
+
+                        <input type="hidden" asp-for="Contract.ContractID" required>
+                <button type="submit" class="button-reject">Export file</button>
+            </form>
+
+                
 
                 <h1>Upload Profile Image</h1>
 
-                <form method="post" enctype="multipart/form-data">
-                    <div style="display: flex;">
-                        <div style="width: 49%; padding-right: 1%; text-align: right;">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/025/019/602/small/camping-hiking-nature-mountain-river-graphic-illustration-vector-art-t-shirt-design-generative-ai-png.png" style="width: 100%; text-align: center;">
-                        </div>
-                        <div style="width: 49%; padding-left: 1%;">
-                            <input type="hidden" asp-for="Contract.ContractID">
-                            <label for="fname">Car Information:</label><br>
-                            <input disabled asp-for="Contract.CarInformation" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
-                            <label for="lname">Deposit:</label><br>
-                            <textarea disabled asp-for="Contract.Deposit" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
-                            <label for="lname">Note:</label><br>
-                            <textarea disabled asp-for="Contract.Note" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
-                        </div>
-
-                    </div>
+                <form method="get" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Contract.ContractID">
+                    <label for="fname">Car Information:</label><br>
+                    <input disabled asp-for="Contract.CarInformation" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
+                    <label for="lname">Deposit:</label><br>
+                    <textarea disabled asp-for="Contract.Deposit" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
+                    <label for="lname">Note:</label><br>
+                    <textarea disabled asp-for="Contract.Note" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
                 </form>
+            </div>
+            <div>
+                @Html.Raw(@Model.Contract.CarInformation)
             </div>
             @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1") && Model.Contract.Status == 3)
             {
@@ -245,6 +292,8 @@
                 </div>
             }
 
+       
+
             
         </section>
     </div>
@@ -254,36 +303,104 @@
         <button class="open-button" onclick="openForm()">Update</button>
     }
 
-    <div class="form-popup" id="myForm">
-        <form method="post" class="form-container">
-
-            <label for="RoomNumber"><b>Car Information</b></label><br></br>
-            <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.CarInformation" required></textarea>
-            <span asp-validation-for="Contract.CarInformation" class="text-danger"></span><br />
-
-            <label for="RoomDetailDescription"><b>Deposit</b></label>
-            <input type="text" asp-for="Contract.Deposit" required>
-            <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
-
-            <label for="RoomNumber"><b>Note</b></label><br></br>
-            <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
-            <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
-
-            <input type="hidden" asp-for="Contract.ContractID" required>
-
-            <button type="submit" class="btn">Update</button>
-            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-        </form>
-    </div>
-
     <script>
-        function openForm() {
-            document.getElementById("myForm").style.display = "block";
-        }
+        ClassicEditor
+            .create(document.querySelector('.form-control1'))
+            .then(editor => {
+                // Thiết lập dữ liệu mặc định
+                editor.setData(`CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 
-        function closeForm() {
-            document.getElementById("myForm").style.display = "none";
-        }
+        Độc lập – Tự do – Hạnh phúc
+
+        HỢP ĐỒNG THUÊ XE
+
+        - Căn cứ Bộ Luật Dân sự 2015;
+
+        - Căn cứ Luật thương mại 2005;
+
+        - Căn cứ vào nhu cầu và khả năng cung ứng của các bên dưới đây.
+
+        Hôm nay, ngày .... tháng .... năm ......., tại ..........................................., chúng tôi gồm:
+
+        BÊN CHO THUÊ (sau đây gọi là Bên A)
+
+        Ông: ........................................        Sinh năm: .................
+
+        CMND/CCCD/Hộ chiếu số: .................... do ................ cấp ngày ....................
+
+        Hộ khẩu thường trú tại: ...................................................................................
+
+        Bà: ........................................          Sinh năm: .................
+
+        CMND/CCCD/Hộ chiếu số: ….................. do ............... cấp ngày ....................
+
+        Hộ khẩu thường trú tại: ...................................................................................
+
+        BÊN THUÊ (Sau đây gọi tắt là Bên B)
+
+        Ông: ........................................        Sinh năm: .................
+
+        CMND/CCCD/Hộ chiếu số: .................... do ................ cấp ngày ....................
+
+        Hộ khẩu thường trú tại: ...................................................................................
+
+        Bà: ........................................          Sinh năm: .................
+
+        CMND/CCCD/Hộ chiếu số: ….................. do ............... cấp ngày ....................
+
+        Hộ khẩu thường trú tại: ...................................................................................
+
+        Hai bên đã thỏa thuận và thống nhất ký kết Hợp đồng thuê xe ôtô với những điều khoản cụ thể như sau:
+
+        Điều 1. Đặc điểm và thỏa thuận thuê xe
+
+        Bằng hợp đồng này, Bên A đồng ý cho Bên B thuê và bên B đồng ý thuê xe ô tô có đặc điểm sau đây:
+
+        Nhãn hiệu: ………………………       Số loại:  ………………
+
+        Loại xe: ……………….               Màu Sơn: …………………
+
+        Số máy: ……………….                Số khung: …………………….
+
+        Số chỗ ngồi: ………………      Đăng ký xe có giá trị đến ngày: ……………….
+
+        Xe ô tô có biển số ………… theo giấy đăng ký ô tô số ……… do ……………. cấp ngày ………… đăng ký lần đầu ngày ………. được mang tên…………. tại địa chỉ: …………
+
+        Giấy chứng nhận kiểm định số …………… do Trung tâm đăng kiểm xe cơ giới số ………., Cục đăng kiểm Việt Nam cấp ngày …………………
+
+        - Bên A cam đoan trước khi ký bản Hợp đồng này, xe ô tô nêu trên:
+
+         + Không có tranh chấp về quyền sở hữu/sử dụng;
+
+         + Không bị ràng buộc bởi bất kỳ Hợp đồng thuê xe ô tô nào đang có hiệu lực.
+
+        - Bên B cam đoan: Bên B được cấp giấy phép lái xe hạng …. số …………. có giá trị đến ngày ……………………. (nếu bên B với tư cách cá nhân)
+
+        Điều 2. Thời hạn thuê xe ô tô
+
+           Thời hạn thuê là …… (……….) tháng kể từ ngày Hợp đồng này được ký kết
+
+        Điều 3. Mục đích thuê
+
+           Bên B sử dụng tài sản thuê nêu trên vào mục đích ………………………
+
+        Điều 4: Giá thuê và phương thức thanh toán
+
+        1. Giá thuê tài sản nêu trên là: ………………VNĐ/…………. (Bằng chữ: ……… đồng trên một ………….).
+
+        2. Phương thức thanh toán: Thanh toán bằng ………………… và Bên B phải thanh toán cho Bên A số tiền thuê xe ô tô nêu trên vào ngày …………………...
+
+        3. Việc giao và nhận số tiền nêu trên do hai bên tự thực hiện và chịu trách nhiệm trước pháp luật.
+
+        Điều 5: Phương thức giao, trả lại tài sản thuê
+
+        Hết thời hạn thuê nêu trên, Bên B phải giao trả chiếc xe ô tô trên cho Bên A.
+
+        Điều 6: Nghĩa vụ và quyền của Bên A`);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     </script>
 
 </body>
