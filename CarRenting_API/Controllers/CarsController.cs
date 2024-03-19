@@ -125,9 +125,9 @@ namespace CarRenting_API.Controllers
             var car = _mapper.Map<Car>(carAddDTO);
             var list = _carRepository.GetListCar();
             foreach (Car c in list) {
-                if (c.CarName.Equals(car.CarName)) {
+                if (c.CarPlate.Equals(car.CarPlate)) {
                     Message = "CarName Existed!";
-                    return NotFound(Message);
+                    return BadRequest(Message);
                 }
             }
             car.Status = 1;

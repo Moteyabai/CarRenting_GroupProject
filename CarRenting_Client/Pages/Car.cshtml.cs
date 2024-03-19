@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace CarRenting_Client.Pages.Users
@@ -84,6 +85,8 @@ namespace CarRenting_Client.Pages.Users
             if (HttpContext.Session.GetString("ID") == null) {
                 return RedirectToPage("./Login");
             }
+            int[] seatNumbers = new int[] { 4, 7, 16 };
+            ViewData["SeatNumbers"] = seatNumbers.Select(x => new SelectListItem { Value = x.ToString(), Text = x.ToString() }).ToList();
             await LoadRoomTypesAsync();
             return Page();
         }
@@ -176,35 +179,34 @@ namespace CarRenting_Client.Pages.Users
 
         public async Task<IActionResult> OnPostCreateRoomInformationAsync()
         {
-            try
-            {
+            try {
                 string token = HttpContext.Session.GetString("Token");
                 string image;
-                if (File != null && File.Length > 0)
-                {
+                if (File != null && File.Length > 0) {
                     image = await UploadImage();
                     RoomInformationDto.ImageCar = image;
                 }
-                using (var httpClient = new HttpClient())
-                {
+                using (var httpClient = new HttpClient()) {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     // Send a POST request to the API to create room information
                     var response = await httpClient.PostAsJsonAsync(apiUrlAddCars, RoomInformationDto);
 
-                    if (response.IsSuccessStatusCode)
-                    {
+                    if (response.IsSuccessStatusCode) {
                         // Reload the page after successful creation
+                        TempData["Message"] = "Add Car Successed.";
                         return RedirectToPage();
                     }
-                    else
-                    {
+                    else {
                         string errorMessage = await response.Content.ReadAsStringAsync();
-                        return BadRequest($"Failed to create room information: {errorMessage}");
+                        if (response.StatusCode == HttpStatusCode.BadRequest) {
+                            TempData["Message"] = "Car Plate Exists.";
+                            return Page();
+                        }
+                        return Page();
                     }
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -262,6 +264,8 @@ namespace CarRenting_Client.Pages.Users
 
             return RedirectToPage();
         }
+       
+
 
     }
 }
