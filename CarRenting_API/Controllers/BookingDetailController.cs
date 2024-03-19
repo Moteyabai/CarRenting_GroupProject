@@ -31,7 +31,6 @@ namespace CarRenting_API.Controllers
             }
         }
 
-        [Authorize]
         [EnableQuery]
         public ActionResult<IQueryable<BookingDetail>> Get()
         {
