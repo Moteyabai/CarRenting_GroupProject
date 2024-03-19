@@ -272,7 +272,7 @@
 
 
                             <label for="RoomDetailDescription"><b>Deposit</b></label>
-                            <input type="text" asp-for="Contract.Deposit" required>
+                            <input type="number" max="@Model.Booking.TotalPrice" asp-for="Contract.Deposit" required>
                             <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
 
                             <label for="RoomNumber"><b>Note</b></label><br></br>
