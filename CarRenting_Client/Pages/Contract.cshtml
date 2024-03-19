@@ -202,72 +202,96 @@
                 <p>Car Renting</p>
             </div>
             <div class="main-body">
-                <div>
-                    <form asp-page-handler="Update">
-
-                        <label for="RoomNumber"><b>Car Information</b></label><br></br>
-                        <textarea class="form-control1" asp-for="Contract.CarInformation" ></textarea>
-
-
-                        <label for="RoomDetailDescription"><b>Deposit</b></label>
-                        <input type="text" asp-for="Contract.Deposit" required>
-                        <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
-
-                        <label for="RoomNumber"><b>Note</b></label><br></br>
-                        <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
-                        <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
-
-                        <input type="hidden" asp-for="Contract.ContractID" required>
-
-                        <button type="submit">Submit</button>
-                    </form>
-                </div>
-
-                <form asp-page-handler="Export"
-                  onclick="return confirm('Are you sure you want to expert file this?')">
-                <label for="RoomNumber"><b>Car Information</b></label><br></br>
-                        <textarea class="form-control1" asp-for="Contract.CarInformation" ></textarea>
-
-
-                        <label for="RoomDetailDescription"><b>Deposit</b></label>
-                        <input type="text" asp-for="Contract.Deposit" required>
-                        <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
-
-                        <label for="RoomNumber"><b>Note</b></label><br></br>
-                        <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
-                        <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
-
-                        <input type="hidden" asp-for="Contract.ContractID" required><label for="RoomNumber"><b>Car Information</b></label><br></br>
-                        <textarea class="form-control1" asp-for="Contract.CarInformation" ></textarea>
-
-
-                        <label for="RoomDetailDescription"><b>Deposit</b></label>
-                        <input type="text" asp-for="Contract.Deposit" required>
-                        <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
-
-                        <label for="RoomNumber"><b>Note</b></label><br></br>
-                        <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
-                        <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
-
-                        <input type="hidden" asp-for="Contract.ContractID" required>
-                <button type="submit" class="button-reject">Export file</button>
-            </form>
-
+                @if (Model.Contract.Status != 1)
+                {
+                    <div style="display:flex; justify-content:space-between;width:100%;">
+                        <div style="width:70%;border-radius:10px;background-color:white;padding:4px;">
+                            @foreach (var bookingDetail in Model.Booking.BookingDetails)
+                            {
+                                <div style="margin-left: 15px;">
+                                    <label style="font-weight: bold;" for="fname">Car Name:</label>
+                                    <span>@bookingDetail.Car.CarName</span>
+                                    <br>
+                                    <label style="font-weight: bold;" for="fname">Car Plate:</label>
+                                    <span>@bookingDetail.Car.CarPlate</span>
+                                    <br>
+                                    <br>
+                                    <label style="font-weight: bold;" for="fname">Car Price Per Day:</label>
+                                    <span>@bookingDetail.Car.PricePerDay</span>
+                                    <br>
+                                    <label style="font-weight: bold;" for="fname">Car Status:</label>
+                                    <span>@bookingDetail.Car.Status</span>
+                                    <br>
+                                    <label style="font-weight: bold;" for="fname">Car Seat:</label>
+                                    <span>@bookingDetail.Car.Seat</span>
+                                    <br>
+                                    <label style="font-weight: bold;" for="fname">Car Description:</label>
+                                    <span>@bookingDetail.Car.Description</span>
+                                    <br>
+                                    <label style="font-weight: bold;" for="fname">Car Brand:</label>
+                                    <span>@bookingDetail.Car.CarBrand.Name</span>
+                                    <br>
+                                </div>
+                            }
+                        </div>
+                        <div style="width:27%;border-radius:10px;background-color:white;padding:4px;">
+                            <label style="font-weight: bold;" for="fname">Booking Date:</label>
+                            <span>@Model.Booking.BookingDate</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">Total Price:</label>
+                            <span>@Model.Booking.TotalPrice</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">User ID:</label>
+                            <span>@Model.Booking.User.UserID</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">User Name:</label>
+                            <span>@Model.Booking.User.UserName</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">User Email:</label>
+                            <span>@Model.Booking.User.Email</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">User Phone:</label>
+                            <span>@Model.Booking.User.Phone</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">User Identification:</label>
+                            <span>@Model.Booking.User.Identification</span>
+                            <br>
+                            <label style="font-weight: bold;" for="fname">User License:</label>
+                            <span>@Model.Booking.User.License</span>
+                        </div>
+                    </div>
+                }
                 
+                @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("3") && Model.Contract.Status == 1)
+                {
+                    <div>
+                        <form asp-page-handler="Update">
 
-                <h1>Upload Profile Image</h1>
+                            <label for="RoomNumber"><b>Car Information</b></label><br></br>
+                            <textarea class="form-control1" asp-for="Contract.CarInformation"></textarea>
 
-                <form method="get" enctype="multipart/form-data">
-                    <input type="hidden" asp-for="Contract.ContractID">
-                    <label for="fname">Car Information:</label><br>
-                    <input disabled asp-for="Contract.CarInformation" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"><br>
-                    <label for="lname">Deposit:</label><br>
-                    <textarea disabled asp-for="Contract.Deposit" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
-                    <label for="lname">Note:</label><br>
-                    <textarea disabled asp-for="Contract.Note" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; transition: border-color 0.3s;"></textarea><br>
-                </form>
+
+                            <label for="RoomDetailDescription"><b>Deposit</b></label>
+                            <input type="number" max="@Model.Booking.TotalPrice" asp-for="Contract.Deposit" required>
+                            <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
+
+                            <label for="RoomNumber"><b>Note</b></label><br></br>
+                            <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
+                            <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
+
+                            <input type="hidden" asp-for="Contract.ContractID" required>
+
+                            <button class="button-accept" type="submit">Update</button>
+                        </form>
+                    </div>
+                }
+                
             </div>
-            <div>
+            <div style="background-color: white;
+    border-radius: 15px;
+    width: 96%;
+    margin-left: 4%;
+    padding-left: 22px;">
                 @Html.Raw(@Model.Contract.CarInformation)
             </div>
             @if (HttpContext.Session.GetString("RoleID") != null && HttpContext.Session.GetString("RoleID").Equals("1") && Model.Contract.Status == 3)
@@ -284,6 +308,14 @@
                     </form>
                 </div>
             }
+            <form asp-page-handler="Export"
+                  onclick="return confirm('Are you sure you want to expert file this?')">
+                <input type="hidden" asp-for="Contract.ContractID" required>
+                <input type="hidden" asp-for="Contract.CarInformation" required>
+                <input type="hidden" asp-for="Contract.Deposit" required>
+                <input type="hidden" asp-for="Contract.Note" required>
+                <button type="submit" class="button-accept">Export file</button>
+            </form>
 
             @if (TempData["Message"] != null)
             {
@@ -307,96 +339,6 @@
         ClassicEditor
             .create(document.querySelector('.form-control1'))
             .then(editor => {
-                // Thiết lập dữ liệu mặc định
-                editor.setData(`CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-
-        Độc lập – Tự do – Hạnh phúc
-
-        HỢP ĐỒNG THUÊ XE
-
-        - Căn cứ Bộ Luật Dân sự 2015;
-
-        - Căn cứ Luật thương mại 2005;
-
-        - Căn cứ vào nhu cầu và khả năng cung ứng của các bên dưới đây.
-
-        Hôm nay, ngày .... tháng .... năm ......., tại ..........................................., chúng tôi gồm:
-
-        BÊN CHO THUÊ (sau đây gọi là Bên A)
-
-        Ông: ........................................        Sinh năm: .................
-
-        CMND/CCCD/Hộ chiếu số: .................... do ................ cấp ngày ....................
-
-        Hộ khẩu thường trú tại: ...................................................................................
-
-        Bà: ........................................          Sinh năm: .................
-
-        CMND/CCCD/Hộ chiếu số: ….................. do ............... cấp ngày ....................
-
-        Hộ khẩu thường trú tại: ...................................................................................
-
-        BÊN THUÊ (Sau đây gọi tắt là Bên B)
-
-        Ông: ........................................        Sinh năm: .................
-
-        CMND/CCCD/Hộ chiếu số: .................... do ................ cấp ngày ....................
-
-        Hộ khẩu thường trú tại: ...................................................................................
-
-        Bà: ........................................          Sinh năm: .................
-
-        CMND/CCCD/Hộ chiếu số: ….................. do ............... cấp ngày ....................
-
-        Hộ khẩu thường trú tại: ...................................................................................
-
-        Hai bên đã thỏa thuận và thống nhất ký kết Hợp đồng thuê xe ôtô với những điều khoản cụ thể như sau:
-
-        Điều 1. Đặc điểm và thỏa thuận thuê xe
-
-        Bằng hợp đồng này, Bên A đồng ý cho Bên B thuê và bên B đồng ý thuê xe ô tô có đặc điểm sau đây:
-
-        Nhãn hiệu: ………………………       Số loại:  ………………
-
-        Loại xe: ……………….               Màu Sơn: …………………
-
-        Số máy: ……………….                Số khung: …………………….
-
-        Số chỗ ngồi: ………………      Đăng ký xe có giá trị đến ngày: ……………….
-
-        Xe ô tô có biển số ………… theo giấy đăng ký ô tô số ……… do ……………. cấp ngày ………… đăng ký lần đầu ngày ………. được mang tên…………. tại địa chỉ: …………
-
-        Giấy chứng nhận kiểm định số …………… do Trung tâm đăng kiểm xe cơ giới số ………., Cục đăng kiểm Việt Nam cấp ngày …………………
-
-        - Bên A cam đoan trước khi ký bản Hợp đồng này, xe ô tô nêu trên:
-
-         + Không có tranh chấp về quyền sở hữu/sử dụng;
-
-         + Không bị ràng buộc bởi bất kỳ Hợp đồng thuê xe ô tô nào đang có hiệu lực.
-
-        - Bên B cam đoan: Bên B được cấp giấy phép lái xe hạng …. số …………. có giá trị đến ngày ……………………. (nếu bên B với tư cách cá nhân)
-
-        Điều 2. Thời hạn thuê xe ô tô
-
-           Thời hạn thuê là …… (……….) tháng kể từ ngày Hợp đồng này được ký kết
-
-        Điều 3. Mục đích thuê
-
-           Bên B sử dụng tài sản thuê nêu trên vào mục đích ………………………
-
-        Điều 4: Giá thuê và phương thức thanh toán
-
-        1. Giá thuê tài sản nêu trên là: ………………VNĐ/…………. (Bằng chữ: ……… đồng trên một ………….).
-
-        2. Phương thức thanh toán: Thanh toán bằng ………………… và Bên B phải thanh toán cho Bên A số tiền thuê xe ô tô nêu trên vào ngày …………………...
-
-        3. Việc giao và nhận số tiền nêu trên do hai bên tự thực hiện và chịu trách nhiệm trước pháp luật.
-
-        Điều 5: Phương thức giao, trả lại tài sản thuê
-
-        Hết thời hạn thuê nêu trên, Bên B phải giao trả chiếc xe ô tô trên cho Bên A.
-
-        Điều 6: Nghĩa vụ và quyền của Bên A`);
             })
             .catch(error => {
                 console.error(error);

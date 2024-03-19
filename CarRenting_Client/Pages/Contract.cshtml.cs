@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using BusinessObject.DTO;
 using System.Net.Http.Headers;
 using writehtml;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CarRenting_Client.Pages
 {
@@ -15,9 +16,17 @@ namespace CarRenting_Client.Pages
         private readonly string apiUrlAccept = "http://localhost:5209/odata/Booking/";
         private readonly string apiUrlReject = "http://localhost:5209/odata/Booking/";
         private readonly string apiUrlUpdate = "http://localhost:5209/odata/Contract/";
+        private readonly string apiUrlGetBoking = "http://localhost:5209/odata/BookingDetail?$filter=ContractID eq ";
+        private readonly string apiUrlDetail = "http://localhost:5209/odata/Booking?$expand=BookingDetails($expand=Car($expand=CarBrand)),User&$filter=BookingID eq ";
 
         [BindProperty]
         public Contract Contract { get; set; }
+
+        [BindProperty]
+        public BookingDetailViewDTO Booking1 { get; set; }
+
+        [BindProperty]
+        public BookingDetailsDto Booking { get; set; }
 
         [BindProperty]
         public BookingUpdateDTO BookingUpdate { get; set; }
@@ -49,8 +58,60 @@ namespace CarRenting_Client.Pages
                             roomInformations = JsonConvert.DeserializeObject<List<Contract>>(roomArray.ToString())!;
                         }
                         Contract = roomInformations.FirstOrDefault();
+                        await LoadRoomTypesAsync(contractID);
                         return Page();
                     }
+                }
+            }
+        }
+
+        private async Task LoadRoomTypesAsync(int contractId)
+        {
+            string token = HttpContext.Session.GetString("Token");
+            List<BookingDetailViewDTO> roomInformations = null;
+            using (var httpClient = new HttpClient())
+            {
+                // Append the search parameter to the API URL if a name is provided
+                string url = $"{apiUrlGetBoking}{contractId}";
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                using (HttpResponseMessage response = await httpClient.GetAsync(url))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+
+                    var roomArray = JObject.Parse(apiResponse)["value"];
+
+                    if (roomArray is JArray)
+                    {
+                        // Deserialize as a list if it's an array
+                        roomInformations = JsonConvert.DeserializeObject<List<BookingDetailViewDTO>>(roomArray.ToString())!;
+                    }
+                    Booking1 = roomInformations.FirstOrDefault();
+                    await LoadDetailAsync(Booking1.BookingID);
+                }
+            }
+        }
+
+        private async Task LoadDetailAsync(int bookingID)
+        {
+            string token = HttpContext.Session.GetString("Token");
+            List<BookingDetailsDto> bookingViews = null;
+            using (var httpClient = new HttpClient())
+            {
+                string apiUrl1 = $"{apiUrlDetail}{bookingID}";
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                using (HttpResponseMessage response = await httpClient.GetAsync(apiUrl1))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    var apiResponseObject = JObject.Parse(apiResponse);
+
+                    if (apiResponseObject["value"] is JArray bookingReservationsArray)
+                    {
+                        bookingViews = JsonConvert.DeserializeObject<List<BookingDetailsDto>>(bookingReservationsArray.ToString())!;
+                        // Deserialize as a list if it's an array
+
+                    }
+                    Booking = bookingViews.FirstOrDefault();
                 }
             }
         }

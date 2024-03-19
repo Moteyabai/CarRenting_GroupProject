@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRenting_Client", "CarRen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcService", "GrpcService\GrpcService.csproj", "{8FA7E281-6AC9-4C22-B5A0-DA09FD0A925F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "write new file", "write new file\write new file.csproj", "{13627C86-9984-4360-8B59-C7A63E5AE166}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "writehtml", "..\writehtml\writehtml\writehtml.csproj", "{97DBE80C-0826-4B9A-B42A-AE17D888DF65}"
 EndProject
 Global
@@ -49,10 +47,6 @@ Global
 		{8FA7E281-6AC9-4C22-B5A0-DA09FD0A925F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FA7E281-6AC9-4C22-B5A0-DA09FD0A925F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FA7E281-6AC9-4C22-B5A0-DA09FD0A925F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13627C86-9984-4360-8B59-C7A63E5AE166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13627C86-9984-4360-8B59-C7A63E5AE166}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13627C86-9984-4360-8B59-C7A63E5AE166}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13627C86-9984-4360-8B59-C7A63E5AE166}.Release|Any CPU.Build.0 = Release|Any CPU
 		{97DBE80C-0826-4B9A-B42A-AE17D888DF65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97DBE80C-0826-4B9A-B42A-AE17D888DF65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97DBE80C-0826-4B9A-B42A-AE17D888DF65}.Release|Any CPU.ActiveCfg = Release|Any CPU
