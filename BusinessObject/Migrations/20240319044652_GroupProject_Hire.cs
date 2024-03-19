@@ -4,10 +4,19 @@
 
 namespace BusinessObject.Migrations
 {
-    public partial class GroupProject_HireCar : Migration
+    public partial class GroupProject_Hire : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "CarInformation",
+                table: "Contracts",
+                type: "ntext",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(50)",
+                oldMaxLength: 50);
+
             migrationBuilder.AddColumn<int>(
                 name: "Status",
                 table: "Contracts",
@@ -42,6 +51,15 @@ namespace BusinessObject.Migrations
             migrationBuilder.DropColumn(
                 name: "Seat",
                 table: "Cars");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CarInformation",
+                table: "Contracts",
+                type: "nvarchar(50)",
+                maxLength: 50,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "ntext");
         }
     }
 }
