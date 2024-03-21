@@ -264,16 +264,14 @@
                     <div>
                         <form asp-page-handler="Update">
 
-                            <label for="RoomNumber"><b>Car Information</b></label><br></br>
+                            <label for="RoomNumber"><b>Contact</b></label><br></br>
                             <textarea class="form-control1" asp-for="Contract.CarInformation"></textarea>
 
 
-                            <label for="RoomDetailDescription"><b>Deposit</b></label>
-                            <input type="number" max="@Model.Booking.TotalPrice" asp-for="Contract.Deposit" required>
+                            <input type="hidden" max="@Model.Booking.TotalPrice" asp-for="Contract.Deposit">
                             <span asp-validation-for="Contract.Deposit" class="text-danger"></span>
 
-                            <label for="RoomNumber"><b>Note</b></label><br></br>
-                            <textarea style="height: 30%; border: 1px solid #ccc;" asp-for="Contract.Note" required></textarea>
+                            <input type="hidden" asp-for="Contract.Note">
                             <span asp-validation-for="Contract.Note" class="text-danger"></span><br />
 
                             <input type="hidden" asp-for="Contract.ContractID" required>
